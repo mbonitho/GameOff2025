@@ -1,0 +1,46 @@
+{
+  "ogmoVersion": "3.4.0",
+  "width": 96,
+  "height": 128,
+  "offsetX": 0,
+  "offsetY": 0,
+  "values": {"BATTLE_TIER": "S"},
+  "layers": [
+    {
+      "name": "tiles",
+      "_eid": "34305677",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 32,
+      "gridCellHeight": 32,
+      "gridCellsX": 3,
+      "gridCellsY": 4,
+      "tileset": "New Tileset",
+      "data": [12, -1, 0, -1, 11, -1, 0, -1, -1, -1, -1, 4],
+      "exportMode": 0,
+      "arrayMode": 0
+    },
+    {
+      "name": "things",
+      "_eid": "34460650",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 32,
+      "gridCellHeight": 32,
+      "gridCellsX": 3,
+      "gridCellsY": 4,
+      "entities": [
+        {
+          "name": "event_text",
+          "id": 0,
+          "_eid": "74733074",
+          "x": 32,
+          "y": 96,
+          "originX": 0,
+          "originY": 0,
+          "values": {"text": "Not all fights are mandatory, but fighting gives rewards."}
+        }
+      ]
+    }
+  ]
+}

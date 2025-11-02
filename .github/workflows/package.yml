@@ -1,0 +1,42 @@
+name: Package Game
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest] #, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Package with PyInstaller
+        run: |
+          pyinstaller main.spec
+        # export PYTHONPATH=$PWD
+        # pyinstaller --onefile main.py \
+        # --collect-submodules=states \
+        # --collect-submodules=utils
+        # pyinstaller --onefile main.py
+
+      - name: Upload packaged game
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-${{ matrix.os }}
+          path: dist/

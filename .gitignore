@@ -1,0 +1,8 @@
+/.vscode
+/__pycache__
+/build
+/dist
+/save
+/tasks.json
+states/__pycache__
+*.pyc
