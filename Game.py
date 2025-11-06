@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from typing import Dict, Optional
 from gamestates.actionState import ActionState
+from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
 from gamestates.titleState import TitleState
@@ -37,7 +38,8 @@ class Game:
             "Title": TitleState(self),
             "Gameplay": GameplayState(self),
             "Action": ActionState(self),
-            "Rebind" : RebindMenuState(self)
+            "Rebind" : RebindMenuState(self),
+            "GameOver" : GameOverState(self),
         }
         self.current_state: Optional[GameState] = None
         self.change_state("Splash")

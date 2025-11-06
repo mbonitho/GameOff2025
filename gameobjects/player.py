@@ -10,8 +10,9 @@ class Player:
         self.Y = y
         self.Tint = color
 
-        self.Speed = 3 # default speed
-
+        self.Speed = 3
+        self.MaxLife = 5
+        self.Life = self.MaxLife
         self.Score = 0
 
 

@@ -143,7 +143,6 @@ class ActionState(GameState):
             if bullet.lifespan >= bullet.max_lifespan:
                 self.Bullets.remove(bullet)
 
-
         # Spawn enemies
         self.enemySpawningTimer += dt
         if self.enemySpawningTimer >= self.enemySpawnDelay:
@@ -176,6 +175,10 @@ class ActionState(GameState):
                     )
                 )
 
+        # check for game over
+        continueGame = any(p.Life > 0 for p in self.Players)
+        if not continueGame:
+            self.game.change_state("GameOver")
 
     def draw(self, screen):
         screen.fill((64, 64, 64))
@@ -194,6 +197,9 @@ class ActionState(GameState):
         #############################################
         player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))
+        pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 32, self.Players[0].MaxLife * 20 + 6, 24))
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 35, self.Players[0].Life * 20, 18))
+
 
         if len(self.Players) == 1:
             self.player2PressStartText.draw(screen)
