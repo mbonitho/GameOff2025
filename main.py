@@ -1,4 +1,4 @@
-from templateGame import Game
+from Game import Game
 import asyncio
 
 async def main():

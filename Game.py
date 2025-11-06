@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 
 from typing import Dict, Optional
+from gamestates.actionState import ActionState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
 from gamestates.titleState import TitleState
@@ -35,6 +36,7 @@ class Game:
             "Splash": SplashState(self),
             "Title": TitleState(self),
             "Gameplay": GameplayState(self),
+            "Action": ActionState(self),
             "Rebind" : RebindMenuState(self)
         }
         self.current_state: Optional[GameState] = None
@@ -63,12 +65,7 @@ class Game:
         }
 
 
-        # detect joysticks
-        self.joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
-        for joystick in self.joysticks:
-            joystick.init()
-            print(f"Detected joystick: {joystick.get_name()}")
-
+        self.joysticks = []
 
     def load_data(self):
         print('loading data')
@@ -138,6 +135,18 @@ class Game:
                 if event.key == K_F11:
                     self.toggle_fullscreen()
 
+            # Hot-plugging Joysticks 
+            if event.type == pygame.JOYDEVICEADDED:
+                new_joystick = pygame.joystick.Joystick(event.device_index)
+                new_joystick.init()
+                self.joysticks.append(new_joystick)
+                print(f"New Joystick Added: {new_joystick.get_name()}")
+            if event.type == pygame.JOYDEVICEREMOVED:
+                # Re-initialize joysticks or remove the disconnected one from your list
+                print(f"Joystick Removed: {event.instance_id}") # instance_id is preferred in Pygame 2.x
+                self.joysticks = [j for j in self.joysticks if j.get_instance_id() != event.instance_id]
+
+
         ########################################
         # INPUT, UPDATE, DRAW THE CURRENT STATE
         ########################################
@@ -187,3 +196,10 @@ class Game:
                                 (self.physical_screen_width, self.physical_screen_height), 
                                 pygame.NOFRAME)
             self.is_fullscreen = not self.is_fullscreen
+
+
+    def player1_joystick(self):
+        return self.joysticks[0]
+    
+    def player2_joystick(self):
+        return self.joysticks[1]
