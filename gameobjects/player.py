@@ -12,6 +12,9 @@ class Player:
 
         self.Speed = 3 # default speed
 
+        self.Score = 0
+
+
     def MoveX(self, value):
         self.X += self.Speed * value
 

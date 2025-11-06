@@ -1,11 +1,16 @@
 
+import random
 import pygame
+from pygame.locals import *
+
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
+from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.player import Player
+from gameobjects.enemies.enemy import Enemy
 from gamestates.gameState import GameState
-from pygame.locals import *
 from utils.helpers.surface_helper import tint_surface
+
 
 class ActionState(GameState):
 
@@ -16,6 +21,7 @@ class ActionState(GameState):
         # SURFACES
         #############################
         self.BulletSurface = pygame.image.load('assets/sprites/bullet.png').convert_alpha()
+        self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
 
         #############################
         # ENTITIES
@@ -25,9 +31,17 @@ class ActionState(GameState):
         self.Bullets = []
 
         #############################
-        # INIT UI
+        # UI
         #############################
-        self.player2_press_start_text = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 200, 16))
+        self.UIFont = pygame.font.SysFont(None, 24)
+        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 200, 16))
+
+        #############################
+        # Load a bunch of enemies (to remove later)
+        #############################
+        self.enemySpawningTimer = 0
+        self.enemySpawnDelay = 3 # seconds
+        self.Enemies = []
 
 
     def exit(self):
@@ -96,7 +110,6 @@ class ActionState(GameState):
                 axis_x_val = joy.get_axis(0)
                 axis_y_val = joy.get_axis(1)
 
-                # print(f'{axis_x_val};{axis_y_val}')
 
                 # Dead zone" to prevent jitter and drift
                 dead_zone_threshold = 0.1
@@ -118,23 +131,60 @@ class ActionState(GameState):
 
         # blinking text
         if len(self.Players) == 1:
-            self.player2_press_start_text.update(dt)
+            self.player2PressStartText.update(dt)
 
+        # Update enemies
+        for enemy in self.Enemies:
+            enemy.update(self.Players, dt)
 
         # Update bullets
         for bullet in self.Bullets.copy():
-            bullet.update(dt)
+            bullet.update(self.Enemies, dt)
             if bullet.lifespan >= bullet.max_lifespan:
                 self.Bullets.remove(bullet)
-            print(len(self.Bullets))
 
+
+        # Spawn enemies
+        self.enemySpawningTimer += dt
+        if self.enemySpawningTimer >= self.enemySpawnDelay:
+            self.enemySpawningTimer %= self.enemySpawnDelay
+
+            for i in range(4 * len(self.Players)):
+                x = 0
+                y = 0
+                rng = random.randint(1, 4)
+                match(rng):
+                    case 1: # TOP OF SCREEN
+                        x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                        y = -self.EnemySurface.get_height()
+                    case 2: # BOTTOM OF SCREEN
+                        x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                        y = self.game.screen.get_height() + self.EnemySurface.get_height() 
+                    case 3: # LEFT OF SCREEN
+                        x = -self.EnemySurface.get_width()
+                        y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+                    case 4: # RIGHT OF SCREEN
+                        x = self.game.screen.get_width() + self.EnemySurface.get_width()
+                        y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+
+                self.Enemies.append(
+                    Enemy(
+                        self.EnemySurface, 
+                        x,
+                        y,
+                        [SeekNearestPlayerBehavior()]
+                    )
+                )
 
 
     def draw(self, screen):
-        screen.fill((30, 30, 60))
+        screen.fill((64, 64, 64))
 
         for p in self.Players:
             screen.blit(p.Surface, (p.X, p.Y))
+
+        for e in self.Enemies:
+            e.draw(screen)
 
         for bullet in self.Bullets:
             bullet.draw(screen)
@@ -142,5 +192,11 @@ class ActionState(GameState):
         #############################################
         # HUD
         #############################################
+        player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
+        screen.blit(player1ScoreText, (16, 16))
+
         if len(self.Players) == 1:
-            self.player2_press_start_text.draw(screen)
+            self.player2PressStartText.draw(screen)
+        else:
+            player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
+            screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
