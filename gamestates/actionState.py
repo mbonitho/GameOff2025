@@ -10,7 +10,7 @@ from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gamestates.gameState import GameState
 from utils.helpers.surface_helper import tint_surface
-
+from utils.ogmo.ogmoHelper import OgmoHelper
 
 class ActionState(GameState):
 
@@ -20,6 +20,7 @@ class ActionState(GameState):
         #############################
         # SURFACES
         #############################
+        self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
         self.BulletSurface = pygame.image.load('assets/sprites/bullet.png').convert_alpha()
         self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
 
@@ -42,6 +43,12 @@ class ActionState(GameState):
         self.enemySpawningTimer = 0
         self.enemySpawnDelay = 3 # seconds
         self.Enemies = []
+
+        #############################
+        # Load the map
+        #############################
+        self.Map = OgmoHelper.get_map('test1')
+        pass
 
 
     def exit(self):
@@ -187,6 +194,40 @@ class ActionState(GameState):
     def draw(self, screen):
         screen.fill((64, 64, 64))
 
+        #############################################
+        # OGMO LAYERS
+        #############################################
+        layers = [self.Map.layers['floor'], self.Map.layers['walls']]
+        for layer in layers:
+            # x_to_draw_to = 0
+            y_to_draw_to = 0
+            for y in range(layer.gridCellsY):
+                x_to_draw_to = 0
+                for x in range(layer.gridCellsX):
+                    index = y * layer.gridCellsY + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
+                    data = layer.data[index]
+
+                    if data != -1:
+                        # convert data in x, y in tileset
+                        x_in_tileset = data * layer.gridCellWidth
+                        y_in_tileset = 0
+
+                        screen.blit(
+                            self.TilesetSurface, 
+                            (x_to_draw_to, y_to_draw_to), 
+                            area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
+                        )
+                    print(layer.name, x_to_draw_to, y_to_draw_to)
+                    x_to_draw_to += layer.gridCellWidth
+
+                y_to_draw_to += layer.gridCellHeight
+
+
+
+
+        #############################################
+        # GAME OBJECTS
+        #############################################
         for p in self.Players:
             p.draw(screen)
 
@@ -203,7 +244,6 @@ class ActionState(GameState):
         screen.blit(player1ScoreText, (16, 16))
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 32, self.Players[0].MaxLife * 20 + 6, 24))
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 35, self.Players[0].Life * 20, 18))
-
 
         if len(self.Players) == 1:
             self.player2PressStartText.draw(screen)
