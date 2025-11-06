@@ -8,9 +8,9 @@ class SeekNearestPlayerBehavior(EnemyBehavior):
             return
 
         # Find nearest player
-        nearest = min(players, key=lambda p: (p.X - enemy.Rect.x)**2 + (p.Y - enemy.Rect.y)**2)
-        dx = nearest.X - enemy.Rect.x
-        dy = nearest.Y - enemy.Rect.y
+        nearest = min(players, key=lambda p: (p.Rect.x - enemy.Rect.x)**2 + (p.Rect.y - enemy.Rect.y)**2)
+        dx = nearest.Rect.x - enemy.Rect.x
+        dy = nearest.Rect.y - enemy.Rect.y
         dist = math.hypot(dx, dy)
 
         if dist != 0:

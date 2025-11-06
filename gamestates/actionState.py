@@ -65,23 +65,23 @@ class ActionState(GameState):
                 if event.button == 7 and event.joy == 1:
                     if len(self.Players) == 1:
                         p2_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (210,120,72))
-                        self.Players.append(Player(p2_surf, self.Players[0].X, self.Players[0].Y, (210,120,72)))
+                        self.Players.append(Player(p2_surf, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
 
                 # only trigger input if the number of players is sufficient
                 if event.joy == 0 or (event.joy == 1 and len(self.Players) == 2):
                     
                     if event.button == 2:
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.X, player.Y, -1, 0))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, -1, 0))
                     elif event.button == 0:
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.X, player.Y, 0, 1))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 0, 1))
                     elif event.button == 1:
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.X, player.Y, 1, 0))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 1, 0))
                     elif event.button == 3:
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.X, player.Y, 0, -1))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 0, -1))
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)
@@ -132,6 +132,10 @@ class ActionState(GameState):
         # blinking text
         if len(self.Players) == 1:
             self.player2PressStartText.update(dt)
+
+        # Update players
+        for player in self.Players:
+            player.update(dt)
 
         # Update enemies
         for enemy in self.Enemies:
@@ -184,7 +188,7 @@ class ActionState(GameState):
         screen.fill((64, 64, 64))
 
         for p in self.Players:
-            screen.blit(p.Surface, (p.X, p.Y))
+            p.draw(screen)
 
         for e in self.Enemies:
             e.draw(screen)

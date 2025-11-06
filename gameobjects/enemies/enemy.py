@@ -25,8 +25,8 @@ class Enemy:
 
         # hurt players that stay too long in attack range
         for player in players:
-            dx = player.X - self.Rect.x
-            dy = player.Y - self.Rect.y
+            dx = player.Rect.x - self.Rect.x
+            dy = player.Rect.y - self.Rect.y
             dist = math.hypot(dx, dy)
 
             if dist <= self.attack_radius:
@@ -34,7 +34,7 @@ class Enemy:
                 self.contact_timers[player] = self.contact_timers.get(player, 0) + dt
 
                 if self.contact_timers[player] >= self.attack_cooldown:
-                    player.Life -= 1
+                    player.ReceiveDamage()
                     self.contact_timers[player] = 0  # reset after damage
             else:
                 # Player left the zone
