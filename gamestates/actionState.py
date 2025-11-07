@@ -6,6 +6,7 @@ from pygame.locals import *
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
+from gameobjects.level import Level
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gamestates.gameState import GameState
@@ -45,9 +46,11 @@ class ActionState(GameState):
         self.Enemies = []
 
         #############################
-        # Load the map
+        # Load the full, procedural Level
         #############################
-        self.Map = OgmoHelper.get_map('test1')
+        self.Level = Level()
+        self.CurrentRoom = self.Level.Rooms[0]
+
         pass
 
 
@@ -66,7 +69,6 @@ class ActionState(GameState):
 
             # JOYSTICKS
             if event.type == pygame.JOYBUTTONUP:
-                print(f"Joystick {event.joy} Button {event.button} released")
 
                 # player2 joining by pressing start, spawns at p1 pos
                 if event.button == 7 and event.joy == 1:
@@ -144,6 +146,18 @@ class ActionState(GameState):
         for player in self.Players:
             player.update(dt)
 
+            # bound player to screen
+            if player.Rect.x < 0:
+                player.Rect.x = 0
+            elif player.Rect.x > self.game.screen.get_width() - player.Rect.width:
+                player.Rect.x = self.game.screen.get_width() - player.Rect.width
+
+            if player.Rect.y < 0:
+                player.Rect.y = 0
+            elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
+                player.Rect.y = self.game.screen.get_height() - player.Rect.height
+            
+
         # Update enemies
         for enemy in self.Enemies:
             enemy.update(self.Players, dt)
@@ -197,14 +211,14 @@ class ActionState(GameState):
         #############################################
         # OGMO LAYERS
         #############################################
-        layers = [self.Map.layers['floor'], self.Map.layers['walls']]
+        layers = [self.CurrentRoom.Map.layers['floor'], self.CurrentRoom.Map.layers['walls']]
         for layer in layers:
             # x_to_draw_to = 0
             y_to_draw_to = 0
             for y in range(layer.gridCellsY):
                 x_to_draw_to = 0
                 for x in range(layer.gridCellsX):
-                    index = y * layer.gridCellsY + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
+                    index = y * layer.gridCellsX + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
                     data = layer.data[index]
 
                     if data != -1:
@@ -217,7 +231,6 @@ class ActionState(GameState):
                             (x_to_draw_to, y_to_draw_to), 
                             area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
                         )
-                    print(layer.name, x_to_draw_to, y_to_draw_to)
                     x_to_draw_to += layer.gridCellWidth
 
                 y_to_draw_to += layer.gridCellHeight
