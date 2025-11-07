@@ -6,7 +6,7 @@ from pygame.locals import *
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
-from gameobjects.level import Level
+from gameobjects.level import Level, Room
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.roomExit import RoomExit
@@ -15,6 +15,8 @@ from utils.helpers.surface_helper import tint_surface
 from utils.ogmo.ogmoHelper import OgmoHelper
 
 class ActionState(GameState):
+
+    EXIT_SIZE = 64
 
     def enter(self):
         print("Entered Action State")
@@ -39,27 +41,34 @@ class ActionState(GameState):
         self.UIFont = pygame.font.SysFont(None, 24)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 200, 16))
 
+
         #############################
-        # Load a bunch of enemies (to remove later)
+        # Load the full, procedural Level
         #############################
-        self.NumberOfEnemiesToSpawn = 20
-        self.NumberOfEnemiesSpawned = 0
+        self.Level = Level()
+        self.LoadRoom(self.Level.Rooms[0])
+
+
+    def LoadRoom(self, room: Room):
+        self.CurrentRoom = room
+
+        #############################
+        # Load a bunch of enemies
+        #############################
+        self.NumberOfEnemiesToSpawn = 3
+        self.NumberOfEnemiesSpawned = 0 if not room.Cleared else self.NumberOfEnemiesToSpawn
 
         self.enemySpawningTimer = 0
         self.enemySpawnDelay = 3 # seconds
         self.Enemies = []
 
         #############################
-        # Load the full, procedural Level
+        # Create the exits
         #############################
-        self.Level = Level()
-        self.CurrentRoom = self.Level.Rooms[0]
-
-        # create the exits
-        exitLeft = RoomExit(pygame.Rect(0,0, 64, self.game.screen.get_height()), 'L')
-        exitRight = RoomExit(pygame.Rect(self.game.screen.get_width() - 64, 0, 64, self.game.screen.get_height()), 'R')
-        exitUp = RoomExit(pygame.Rect(0,0, self.game.screen.get_width(), 64), 'U')
-        exitDown = RoomExit(pygame.Rect(0,self.game.screen.get_height() - 64, self.game.screen.get_width(), 64), 'D')
+        exitLeft = RoomExit(pygame.Rect(0,0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'L')
+        exitRight = RoomExit(pygame.Rect(self.game.screen.get_width() - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'R')
+        exitUp = RoomExit(pygame.Rect(0,0, self.game.screen.get_width(), ActionState.EXIT_SIZE), 'U')
+        exitDown = RoomExit(pygame.Rect(0,self.game.screen.get_height() - ActionState.EXIT_SIZE, self.game.screen.get_width(), ActionState.EXIT_SIZE), 'D')
         self.Exits = []
 
         match self.CurrentRoom.Map.name:
@@ -106,18 +115,22 @@ class ActionState(GameState):
                 # only trigger input if the number of players is sufficient
                 if event.joy == 0 or (event.joy == 1 and len(self.Players) == 2):
                     
-                    if event.button == 2:
+                    if event.button == 2: # SHOOT LEFT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, -1, 0))
-                    elif event.button == 0:
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft[0], player.Rect.midleft[1], -1, 0))
+
+                    elif event.button == 0: # SHOOT RIGHT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 0, 1))
-                    elif event.button == 1:
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright[0], player.Rect.midright[1], 0, 1))
+
+                    elif event.button == 3: # SHOOT UP
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 1, 0))
-                    elif event.button == 3:
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop[0], player.Rect.midtop[1], 0, -1))
+
+                    elif event.button == 1: # SHOOT DOWN
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.x, player.Rect.y, 0, -1))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom[0], player.Rect.midbottom[1], 1, 0))
+
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)
@@ -188,9 +201,32 @@ class ActionState(GameState):
             if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
                 for exit in self.Exits:
                     if player.Rect.colliderect(exit.Rect):
-                        self.game.change_state("GameOver") # todo move!
-
-
+                        match exit.Direction:
+                            case 'L':
+                                self.LoadRoom(self.CurrentRoom.RoomLeft)
+                                for player in self.Players:
+                                    player.Rect.center = (
+                                        self.game.screen.get_width() - ActionState.EXIT_SIZE * 1.5, 
+                                        self.game.screen.get_height() * 0.5
+                                    )
+                            case 'R':
+                                self.LoadRoom(self.CurrentRoom.RoomRight)
+                                player.Rect.center = (
+                                    ActionState.EXIT_SIZE * 1.5, 
+                                    self.game.screen.get_height() * 0.5
+                                )
+                            case 'U':
+                                self.LoadRoom(self.CurrentRoom.RoomUp)
+                                player.Rect.center = (
+                                    self.game.screen.get_width() * 0.5,
+                                    self.game.screen.get_height() - ActionState.EXIT_SIZE * 1.5
+                                )
+                            case 'R':
+                                self.LoadRoom(self.CurrentRoom.RoomDown)
+                                player.Rect.center = (
+                                    self.game.screen.get_width() * 0.5,
+                                    ActionState.EXIT_SIZE * 1.5
+                                )
         # Update enemies
         for enemy in self.Enemies:
             enemy.update(self.Players, dt)

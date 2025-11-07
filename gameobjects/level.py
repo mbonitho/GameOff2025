@@ -15,6 +15,8 @@ class Room:
         self.RoomDown: Room | None = None
         self.Coords = coords
 
+        self.Cleared = False
+
         # block walls
         match map.name:
             case '2waysUD':
@@ -73,12 +75,16 @@ class Level:
 
                 if rng >= 1 and rng <= 3:
                     selected_room.RoomRight = Room(OgmoHelper.get_map('2waysLR'), (selected_room.Coords[0] + 1, selected_room.Coords[1]))
+                    selected_room.RoomRight.RoomLeft = selected_room
                 elif rng >= 4 and rng <= 5:
                     selected_room.RoomRight = Room(OgmoHelper.get_map('1wayL'), (selected_room.Coords[0] + 1, selected_room.Coords[1]))
+                    selected_room.RoomRight.RoomLeft = selected_room
                 elif rng == 6:
                     selected_room.RoomRight = Room(OgmoHelper.get_map('4ways'), (selected_room.Coords[0] + 1, selected_room.Coords[1]))
+                    selected_room.RoomRight.RoomLeft = selected_room
             else:
                 selected_room.RoomRight = Room(OgmoHelper.get_map('1wayL'), (selected_room.Coords[0] + 1, selected_room.Coords[1]))
+                selected_room.RoomRight.RoomLeft = selected_room
 
             self.Rooms.append(selected_room.RoomRight)
 
@@ -94,12 +100,16 @@ class Level:
 
                 if rng >= 1 and rng <= 3:
                     selected_room.RoomLeft = Room(OgmoHelper.get_map('2waysLR'), (selected_room.Coords[0] - 1, selected_room.Coords[1]))
+                    selected_room.RoomLeft.RoomRight = selected_room
                 elif rng >= 4 and rng <= 5:
                     selected_room.RoomLeft = Room(OgmoHelper.get_map('1wayR'), (selected_room.Coords[0] - 1, selected_room.Coords[1]))
+                    selected_room.RoomLeft.RoomRight = selected_room
                 elif rng == 6:
                     selected_room.RoomLeft = Room(OgmoHelper.get_map('4ways'), (selected_room.Coords[0] - 1, selected_room.Coords[1]))
+                    selected_room.RoomLeft.RoomRight = selected_room
             else:
                 selected_room.RoomLeft = Room(OgmoHelper.get_map('1wayR'), (selected_room.Coords[0] - 1, selected_room.Coords[1]))
+                selected_room.RoomLeft.RoomRight = selected_room
 
             self.Rooms.append(selected_room.RoomLeft)
 
@@ -115,12 +125,16 @@ class Level:
 
                 if rng >= 1 and rng <= 3:
                     selected_room.RoomUp = Room(OgmoHelper.get_map('2waysUD'), (selected_room.Coords[0], selected_room.Coords[1] - 1))
+                    selected_room.RoomUp.RoomDown = selected_room
                 elif rng >= 4 and rng <= 5:
                     selected_room.RoomUp = Room(OgmoHelper.get_map('1wayD'), (selected_room.Coords[0], selected_room.Coords[1] - 1))
+                    selected_room.RoomUp.RoomDown = selected_room
                 elif rng == 6:
                     selected_room.RoomUp = Room(OgmoHelper.get_map('4ways'), (selected_room.Coords[0], selected_room.Coords[1] - 1))
+                    selected_room.RoomUp.RoomDown = selected_room
             else:
                 selected_room.RoomUp = Room(OgmoHelper.get_map('1wayD'), (selected_room.Coords[0], selected_room.Coords[1] - 1))
+                selected_room.RoomUp.RoomDown = selected_room
 
             self.Rooms.append(selected_room.RoomUp)
 
@@ -136,11 +150,15 @@ class Level:
 
                 if rng >= 1 and rng <= 3:
                     selected_room.RoomDown = Room(OgmoHelper.get_map('2waysUD'), (selected_room.Coords[0], selected_room.Coords[1] + 1))
+                    selected_room.RoomDown.RoomUp = selected_room
                 elif rng >= 4 and rng <= 5:
                     selected_room.RoomDown = Room(OgmoHelper.get_map('1wayU'), (selected_room.Coords[0], selected_room.Coords[1] + 1))
+                    selected_room.RoomDown.RoomUp = selected_room
                 elif rng == 6:
                     selected_room.RoomDown = Room(OgmoHelper.get_map('4ways'), (selected_room.Coords[0], selected_room.Coords[1] + 1))
+                    selected_room.RoomDown.RoomUp = selected_room
             else:
                 selected_room.RoomDown = Room(OgmoHelper.get_map('1wayU'), (selected_room.Coords[0], selected_room.Coords[1] + 1))
+                selected_room.RoomDown.RoomUp = selected_room
 
             self.Rooms.append(selected_room.RoomDown)
