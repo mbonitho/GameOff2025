@@ -9,6 +9,7 @@ from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBe
 from gameobjects.level import Level
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
+from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
 from utils.helpers.surface_helper import tint_surface
 from utils.ogmo.ogmoHelper import OgmoHelper
@@ -41,6 +42,9 @@ class ActionState(GameState):
         #############################
         # Load a bunch of enemies (to remove later)
         #############################
+        self.NumberOfEnemiesToSpawn = 20
+        self.NumberOfEnemiesSpawned = 0
+
         self.enemySpawningTimer = 0
         self.enemySpawnDelay = 3 # seconds
         self.Enemies = []
@@ -51,6 +55,28 @@ class ActionState(GameState):
         self.Level = Level()
         self.CurrentRoom = self.Level.Rooms[0]
 
+        # create the exits
+        exitLeft = RoomExit(pygame.Rect(0,0, 64, self.game.screen.get_height()), 'L')
+        exitRight = RoomExit(pygame.Rect(self.game.screen.get_width() - 64, 0, 64, self.game.screen.get_height()), 'R')
+        exitUp = RoomExit(pygame.Rect(0,0, self.game.screen.get_width(), 64), 'U')
+        exitDown = RoomExit(pygame.Rect(0,self.game.screen.get_height() - 64, self.game.screen.get_width(), 64), 'D')
+        self.Exits = []
+
+        match self.CurrentRoom.Map.name:
+            case '4ways':
+                self.Exits = [exitLeft, exitRight, exitUp, exitDown]
+            case '2waysLR':
+                self.Exits = [exitLeft, exitRight, ]
+            case '2waysUD':
+                self.Exits = [exitUp, exitDown]
+            case '1wayL':
+                self.Exits = [exitLeft]
+            case '1wayR':
+                self.Exits = [exitRight]
+            case '1wayU':
+                self.Exits = [exitUp]
+            case '1wayD':
+                self.Exits = [exitDown]
         pass
 
 
@@ -157,6 +183,12 @@ class ActionState(GameState):
             elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
                 player.Rect.y = self.game.screen.get_height() - player.Rect.height
             
+            # check for teleport
+            if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
+                for exit in self.Exits:
+                    if player.Rect.colliderect(exit.Rect):
+                        self.game.change_state("GameOver") # todo move!
+
 
         # Update enemies
         for enemy in self.Enemies:
@@ -169,36 +201,38 @@ class ActionState(GameState):
                 self.Bullets.remove(bullet)
 
         # Spawn enemies
-        self.enemySpawningTimer += dt
-        if self.enemySpawningTimer >= self.enemySpawnDelay:
-            self.enemySpawningTimer %= self.enemySpawnDelay
+        if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
+            self.enemySpawningTimer += dt
+            if self.enemySpawningTimer >= self.enemySpawnDelay:
+                self.enemySpawningTimer %= self.enemySpawnDelay
 
-            for i in range(4 * len(self.Players)):
-                x = 0
-                y = 0
-                rng = random.randint(1, 4)
-                match(rng):
-                    case 1: # TOP OF SCREEN
-                        x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                        y = -self.EnemySurface.get_height()
-                    case 2: # BOTTOM OF SCREEN
-                        x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                        y = self.game.screen.get_height() + self.EnemySurface.get_height() 
-                    case 3: # LEFT OF SCREEN
-                        x = -self.EnemySurface.get_width()
-                        y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
-                    case 4: # RIGHT OF SCREEN
-                        x = self.game.screen.get_width() + self.EnemySurface.get_width()
-                        y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+                for i in range(4 * len(self.Players)):
+                    x = 0
+                    y = 0
+                    rng = random.randint(1, 4)
+                    match(rng):
+                        case 1: # TOP OF SCREEN
+                            x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                            y = -self.EnemySurface.get_height()
+                        case 2: # BOTTOM OF SCREEN
+                            x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                            y = self.game.screen.get_height() + self.EnemySurface.get_height() 
+                        case 3: # LEFT OF SCREEN
+                            x = -self.EnemySurface.get_width()
+                            y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+                        case 4: # RIGHT OF SCREEN
+                            x = self.game.screen.get_width() + self.EnemySurface.get_width()
+                            y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
 
-                self.Enemies.append(
-                    Enemy(
-                        self.EnemySurface, 
-                        x,
-                        y,
-                        [SeekNearestPlayerBehavior()]
+                    self.Enemies.append(
+                        Enemy(
+                            self.EnemySurface, 
+                            x,
+                            y,
+                            [SeekNearestPlayerBehavior()]
+                        )
                     )
-                )
+                    self.NumberOfEnemiesSpawned += 1
 
         # check for game over
         continueGame = any(p.Life > 0 for p in self.Players)
