@@ -1,5 +1,6 @@
-from pygame import Surface
+from pygame import Rect, Surface
 from typing import Tuple
+from utils.helpers.collisions_helper import MoveAndCollide
 
 class Player:
 
@@ -48,23 +49,30 @@ class Player:
         if self.visible:
             screen.blit(self.Surface, self.Rect.topleft)
 
-    def MoveX(self, value):
-        self.Rect.x += self.Speed * value
+    def MoveX(self, value, obstacles: list[Rect]):
+        #self.Rect.x += self.Speed * value
+        MoveAndCollide(self.Rect, self.Speed * value, 0, obstacles)
 
-    def MoveY(self, value):
-        self.Rect.y += self.Speed * value
+    def MoveY(self, value, obstacles: list[Rect]):
+        #self.Rect.y += self.Speed * value
+        MoveAndCollide(self.Rect, 0, self.Speed * value, obstacles)
 
-    def MoveLeft(self, ratio: float = 1):
-        self.Rect.x -= self.Speed * ratio
+    def MoveLeft(self, obstacles: list[Rect], ratio: float = 1):
+        #self.Rect.x -= int(self.Speed * ratio)
+        MoveAndCollide(self.Rect, int(self.Speed * ratio) * -1, 0, obstacles)
 
-    def MoveRight(self, ratio: float = 1):
-        self.Rect.x += self.Speed * ratio
 
-    def MoveUp(self, ratio: float = 1):
-        self.Rect.y -= self.Speed * ratio
+    def MoveRight(self, obstacles: list[Rect], ratio: float = 1):
+        #self.Rect.x += int(self.Speed * ratio)
+        MoveAndCollide(self.Rect, int(self.Speed * ratio), 0, obstacles)
 
-    def MoveDown(self, ratio: float = 1):
-        self.Rect.y += self.Speed * ratio
+    def MoveUp(self, obstacles: list[Rect], ratio: float = 1):
+        #self.Rect.y -= int(self.Speed * ratio)
+        MoveAndCollide(self.Rect, 0, int(self.Speed * ratio) * -1, obstacles)
+
+    def MoveDown(self, obstacles: list[Rect], ratio: float = 1):
+        #self.Rect.y += int(self.Speed * ratio)
+        MoveAndCollide(self.Rect, 0, int(self.Speed * ratio), obstacles)
 
     def ReceiveDamage(self):
         # invicibility fames

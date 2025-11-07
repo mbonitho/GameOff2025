@@ -49,7 +49,11 @@ class ActionState(GameState):
         self.LoadRoom(self.Level.Rooms[0])
 
 
-    def LoadRoom(self, room: Room):
+    def LoadRoom(self, room: Room | None):
+
+        if room == None:
+            return
+
         self.CurrentRoom = room
 
         #############################
@@ -99,8 +103,19 @@ class ActionState(GameState):
 
             # KEYBOARD
             if event.type == pygame.KEYDOWN:
-                if event.key == K_SPACE:
-                    pass
+                if event.key == K_a: # SHOOT LEFT
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft[0], player.Rect.midleft[1], -1, 0))
+                elif event.key == K_s: # SHOOT DOWN
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright[0], player.Rect.midright[1], 0, 1))
+                elif event.key == K_w: # SHOOT UP
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop[0], player.Rect.midtop[1], 0, -1))
+                elif event.key == K_d: # SHOOT RIGHT 
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom[0], player.Rect.midbottom[1], 1, 0))
+
 
             # JOYSTICKS
             if event.type == pygame.JOYBUTTONUP:
@@ -138,16 +153,14 @@ class ActionState(GameState):
 
         # KEYBOARD
         keys = pygame.key.get_pressed()
-        if keys[K_LEFT] or keys[K_a]:
-            self.Players[0].MoveLeft()
-        elif keys[K_RIGHT] or keys[K_d]:
-            self.Players[0].MoveRight()
-
-        if keys[K_UP] or keys[K_w]:
-            self.Players[0].MoveUp()
-
-        elif keys[K_DOWN] or keys[K_s]:
-            self.Players[0].MoveDown()
+        if keys[K_LEFT]: #or keys[K_a]:
+            self.Players[0].MoveLeft(self.CurrentRoom.Obstacles)
+        elif keys[K_RIGHT]: #or keys[K_d]:
+            self.Players[0].MoveRight(self.CurrentRoom.Obstacles)
+        if keys[K_UP]: #or keys[K_w]:
+            self.Players[0].MoveUp(self.CurrentRoom.Obstacles)
+        elif keys[K_DOWN]: #or keys[K_s]:
+            self.Players[0].MoveDown(self.CurrentRoom.Obstacles)
 
         # GAMEPADS 
         for index, player in enumerate(self.Players):
@@ -164,16 +177,16 @@ class ActionState(GameState):
                 dead_zone_threshold = 0.1
 
                 if abs(axis_x_val) > dead_zone_threshold:
-                    player.MoveX(axis_x_val)
+                    player.MoveX(axis_x_val, self.CurrentRoom.Obstacles)
 
                 if abs(axis_y_val) > dead_zone_threshold:
-                    player.MoveY(axis_y_val)
+                    player.MoveY(axis_y_val, self.CurrentRoom.Obstacles)
 
                 if joy.get_hat(0)[0] != 0:
-                    player.MoveX(joy.get_hat(0)[0])
+                    player.MoveX(joy.get_hat(0)[0], self.CurrentRoom.Obstacles)
 
                 if joy.get_hat(0)[1] != 0:
-                    player.MoveY(joy.get_hat(0)[1] * -1)
+                    player.MoveY(joy.get_hat(0)[1] * -1, self.CurrentRoom.Obstacles)
 
 
     def update(self, dt: float):
@@ -199,6 +212,10 @@ class ActionState(GameState):
             
             # check for teleport
             if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
+
+                # that room is cleared
+                self.CurrentRoom.Cleared = True
+
                 for exit in self.Exits:
                     if player.Rect.colliderect(exit.Rect):
                         match exit.Direction:
@@ -212,7 +229,7 @@ class ActionState(GameState):
                             case 'R':
                                 self.LoadRoom(self.CurrentRoom.RoomRight)
                                 player.Rect.center = (
-                                    ActionState.EXIT_SIZE * 1.5, 
+                                    int(ActionState.EXIT_SIZE * 1.5), 
                                     self.game.screen.get_height() * 0.5
                                 )
                             case 'U':
@@ -221,11 +238,11 @@ class ActionState(GameState):
                                     self.game.screen.get_width() * 0.5,
                                     self.game.screen.get_height() - ActionState.EXIT_SIZE * 1.5
                                 )
-                            case 'R':
+                            case 'D':
                                 self.LoadRoom(self.CurrentRoom.RoomDown)
                                 player.Rect.center = (
                                     self.game.screen.get_width() * 0.5,
-                                    ActionState.EXIT_SIZE * 1.5
+                                    int(ActionState.EXIT_SIZE * 1.5)
                                 )
         # Update enemies
         for enemy in self.Enemies:
@@ -302,12 +319,10 @@ class ActionState(GameState):
                             (x_to_draw_to, y_to_draw_to), 
                             area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
                         )
+
                     x_to_draw_to += layer.gridCellWidth
 
                 y_to_draw_to += layer.gridCellHeight
-
-
-
 
         #############################################
         # GAME OBJECTS
@@ -334,3 +349,12 @@ class ActionState(GameState):
         else:
             player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
             screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
+
+
+        # # TELEPORTS
+        # if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
+        #     for exit in self.Exits:
+        #         pygame.draw.rect(screen, (255,0,0), exit.Rect)
+
+
+    

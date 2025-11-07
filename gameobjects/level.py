@@ -1,5 +1,7 @@
 import random
 from typing import Counter
+
+import pygame
 from utils.ogmo.ogmoHelper import OgmoHelper
 from utils.ogmo.ogmoMap import OgmoMap
 
@@ -16,6 +18,8 @@ class Room:
         self.Coords = coords
 
         self.Cleared = False
+
+        self.Obstacles = []
 
         # block walls
         match map.name:
@@ -43,6 +47,21 @@ class Room:
                 self.RoomLeft = Room(OgmoMap(), (-1, -1))
 
 
+    def GenerateObstacles(self):
+        self.Obstacles = []
+        layer = self.Map.layers['walls']
+        y_to_draw_to = 0
+        for y in range(layer.gridCellsY):
+            x_to_draw_to = 0
+            for x in range(layer.gridCellsX):
+                index = y * layer.gridCellsX + x 
+                data = layer.data[index]
+                if data != -1:
+                    self.Obstacles.append(pygame.Rect(x_to_draw_to, y_to_draw_to, layer.gridCellWidth, layer.gridCellHeight))
+                x_to_draw_to += layer.gridCellWidth
+            y_to_draw_to += layer.gridCellHeight
+
+
 class Level:
 
     MAX_SIZE = 8
@@ -56,6 +75,10 @@ class Level:
             print(f'Generation attempt {attempt}')
             self.GenerateDungeon()
             attempt += 1
+
+        # when generation is successfull, generate all the obstacles
+        for room in self.Rooms:
+            room.GenerateObstacles()
 
 
     def GenerateDungeon(self):
