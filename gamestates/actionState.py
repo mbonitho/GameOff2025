@@ -101,6 +101,7 @@ class ActionState(GameState):
                     if len(self.Players) == 1:
                         p2_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (210,120,72))
                         self.Players.append(Player(p2_surf, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
+                        self.NumberOfEnemiesToSpawn *= 3
 
                 # only trigger input if the number of players is sufficient
                 if event.joy == 0 or (event.joy == 1 and len(self.Players) == 2):
