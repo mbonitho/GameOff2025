@@ -16,7 +16,7 @@ from gamestates.rebindState import RebindMenuState
 class Game:
 
     WEB = False
-    GAME_WINDOW_SIZE = (800, 600)
+    GAME_WINDOW_SIZE = (1280, 960)
     TARGET_ASPECT = GAME_WINDOW_SIZE[0] / GAME_WINDOW_SIZE[1]
 
     def __init__(self):

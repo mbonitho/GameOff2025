@@ -10,7 +10,7 @@ class Player:
         self.Rect.topleft = (x, y)
         self.Tint = color
 
-        self.Speed = 3
+        self.Speed = 6
         self.MaxLife = 5
         self.Life = self.MaxLife
         self.Score = 0

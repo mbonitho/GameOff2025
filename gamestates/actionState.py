@@ -16,7 +16,7 @@ from utils.ogmo.ogmoHelper import OgmoHelper
 
 class ActionState(GameState):
 
-    EXIT_SIZE = 64
+    EXIT_SIZE = 96
 
     def enter(self):
         print("Entered Action State")
@@ -27,6 +27,8 @@ class ActionState(GameState):
         self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
         self.BulletSurface = pygame.image.load('assets/sprites/bullet.png').convert_alpha()
         self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
+        self.antennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
+
 
         #############################
         # ENTITIES
@@ -54,7 +56,10 @@ class ActionState(GameState):
         if room == None:
             return
 
+        self.Bullets = []
+
         self.CurrentRoom = room
+
 
         #############################
         # Load a bunch of enemies
@@ -105,16 +110,16 @@ class ActionState(GameState):
             if event.type == pygame.KEYDOWN:
                 if event.key == K_a: # SHOOT LEFT
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft[0], player.Rect.midleft[1], -1, 0))
-                elif event.key == K_s: # SHOOT DOWN
-                    player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright[0], player.Rect.midright[1], 0, 1))
-                elif event.key == K_w: # SHOOT UP
-                    player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop[0], player.Rect.midtop[1], 0, -1))
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
                 elif event.key == K_d: # SHOOT RIGHT 
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom[0], player.Rect.midbottom[1], 1, 0))
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
+                elif event.key == K_w: # SHOOT UP
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
+                elif event.key == K_s: # SHOOT DOWN
+                    player = self.Players[0]
+                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
 
 
             # JOYSTICKS
@@ -132,19 +137,19 @@ class ActionState(GameState):
                     
                     if event.button == 2: # SHOOT LEFT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft[0], player.Rect.midleft[1], -1, 0))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
 
-                    elif event.button == 0: # SHOOT RIGHT
+                    elif event.button == 1: # SHOOT RIGHT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright[0], player.Rect.midright[1], 0, 1))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
 
                     elif event.button == 3: # SHOOT UP
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop[0], player.Rect.midtop[1], 0, -1))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
 
-                    elif event.button == 1: # SHOOT DOWN
+                    elif event.button == 0: # SHOOT DOWN
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom[0], player.Rect.midbottom[1], 1, 0))
+                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
 
 
         ######################################
@@ -261,22 +266,27 @@ class ActionState(GameState):
                 self.enemySpawningTimer %= self.enemySpawnDelay
 
                 for i in range(4 * len(self.Players)):
-                    x = 0
-                    y = 0
-                    rng = random.randint(1, 4)
-                    match(rng):
-                        case 1: # TOP OF SCREEN
-                            x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                            y = -self.EnemySurface.get_height()
-                        case 2: # BOTTOM OF SCREEN
-                            x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                            y = self.game.screen.get_height() + self.EnemySurface.get_height() 
-                        case 3: # LEFT OF SCREEN
-                            x = -self.EnemySurface.get_width()
-                            y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
-                        case 4: # RIGHT OF SCREEN
-                            x = self.game.screen.get_width() + self.EnemySurface.get_width()
-                            y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+
+                    exit  = random.choice(self.Exits)
+                    x = random.randrange(int(exit.Rect.centerx * 0.9), int(exit.Rect.centerx * 1.1))
+                    y = random.randrange(int(exit.Rect.centery * 0.9), int(exit.Rect.centery * 1.1))
+
+                    # x = 0
+                    # y = 0
+                    # rng = random.randint(1, 4)
+                    # match(rng):
+                    #     case 1: # TOP OF SCREEN
+                    #         x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                    #         y = -self.EnemySurface.get_height()
+                    #     case 2: # BOTTOM OF SCREEN
+                    #         x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
+                    #         y = self.game.screen.get_height() + self.EnemySurface.get_height() 
+                    #     case 3: # LEFT OF SCREEN
+                    #         x = -self.EnemySurface.get_width()
+                    #         y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
+                    #     case 4: # RIGHT OF SCREEN
+                    #         x = self.game.screen.get_width() + self.EnemySurface.get_width()
+                    #         y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
 
                     self.Enemies.append(
                         Enemy(

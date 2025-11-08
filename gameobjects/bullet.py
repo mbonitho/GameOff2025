@@ -3,14 +3,14 @@ import pygame
 
 class Bullet:
 
-    def __init__(self, surface: Surface, x: int, y: int, x_dir: int, y_dir: int):
+    def __init__(self, surface: Surface, pos: tuple[int, int], x_dir: int, y_dir: int):
         self.Surface = surface
         self.Rect = surface.get_rect()
-        self.Rect.topleft = ((x, y))
+        self.Rect.topleft = pos
         self.X_dir = x_dir
         self.Y_dir = y_dir
         
-        self.Speed = 5 # default speed
+        self.Speed = 18 # default speed
 
         self.lifespan = 0
         self.max_lifespan = 3
