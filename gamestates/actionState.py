@@ -266,6 +266,12 @@ class ActionState(GameState):
         for enemy in self.Enemies:
             enemy.update(self.Players, dt)
 
+        # Comm towers shoot waves from other rooms
+        for comTowerpos in self.Level.CommTowerPositions:
+
+            pass
+
+
         # Check if comm tower is destroyed
         if self.CommTower and self.CommTower.CurrentLife <= 0:
             # self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
