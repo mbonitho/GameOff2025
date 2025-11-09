@@ -1,5 +1,6 @@
 
 import random
+from typing import List
 import pygame
 from pygame.locals import *
 
@@ -7,6 +8,7 @@ from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
 from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
+from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
 from gameobjects.level import Level, Room
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
@@ -26,7 +28,8 @@ class ActionState(GameState):
         # SURFACES
         #############################
         self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
-        self.BulletSurface = pygame.image.load('assets/sprites/bullet.png').convert_alpha()
+        self.BulletSurface = pygame.image.load('assets/sprites/projectiles/bullet.png').convert_alpha()
+        self.WaveBulletSurface = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
         self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
         self.AntennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
 
@@ -37,11 +40,12 @@ class ActionState(GameState):
         p1_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (23,45,34))
         self.Players = [Player(p1_surf, 100, 100, (23,45,34))]
         self.CommTower: Enemy | None = None
+        self.FarawayTowers: List[Enemy] = []
 
         #############################
         # UI
         #############################
-        self.UIFont = pygame.font.SysFont(None, 24)
+        self.UIFont = pygame.font.SysFont(None, 48)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 200, 16))
 
 
@@ -50,6 +54,9 @@ class ActionState(GameState):
         #############################
         self.Level = Level()
         self.LoadRoom(self.Level.Rooms[0])
+
+
+
 
 
     def LoadRoom(self, room: Room | None):
@@ -76,13 +83,79 @@ class ActionState(GameState):
         # Add a Comm Tower here if there's one
         #############################
         if self.CurrentRoom.Coords in self.Level.CommTowerPositions:
-            x = self.game.screen.get_width() * 0.5 - self.AntennaSurface.get_width() * 0.5
-            y = self.game.screen.get_height() * 0.5 - self.AntennaSurface.get_height() * 0.5
-            self.CommTower = Enemy(self.AntennaSurface, x, y, [])
+            posX = self.game.screen.get_width() * 0.5 - self.AntennaSurface.get_width() * 0.5
+            posY = self.game.screen.get_height() * 0.5 - self.AntennaSurface.get_height() * 0.5
+            self.CommTower = Enemy(self.AntennaSurface, posX, posY, [])
             self.Enemies.append(self.CommTower)
             self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
         else:
             self.CommTower = None
+
+        #############################
+        # Initialize the faraway towers
+        #############################
+        self.FarawayTowers: List[Enemy] = []
+        for comTowerpos in self.Level.CommTowerPositions:
+
+            if comTowerpos == self.CurrentRoom.Coords:
+                continue # ignore current room
+
+            posX = 0
+            posXName = ''
+            if comTowerpos[0] < self.CurrentRoom.Coords[0]:
+                posX = -self.BulletSurface.get_width()
+                posXName = 'left'
+            elif comTowerpos[0] > self.CurrentRoom.Coords[0]:
+                posX = self.game.screen.get_width()
+                posXName = 'right'
+            else:
+                posX = self.game.screen.get_width() * .5 - self.BulletSurface.get_width() * .5
+                posXName = 'mid'
+
+            posY = 0
+            posYName = ''
+            if comTowerpos[1] < self.CurrentRoom.Coords[1]:
+                posY = -self.BulletSurface.get_height()
+                posYName = 'top'
+            elif comTowerpos[1] > self.CurrentRoom.Coords[1]:
+                posY = self.game.screen.get_height()
+                posYName = 'bottom'
+            else:
+                posY = self.game.screen.get_height() * .5 - self.BulletSurface.get_height() * .5               
+                posYName = 'mid'
+
+            angleRange: tuple[int, int]
+
+            # midleft
+            if posXName == 'right' and posYName == 'mid':
+                angleRange = (150, 210)
+            # topleft
+            elif posXName == 'right' and posYName == 'bottom':
+                angleRange = (105, 165)
+            # midtop
+            elif posXName == 'mid' and posYName == 'bottom':
+                angleRange = (60, 120)
+            # topright
+            elif posXName == 'left' and posYName == 'bottom':
+                angleRange = (15, 75)
+            # midright
+            elif posXName == 'left' and posYName == 'mid':
+                angleRange = (-30, 30)
+            # bottomright
+            elif posXName == 'left' and posYName == 'top':
+                angleRange = (300, 360)
+            # midbottom
+            elif posXName == 'mid' and posYName == 'top':
+                angleRange = (105, 165)
+            # bottomleft
+            elif posXName == 'right' and posYName == 'top':
+                angleRange = (195, 255)
+
+
+            tower = Enemy(self.BulletSurface, posX, posY, [
+                TeleportAndShootWaveBehavior(self.WaveBulletSurface, angleRange)
+            ])
+            self.FarawayTowers.append(tower)
 
         #############################
         # Create the exits
@@ -267,14 +340,12 @@ class ActionState(GameState):
             enemy.update(self.Players, dt)
 
         # Comm towers shoot waves from other rooms
-        for comTowerpos in self.Level.CommTowerPositions:
-
-            pass
-
+        for tower in self.FarawayTowers:
+            tower.update(self.Players, dt)
 
         # Check if comm tower is destroyed
         if self.CommTower and self.CommTower.CurrentLife <= 0:
-            # self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
+            self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
             self.Level.CommTowerPositions.remove(self.CurrentRoom.Coords)
             self.CommTower = None
 
@@ -354,6 +425,9 @@ class ActionState(GameState):
 
         if self.CommTower:
             self.CommTower.draw(screen)
+
+        for t in self.FarawayTowers:
+            t.draw(screen)
 
         for player in self.Players:
             for bullet in player.Bullets:
