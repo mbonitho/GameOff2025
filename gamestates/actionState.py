@@ -28,7 +28,7 @@ class ActionState(GameState):
         self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
         self.BulletSurface = pygame.image.load('assets/sprites/bullet.png').convert_alpha()
         self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
-        self.antennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
+        self.AntennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
 
 
         #############################
@@ -36,6 +36,7 @@ class ActionState(GameState):
         #############################
         p1_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (23,45,34))
         self.Players = [Player(p1_surf, 100, 100, (23,45,34))]
+        self.CommTower: Enemy | None = None
 
         #############################
         # UI
@@ -61,16 +62,27 @@ class ActionState(GameState):
 
         self.CurrentRoom = room
 
-
         #############################
         # Load a bunch of enemies
         #############################
         self.NumberOfEnemiesToSpawn = 3
         self.NumberOfEnemiesSpawned = 0 if not room.Cleared else self.NumberOfEnemiesToSpawn
 
-        self.enemySpawningTimer = 0
         self.enemySpawnDelay = 3 # seconds
+        self.enemySpawningTimer = self.enemySpawnDelay 
         self.Enemies = []
+
+        #############################
+        # Add a Comm Tower here if there's one
+        #############################
+        if self.CurrentRoom.Coords in self.Level.CommTowerPositions:
+            x = self.game.screen.get_width() * 0.5 - self.AntennaSurface.get_width() * 0.5
+            y = self.game.screen.get_height() * 0.5 - self.AntennaSurface.get_height() * 0.5
+            self.CommTower = Enemy(self.AntennaSurface, x, y, [])
+            self.Enemies.append(self.CommTower)
+            self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
+        else:
+            self.CommTower = None
 
         #############################
         # Create the exits
@@ -254,6 +266,12 @@ class ActionState(GameState):
         for enemy in self.Enemies:
             enemy.update(self.Players, dt)
 
+        # Check if comm tower is destroyed
+        if self.CommTower and self.CommTower.CurrentLife <= 0:
+            # self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
+            self.Level.CommTowerPositions.remove(self.CurrentRoom.Coords)
+            self.CommTower = None
+
         # Update bullets
         for player in self.Players:
             for bullet in player.Bullets.copy():
@@ -273,23 +291,6 @@ class ActionState(GameState):
                     x = random.randrange(int(exit.Rect.centerx * 0.9), int(exit.Rect.centerx * 1.1))
                     y = random.randrange(int(exit.Rect.centery * 0.9), int(exit.Rect.centery * 1.1))
 
-                    # x = 0
-                    # y = 0
-                    # rng = random.randint(1, 4)
-                    # match(rng):
-                    #     case 1: # TOP OF SCREEN
-                    #         x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                    #         y = -self.EnemySurface.get_height()
-                    #     case 2: # BOTTOM OF SCREEN
-                    #         x = random.randrange(int(self.game.screen.get_width() * 0.25), int(self.game.screen.get_width() * 0.75))
-                    #         y = self.game.screen.get_height() + self.EnemySurface.get_height() 
-                    #     case 3: # LEFT OF SCREEN
-                    #         x = -self.EnemySurface.get_width()
-                    #         y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
-                    #     case 4: # RIGHT OF SCREEN
-                    #         x = self.game.screen.get_width() + self.EnemySurface.get_width()
-                    #         y = random.randrange(int(self.game.screen.get_height() * 0.25), int(self.game.screen.get_height() * 0.75))
-
                     self.Enemies.append(
                         Enemy(
                             self.EnemySurface, 
@@ -301,7 +302,7 @@ class ActionState(GameState):
                     self.NumberOfEnemiesSpawned += 1
 
         # check for game over
-        continueGame = any(p.Life > 0 for p in self.Players)
+        continueGame = any(p.CurrentLife > 0 for p in self.Players)
         if not continueGame:
             self.game.change_state("GameOver")
 
@@ -345,6 +346,9 @@ class ActionState(GameState):
         for e in self.Enemies:
             e.draw(screen)
 
+        if self.CommTower:
+            self.CommTower.draw(screen)
+
         for player in self.Players:
             for bullet in player.Bullets:
                 bullet.draw(screen)
@@ -355,7 +359,7 @@ class ActionState(GameState):
         player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 32, self.Players[0].MaxLife * 20 + 6, 24))
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 35, self.Players[0].Life * 20, 18))
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 35, self.Players[0].CurrentLife * 20, 18))
 
         if len(self.Players) == 1:
             self.player2PressStartText.draw(screen)

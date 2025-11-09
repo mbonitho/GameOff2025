@@ -17,6 +17,8 @@ class Room:
         self.RoomDown: Room | None = None
         self.Coords = coords
 
+        self.Occupied = False
+
         self.Cleared = False
 
         self.Obstacles = []
@@ -68,6 +70,7 @@ class Level:
 
     def __init__(self):
         self.Rooms = []
+        self.CommTowerPositions: list[tuple[int, int]] = []
 
         overlappingCoords = [coord for coord, count in Counter(room.Coords for room in self.Rooms).items() if count > 1] 
         attempt = 1
@@ -80,6 +83,11 @@ class Level:
         for room in self.Rooms:
             room.GenerateObstacles()
 
+        # add a few towers
+        for i in range(4):
+            oneWayUnoccupiedRoom = random.choice([room for room in self.Rooms if room.Map.name.startswith('1way') and not room.Occupied])
+            oneWayUnoccupiedRoom.Occupied = True
+            self.CommTowerPositions.append(oneWayUnoccupiedRoom.Coords)
 
     def GenerateDungeon(self):
         self.Rooms = []

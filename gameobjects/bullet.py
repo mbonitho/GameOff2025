@@ -13,7 +13,7 @@ class Bullet:
         self.Speed = 18 # default speed
 
         self.lifespan = 0
-        self.max_lifespan = 0.2 # seconds
+        self.max_lifespan = 0.5 # seconds
 
     def update(self, enemies, dt: float):
         self.lifespan += dt
@@ -23,8 +23,10 @@ class Bullet:
 
         for enemy in enemies.copy():
             if self.Rect.colliderect(enemy.Rect):
-                enemies.remove(enemy)
-                self.lifespan = self.max_lifespan
+                self.lifespan = self.max_lifespan # kill bullet
+                enemy.ReceiveDamage() # hurt enemy
+                if enemy.CurrentLife <= 0:
+                    enemies.remove(enemy)
 
 
     def draw(self, screen):

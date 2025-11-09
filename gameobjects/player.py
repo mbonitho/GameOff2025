@@ -1,5 +1,6 @@
 from pygame import Rect, Surface
 from typing import Tuple
+from gameobjects.blinkingComponent import BlinkingComponent
 from utils.helpers.collisions_helper import MoveAndCollide
 
 class Player:
@@ -12,44 +13,21 @@ class Player:
 
         self.Speed = 6
         self.MaxLife = 5
-        self.Life = self.MaxLife
+        self.CurrentLife = self.MaxLife
         self.Score = 0
 
         self.MaxBullets = 3
         self.Bullets = []
 
-        # blinking
-        self.visible = True
-        self.overall_blinking_timer = -1
-        self.total_blinking_duration = 1.5 #s
-        self.blinking_timer = 0
-        self.blinking_speed = .15 # s
+        self.BlinkingComponent = BlinkingComponent()
 
 
     def update(self, dt: float):
-        
-        ##########################
-        # BLINKING
-        ##########################
-        if self.overall_blinking_timer >= 0:
-
-            if self.overall_blinking_timer == 0:
-                self.blinking_timer = 0
-
-            self.overall_blinking_timer += dt
-            self.blinking_timer += dt
-            if self.blinking_timer >= self.blinking_speed:
-                self.blinking_timer %= self.blinking_speed
-                self.visible = not self.visible
-
-            if self.overall_blinking_timer >= self.total_blinking_duration:
-                self.blinking_timer = -1
-                self.overall_blinking_timer = -1
-                self.visible = True
+        self.BlinkingComponent.update(dt)
 
 
     def draw(self, screen):
-        if self.visible:
+        if self.BlinkingComponent.visible:
             screen.blit(self.Surface, self.Rect.topleft)
 
     def MoveX(self, value, obstacles: list[Rect]):
@@ -79,9 +57,9 @@ class Player:
 
     def ReceiveDamage(self):
         # invicibility fames
-        if self.overall_blinking_timer < 0:
-            self.overall_blinking_timer = 0
-            self.Life -= 1
+        if not self.BlinkingComponent.IsBlinking():
+            self.BlinkingComponent.StartBlinking()
+            self.CurrentLife -= 1
 
     def TryShootBullet(self, bullet):
 
