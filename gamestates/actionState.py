@@ -123,16 +123,16 @@ class ActionState(GameState):
             if event.type == pygame.KEYDOWN:
                 if event.key == K_a: # SHOOT LEFT
                     player = self.Players[0]
-                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, 180))
                 elif event.key == K_d: # SHOOT RIGHT 
                     player = self.Players[0]
-                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 0))
                 elif event.key == K_w: # SHOOT UP
                     player = self.Players[0]
-                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 270))
                 elif event.key == K_s: # SHOOT DOWN
                     player = self.Players[0]
-                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 90))
 
 
             # JOYSTICKS
@@ -150,19 +150,19 @@ class ActionState(GameState):
                     
                     if event.button == 2: # SHOOT LEFT
                         player = self.Players[event.joy]
-                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, 180))
 
                     elif event.button == 1: # SHOOT RIGHT
                         player = self.Players[event.joy]
-                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 0))
 
                     elif event.button == 3: # SHOOT UP
                         player = self.Players[event.joy]
-                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 270))
 
                     elif event.button == 0: # SHOOT DOWN
                         player = self.Players[event.joy]
-                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 90))
 
 
         ######################################

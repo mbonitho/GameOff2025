@@ -1,16 +1,22 @@
+import math
 from pygame import Surface
 import pygame
 
 class Bullet:
 
-    def __init__(self, surface: Surface, pos: tuple[int, int], x_dir: int, y_dir: int):
+    def __init__(self, surface: Surface, pos: tuple[int, int], angle_deg: float):
         self.Surface = surface
+
         self.Rect = surface.get_rect()
+        self.RotatedSurface = pygame.transform.rotate(surface, -angle_deg)
+        self.Rect = self.RotatedSurface.get_rect(center=self.Rect.center)
         self.Rect.topleft = pos
-        self.X_dir = x_dir
-        self.Y_dir = y_dir
+
+        angle_rad = math.radians(angle_deg)
+        self.X_dir = math.cos(angle_rad)
+        self.Y_dir = math.sin(angle_rad)
         
-        self.Speed = 18 # default speed
+        self.Speed = 18 * 60 # default speed
 
         self.lifespan = 0
         self.max_lifespan = 0.5 # seconds
@@ -18,8 +24,8 @@ class Bullet:
     def update(self, enemies, dt: float):
         self.lifespan += dt
         
-        self.Rect.x += self.Speed * self.X_dir
-        self.Rect.y += self.Speed * self.Y_dir
+        self.Rect.x += self.Speed * self.X_dir * dt
+        self.Rect.y += self.Speed * self.Y_dir * dt
 
         for enemy in enemies.copy():
             if self.Rect.colliderect(enemy.Rect):
@@ -30,4 +36,4 @@ class Bullet:
 
 
     def draw(self, screen):
-        screen.blit(self.Surface, self.Rect.topleft)
+        screen.blit(self.RotatedSurface, self.Rect.topleft)
