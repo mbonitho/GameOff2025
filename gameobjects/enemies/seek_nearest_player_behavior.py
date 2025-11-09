@@ -16,5 +16,3 @@ class SeekNearestPlayerBehavior(EnemyBehavior):
         if dist != 0:
             enemy.Rect.x += (dx / dist) * enemy.Speed * dt
             enemy.Rect.y += (dy / dist) * enemy.Speed * dt
-
-        enemy.in_attack_range = dist <= enemy.attack_radius

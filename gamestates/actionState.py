@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
+from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.level import Level, Room
 from gameobjects.player import Player
@@ -294,7 +295,7 @@ class ActionState(GameState):
                             self.EnemySurface, 
                             x,
                             y,
-                            [SeekNearestPlayerBehavior()]
+                            [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()]
                         )
                     )
                     self.NumberOfEnemiesSpawned += 1
