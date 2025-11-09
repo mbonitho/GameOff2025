@@ -13,7 +13,7 @@ class Bullet:
         self.Speed = 18 # default speed
 
         self.lifespan = 0
-        self.max_lifespan = 3
+        self.max_lifespan = 0.2 # seconds
 
     def update(self, enemies, dt: float):
         self.lifespan += dt

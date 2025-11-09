@@ -35,7 +35,6 @@ class ActionState(GameState):
         #############################
         p1_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (23,45,34))
         self.Players = [Player(p1_surf, 100, 100, (23,45,34))]
-        self.Bullets = []
 
         #############################
         # UI
@@ -56,7 +55,8 @@ class ActionState(GameState):
         if room == None:
             return
 
-        self.Bullets = []
+        for player in self.Players:
+            player.Bullets = []
 
         self.CurrentRoom = room
 
@@ -110,16 +110,16 @@ class ActionState(GameState):
             if event.type == pygame.KEYDOWN:
                 if event.key == K_a: # SHOOT LEFT
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
                 elif event.key == K_d: # SHOOT RIGHT 
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
                 elif event.key == K_w: # SHOOT UP
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
                 elif event.key == K_s: # SHOOT DOWN
                     player = self.Players[0]
-                    self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
+                    self.Players[0].TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
 
 
             # JOYSTICKS
@@ -137,19 +137,19 @@ class ActionState(GameState):
                     
                     if event.button == 2: # SHOOT LEFT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midleft, -1, 0))
 
                     elif event.button == 1: # SHOOT RIGHT
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midright, 1, 0))
 
                     elif event.button == 3: # SHOOT UP
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midtop, 0, -1))
 
                     elif event.button == 0: # SHOOT DOWN
                         player = self.Players[event.joy]
-                        self.Bullets.append(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
+                        player.TryShootBullet(Bullet(self.BulletSurface, player.Rect.midbottom, 0, 1))
 
 
         ######################################
@@ -254,10 +254,11 @@ class ActionState(GameState):
             enemy.update(self.Players, dt)
 
         # Update bullets
-        for bullet in self.Bullets.copy():
-            bullet.update(self.Enemies, dt)
-            if bullet.lifespan >= bullet.max_lifespan:
-                self.Bullets.remove(bullet)
+        for player in self.Players:
+            for bullet in player.Bullets.copy():
+                bullet.update(self.Enemies, dt)
+                if bullet.lifespan >= bullet.max_lifespan:
+                    player.Bullets.remove(bullet)
 
         # Spawn enemies
         if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
@@ -343,8 +344,9 @@ class ActionState(GameState):
         for e in self.Enemies:
             e.draw(screen)
 
-        for bullet in self.Bullets:
-            bullet.draw(screen)
+        for player in self.Players:
+            for bullet in player.Bullets:
+                bullet.draw(screen)
 
         #############################################
         # HUD

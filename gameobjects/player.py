@@ -15,6 +15,9 @@ class Player:
         self.Life = self.MaxLife
         self.Score = 0
 
+        self.MaxBullets = 3
+        self.Bullets = []
+
         # blinking
         self.visible = True
         self.overall_blinking_timer = -1
@@ -79,3 +82,8 @@ class Player:
         if self.overall_blinking_timer < 0:
             self.overall_blinking_timer = 0
             self.Life -= 1
+
+    def TryShootBullet(self, bullet):
+
+        if len(self.Bullets) < self.MaxBullets:
+            self.Bullets.append(bullet)
