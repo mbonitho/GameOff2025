@@ -7,7 +7,7 @@ class AttackPlayerInRadiusBehavior(EnemyBehavior):
 
     def __init__(self):
         super().__init__()
-        self.attack_radius = 72
+        self.attack_radius = 144
         self.in_attack_range = False
 
         self.contact_timers = {}  # player -> time in contact

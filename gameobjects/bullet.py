@@ -24,6 +24,7 @@ class Bullet:
         for enemy in enemies.copy():
             if self.Rect.colliderect(enemy.Rect):
                 enemies.remove(enemy)
+                self.lifespan = self.max_lifespan
 
 
     def draw(self, screen):

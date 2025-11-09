@@ -7,8 +7,9 @@ class Enemy:
         self.Surface = surface
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
-        self.Speed = 100
         self.Behaviors = behaviors
+
+        self.MaxHP = 5
 
     def update(self, players, dt: float):
         for beh in self.Behaviors:
@@ -19,3 +20,6 @@ class Enemy:
 
         for beh in self.Behaviors:
             beh.draw(screen, self)
+
+    def ReceiveDamage(self):
+        pass

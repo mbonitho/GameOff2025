@@ -3,6 +3,11 @@ from gameobjects.enemies.enemy_behavior import EnemyBehavior
 
 
 class SeekNearestPlayerBehavior(EnemyBehavior):
+
+    def __init__(self):
+        super().__init__()
+        self.Speed = 100
+
     def update(self, enemy, players, dt):
         if not players:
             return
@@ -14,5 +19,5 @@ class SeekNearestPlayerBehavior(EnemyBehavior):
         dist = math.hypot(dx, dy)
 
         if dist != 0:
-            enemy.Rect.x += (dx / dist) * enemy.Speed * dt
-            enemy.Rect.y += (dy / dist) * enemy.Speed * dt
+            enemy.Rect.x += (dx / dist) * self.Speed * dt
+            enemy.Rect.y += (dy / dist) * self.Speed * dt
