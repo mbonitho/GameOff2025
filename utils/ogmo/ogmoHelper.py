@@ -6,8 +6,8 @@ from utils.ogmo.ogmoMap import OgmoMap
 class OgmoHelper:
 
     @classmethod
-    def get_map(self, mapFileNameWithoutExtension):
-        full_path = os.path.join('assets', 'maps', f'{mapFileNameWithoutExtension}.json')
+    def get_map(self, mapFileNameWithoutExtension, sub_folder= 'rooms'):
+        full_path = os.path.join('assets', 'maps', sub_folder, f'{mapFileNameWithoutExtension}.json')
 
         # print(os.getcwd())
         # print(full_path)

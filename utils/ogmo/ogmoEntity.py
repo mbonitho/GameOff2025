@@ -20,6 +20,6 @@ class OgmoEntity:
                 json_dict['name'],
                 json_dict['x'],
                 json_dict['y'],
-                json_dict['values'])
+                json_dict['values'] if 'values' in json_dict.keys() else None)
 
         return instance

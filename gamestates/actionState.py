@@ -19,7 +19,7 @@ from utils.ogmo.ogmoHelper import OgmoHelper
 
 class ActionState(GameState):
 
-    EXIT_SIZE = 96
+    EXIT_SIZE = 48
 
     def enter(self):
         print("Entered Action State")
@@ -46,14 +46,16 @@ class ActionState(GameState):
         # UI
         #############################
         self.UIFont = pygame.font.SysFont(None, 48)
-        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 200, 16))
+        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
 
 
         #############################
-        # Load the full, procedural Level
+        # Load the full level
         #############################
-        self.Level = Level()
-        self.LoadRoom(self.Level.Rooms[0])
+        # self.NumberOfEnemiesToSpawn = 0
+        # self.NumberOfEnemiesSpawned = 0
+        self.Level = Level('F1')
+        self.LoadRoom(self.Level.StartingRoom)
 
 
 
@@ -311,29 +313,29 @@ class ActionState(GameState):
                     if player.Rect.colliderect(exit.Rect):
                         match exit.Direction:
                             case 'L':
-                                self.LoadRoom(self.CurrentRoom.RoomLeft)
+                                self.LoadRoom(self.Level.GetRoomByCoords(x=self.CurrentRoom.Coords[0] - 1, y=self.CurrentRoom.Coords[1]))
                                 for player in self.Players:
-                                    player.Rect.center = (
-                                        self.game.screen.get_width() - ActionState.EXIT_SIZE * 1.5, 
+                                    player.Rect.midright = (
+                                        self.game.screen.get_width() - ActionState.EXIT_SIZE - 1, 
                                         self.game.screen.get_height() * 0.5
                                     )
                             case 'R':
-                                self.LoadRoom(self.CurrentRoom.RoomRight)
-                                player.Rect.center = (
-                                    int(ActionState.EXIT_SIZE * 1.5), 
+                                self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0] + 1, self.CurrentRoom.Coords[1]))
+                                player.Rect.midleft = (
+                                    ActionState.EXIT_SIZE + 1, 
                                     self.game.screen.get_height() * 0.5
                                 )
                             case 'U':
-                                self.LoadRoom(self.CurrentRoom.RoomUp)
-                                player.Rect.center = (
+                                self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] - 1))
+                                player.Rect.midbottom = (
                                     self.game.screen.get_width() * 0.5,
-                                    self.game.screen.get_height() - ActionState.EXIT_SIZE * 1.5
+                                    self.game.screen.get_height() - ActionState.EXIT_SIZE - 1
                                 )
                             case 'D':
-                                self.LoadRoom(self.CurrentRoom.RoomDown)
-                                player.Rect.center = (
+                                self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] + 1))
+                                player.Rect.midtop = (
                                     self.game.screen.get_width() * 0.5,
-                                    int(ActionState.EXIT_SIZE * 1.5)
+                                    int(ActionState.EXIT_SIZE + 1)
                                 )
         # Update enemies
         for enemy in self.Enemies:
@@ -438,8 +440,10 @@ class ActionState(GameState):
         #############################################
         player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))
-        pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 32, self.Players[0].MaxLife * 20 + 6, 24))
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 35, self.Players[0].CurrentLife * 20, 18))
+
+        # P1 life bar
+        pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[0].MaxLife * 20 + 6, 24))
+        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[0].CurrentLife * 20, 18))
 
         if len(self.Players) == 1:
             self.player2PressStartText.draw(screen)
