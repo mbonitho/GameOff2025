@@ -12,6 +12,7 @@ from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShoo
 from gameobjects.level import Level, Room
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
+from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
 from utils.helpers.surface_helper import tint_surface
@@ -32,6 +33,7 @@ class ActionState(GameState):
         self.WaveBulletSurface = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
         self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
         self.AntennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
+        self.ElevatorSurface = pygame.image.load('assets/sprites/objects/elevator_1.png').convert_alpha()
 
 
         #############################
@@ -40,6 +42,7 @@ class ActionState(GameState):
         p1_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (23,45,34))
         self.Players = [Player(p1_surf, 100, 100, (23,45,34))]
         self.CommTower: Enemy | None = None
+        self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
 
         #############################
@@ -54,7 +57,7 @@ class ActionState(GameState):
         #############################
         # self.NumberOfEnemiesToSpawn = 0
         # self.NumberOfEnemiesSpawned = 0
-        self.Level = Level('F1')
+        self.Level = Level(f'F{self.game.game_data['floor']}')
         self.LoadRoom(self.Level.StartingRoom)
 
 
@@ -92,6 +95,17 @@ class ActionState(GameState):
             self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
         else:
             self.CommTower = None
+
+        #############################
+        # Add the elevator if it's here
+        #############################
+        if self.CurrentRoom.Coords == self.Level.ElevatorCoords:
+            posX = self.game.screen.get_width() * 0.5 - self.ElevatorSurface.get_width() * 0.5
+            posY = self.ElevatorSurface.get_height() * 0.5
+            self.Elevator = Elevator(self.ElevatorSurface, posX, posY)
+            # self.CurrentRoom.Obstacles.append(self.Elevator.Rect)
+        else:
+            self.Elevator = None
 
         #############################
         # Initialize the faraway towers
@@ -303,7 +317,13 @@ class ActionState(GameState):
             elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
                 player.Rect.y = self.game.screen.get_height() - player.Rect.height
             
-            # check for teleport
+            # check for teleport to next floor
+            if self.Elevator:
+                if player.Rect.colliderect(self.Elevator.Rect):
+                    self.game.game_data['floor'] += 1
+                    self.game.change_state("Action")
+
+            # check for teleport to adjacent room
             if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
 
                 # that room is cleared
@@ -427,6 +447,9 @@ class ActionState(GameState):
 
         if self.CommTower:
             self.CommTower.draw(screen)
+
+        if self.Elevator:
+            self.Elevator.draw(screen)
 
         for t in self.FarawayTowers:
             t.draw(screen)

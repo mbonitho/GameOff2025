@@ -23,7 +23,7 @@ class Level:
     def __init__(self, levelFilenameWithoutExtension: str):
         self.Rooms = []
         self.CommTowerPositions: list[tuple[int, int]] = []
-        self.StairsUpPos: tuple[int, int]
+        self.ElevatorCoords: tuple[int, int]
 
         self.StartingRoom = None
         
@@ -57,7 +57,7 @@ class Level:
                                 self.CommTowerPositions.append((x, y))
 
                             case 'roomStairsUp':
-                                self.StairsUpPos = (x, y)
+                                self.ElevatorCoords = (x, y)
 
                         eventLayer.entities.remove(entity)
 

@@ -57,7 +57,8 @@ class Game:
         # clean game data, is overridden when load_data is called
         self.game_data = {
             "highscore": 0,
-            "score": 0
+            "score": 0,
+            "floor": 1
         }
 
         # clean input map, can be overridden when load_data is called
@@ -66,8 +67,8 @@ class Game:
             "pause": 7  # Start button
         }
 
-
         self.joysticks = []
+
 
     def load_data(self):
         print('loading data')
