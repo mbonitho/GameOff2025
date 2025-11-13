@@ -24,7 +24,7 @@
       "exportID": "82121973",
       "exportMode": 0,
       "arrayMode": 0,
-      "defaultTileset": "PlaceholderTileset"
+      "defaultTileset": "New Tileset"
     },
     {
       "definition": "entity",
@@ -146,6 +146,6 @@
     }
   ],
   "tilesets": [
-    {"label": "LevelTileset", "path": "../../../../workingFiles/GameOff2025/levelTileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAICAIAAAAjnqvkAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9btaIVBzuIOGSoTtZBRR1rFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxF5wUXaTE/yWFFjEeHPfj3b3H3TvAXy8z1eyIAapmGalEXMhkV4XgK3rRhRDGMSMxU58TxSQ8x9c9fHy9i/Is73N/jj4lZzLAJxDHmG5YxBvE05uWznmfOMyKkkJ8Tjxm0AWJH7kuu/zGueCwn2eGjXRqnjhMLBTaWG5jVjRU4iniiKJqlO/PuKxw3uKslquseU/+wlBOW1nmOs1hJLCIJYgQIKOKEsqwEKVVI8VEivbjHv4hxy+SSyZXCYwcC6hAheT4wf/gd7dmfnLCTQrFgc4X2/4YAYK7QKNm29/Htt04AQLPwJXW8lfqwOwn6bWWFjkC+reBi+uWJu8BlzvA4JMuGZIjBWj683ng/Yy+KQsM3AI9a25vzX2cPgBp6ip5AxwcAqMFyl73eHd3e2//nmn29wPktHLUFtJGyQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLCwAgFjwexwkAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAV0lEQVQ4y2NMSEhgoCqYPzGUgYEhMX81herRxJkYhghghIQoxPkQgOy5wSPOgj9GKI9rTHPIUz9koh5niEJ8TEy44s83mOaQp54RnutJza20LiWGaq4HAAsxQ/dKWxQQAAAAAElFTkSuQmCC", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "LevelTileset", "path": "../../../../../workingFiles/GameOff2025/levelTileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAICAIAAAC9JKxEAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9btaIVBzuIOGSoTtZBRR1rFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxF5wUXaTE/yWFFjEeHPfj3b3H3TvAXy8z1eyIAapmGalEXMhkV4XgK3rRhRDGMSMxU58TxSQ8x9c9fHy9i/Is73N/jj4lZzLAJxDHmG5YxBvE05uWznmfOMyKkkJ8Tjxm0AWJH7kuu/zGueCwn2eGjXRqnjhMLBTaWG5jVjRU4iniiKJqlO/PuKxw3uKslquseU/+wlBOW1nmOs1hJLCIJYgQIKOKEsqwEKVVI8VEivbjHv4hxy+SSyZXCYwcC6hAheT4wf/gd7dmfnLCTQrFgc4X2/4YAYK7QKNm29/Htt04AQLPwJXW8lfqwOwn6bWWFjkC+reBi+uWJu8BlzvA4JMuGZIjBWj683ng/Yy+KQsM3AI9a25vzX2cPgBp6ip5AxwcAqMFyl73eHd3e2//nmn29wPktHLUFtJGyQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLDRcIKnIu/w0AAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAjklEQVRIx2NMSEhgoCqYPzGUgYEhMX81heqpJU4t91NoLxPDKKALYEGOFghAjhyyxedPDKWKejTxIR/QuHIQ5WUFpjnkqSfJMcjm49dOUBmaOKb5RDpytOgY6BQNiTFiUhP+rI1pDnXVk2QsnjSIK2mTbTtaxmWBq8Oao3FZQ0VxXPZSqxUxSMBo0UEnAACaxHqpehPERQAAAABJRU5ErkJggg==", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }

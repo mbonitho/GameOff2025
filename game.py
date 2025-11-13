@@ -58,7 +58,7 @@ class Game:
         self.game_data = {
             "highscore": 0,
             "score": 0,
-            "floor": 1
+            "floor": 3
         }
 
         # clean input map, can be overridden when load_data is called

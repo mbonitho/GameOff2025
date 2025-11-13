@@ -15,7 +15,15 @@ class Level:
         3: "1wayU",
         4: "2waysLR",
         5: "2waysUD",
-        6: "4ways"
+        6: "4ways",
+        7: "2waysLU",
+        8: "2waysUR",
+        9: "2waysRD",
+        10: "2waysDL",
+        11: "3waysLUD",
+        12: "3waysLUR",
+        13: "3waysURD",
+        14: "3waysLRD",
     }
 
     MAX_SIZE = 8

@@ -186,7 +186,7 @@ class ActionState(GameState):
             case '4ways':
                 self.Exits = [exitLeft, exitRight, exitUp, exitDown]
             case '2waysLR':
-                self.Exits = [exitLeft, exitRight, ]
+                self.Exits = [exitLeft, exitRight]
             case '2waysUD':
                 self.Exits = [exitUp, exitDown]
             case '1wayL':
@@ -197,6 +197,23 @@ class ActionState(GameState):
                 self.Exits = [exitUp]
             case '1wayD':
                 self.Exits = [exitDown]
+            case '2waysLU':
+                self.Exits = [exitLeft, exitUp]
+            case '2waysUR':
+                self.Exits = [exitUp, exitRight]
+            case '2waysRD':
+                self.Exits = [exitRight, exitDown]
+            case '2waysDL':
+                self.Exits = [exitDown, exitLeft]
+            case '3waysLUD':
+                self.Exits = [exitLeft, exitUp, exitDown]
+            case '3waysLUR':
+                self.Exits = [exitLeft, exitUp, exitRight]
+            case '3waysURD':
+                self.Exits = [exitUp, exitRight, exitDown]     
+            case '3waysLRD':
+                self.Exits = [exitLeft, exitRight, exitDown]
+
         pass
 
 
