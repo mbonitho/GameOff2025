@@ -6,45 +6,6 @@
   "offsetY": 0,
   "layers": [
     {
-      "name": "floor",
-      "_eid": "43368736",
-      "offsetX": 0,
-      "offsetY": 0,
-      "gridCellWidth": 32,
-      "gridCellHeight": 32,
-      "gridCellsX": 10,
-      "gridCellsY": 9,
-      "tileset": "PlaceholderTileset",
-      "data": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      "exportMode": 0,
-      "arrayMode": 0
-    },
-    {
-      "name": "walls",
-      "_eid": "43367667",
-      "offsetX": 0,
-      "offsetY": 0,
-      "gridCellWidth": 32,
-      "gridCellHeight": 32,
-      "gridCellsX": 10,
-      "gridCellsY": 9,
-      "tileset": "PlaceholderTileset",
-      "data": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
-      "exportMode": 0,
-      "arrayMode": 0
-    },
-    {
-      "name": "events",
-      "_eid": "43367588",
-      "offsetX": 0,
-      "offsetY": 0,
-      "gridCellWidth": 32,
-      "gridCellHeight": 32,
-      "gridCellsX": 10,
-      "gridCellsY": 9,
-      "entities": []
-    },
-    {
       "name": "rooms",
       "_eid": "82121973",
       "offsetX": 0,

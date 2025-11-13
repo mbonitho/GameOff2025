@@ -1,5 +1,5 @@
 {
-  "name": "GameOff2025",
+  "name": "GameOff2025Levels",
   "ogmoVersion": "3.4.0",
   "levelPaths": ["."],
   "backgroundColor": "#282c34ff",
@@ -17,32 +17,6 @@
   "playCommand": "",
   "entityTags": [],
   "layers": [
-    {
-      "definition": "tile",
-      "name": "floor",
-      "gridSize": {"x": 32, "y": 32},
-      "exportID": "43368736",
-      "exportMode": 0,
-      "arrayMode": 0,
-      "defaultTileset": "PlaceholderTileset"
-    },
-    {
-      "definition": "tile",
-      "name": "walls",
-      "gridSize": {"x": 32, "y": 32},
-      "exportID": "43367667",
-      "exportMode": 0,
-      "arrayMode": 0,
-      "defaultTileset": "PlaceholderTileset"
-    },
-    {
-      "definition": "entity",
-      "name": "events",
-      "gridSize": {"x": 32, "y": 32},
-      "exportID": "43367588",
-      "requiredTags": [],
-      "excludedTags": []
-    },
     {
       "definition": "tile",
       "name": "rooms",
@@ -172,7 +146,6 @@
     }
   ],
   "tilesets": [
-    {"label": "PlaceholderTileset", "path": "../sprites/environment/tileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAIAAAAt/+nTAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9btaIVBzuIOGSoTtZBRR1rFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxF5wUXaTE/yWFFjEeHPfj3b3H3TvAXy8z1eyIAapmGalEXMhkV4XgK3rRhRDGMSMxU58TxSQ8x9c9fHy9i/Is73N/jj4lZzLAJxDHmG5YxBvE05uWznmfOMyKkkJ8Tjxm0AWJH7kuu/zGueCwn2eGjXRqnjhMLBTaWG5jVjRU4iniiKJqlO/PuKxw3uKslquseU/+wlBOW1nmOs1hJLCIJYgQIKOKEsqwEKVVI8VEivbjHv4hxy+SSyZXCYwcC6hAheT4wf/gd7dmfnLCTQrFgc4X2/4YAYK7QKNm29/Htt04AQLPwJXW8lfqwOwn6bWWFjkC+reBi+uWJu8BlzvA4JMuGZIjBWj683ng/Yy+KQsM3AI9a25vzX2cPgBp6ip5AxwcAqMFyl73eHd3e2//nmn29wPktHLUFtJGyQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLBgwyC9yc+roAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAACKUlEQVRYw9VYTa6CMBAuBZSqTY0LV97AhUuXHNPTsPQAuvAGxMQEEUHLTylvgTGEIj4e+CyzIqQM83Xm6zdTZbPZhGEIPmOGYSwWC/BJ08Iw3O12CKHOXVNKV6tV/swYy7JMURRN0zoGAABACC2XyyAICCEQwpYeGWO+7xNC9vv986XneVEUaZo2n8/bB52mqaqq+fMj3Mvlst1uoyhq7z139bmy5JwX43wkdDabmaZpGEb7H0ynU9M0SzU5Ho8RQu3TCwCAEI5GozIAVVUxxt0UpaaJrhptDaVU1/UiWzjneegVeIB8hhAqcf16vbqu+5LE37IiF+sNY5wnQa4MFGPKqckYq1ypqqqu69IBKMYUx7HjOJTSt1/d7/c0TaUoIZH6g8Hg7criESQdALHG3p688FtF35X9K4BXHK3RLLkA/KbE6wXOcRyJdKCpDYdDUTe+doyGYdiUEhBCMYdfy0AnjaOMvVCWZUWd6h8AxlijsUQ6Euu6/qrt6UcGesAB3/dPp1OPAfxSYp92u908z5OIAxjjRuMrhLBm7umBEtffWclF4jiO/8iBNE0ppVmWdTLp/tlVfbfHOU+SpBrA+Xy2LKuT2yjXdS3LqhwORYnlnB+Px9J/XykxhFCUiAcAQsh6vW7Z7hZdVbY6QRCU3iiKgjGuuTBNkkTc9TKJKaWHwwEAYNt2V9Vs27aYBEKICGAymYh3EMVR800rYRjG8w5ZwpZTUZT6BT/JQe6Uf1UfdgAAAABJRU5ErkJggg==", "tileWidth": 32, "tileHeight": 32, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0},
     {"label": "LevelTileset", "path": "../../../../workingFiles/GameOff2025/levelTileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAAICAIAAAAjnqvkAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9btaIVBzuIOGSoTtZBRR1rFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxF5wUXaTE/yWFFjEeHPfj3b3H3TvAXy8z1eyIAapmGalEXMhkV4XgK3rRhRDGMSMxU58TxSQ8x9c9fHy9i/Is73N/jj4lZzLAJxDHmG5YxBvE05uWznmfOMyKkkJ8Tjxm0AWJH7kuu/zGueCwn2eGjXRqnjhMLBTaWG5jVjRU4iniiKJqlO/PuKxw3uKslquseU/+wlBOW1nmOs1hJLCIJYgQIKOKEsqwEKVVI8VEivbjHv4hxy+SSyZXCYwcC6hAheT4wf/gd7dmfnLCTQrFgc4X2/4YAYK7QKNm29/Htt04AQLPwJXW8lfqwOwn6bWWFjkC+reBi+uWJu8BlzvA4JMuGZIjBWj683ng/Yy+KQsM3AI9a25vzX2cPgBp6ip5AxwcAqMFyl73eHd3e2//nmn29wPktHLUFtJGyQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLCwAgFjwexwkAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAV0lEQVQ4y2NMSEhgoCqYPzGUgYEhMX81herRxJkYhghghIQoxPkQgOy5wSPOgj9GKI9rTHPIUz9koh5niEJ8TEy44s83mOaQp54RnutJza20LiWGaq4HAAsxQ/dKWxQQAAAAAElFTkSuQmCC", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }
