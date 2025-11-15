@@ -11,8 +11,9 @@ from gamestates.splashState import SplashState
 from gamestates.titleState import TitleState
 from gamestates.gameplayState import GameplayState
 from gamestates.rebindState import RebindMenuState
+from gamestates.elevatorState import ElevatorState
+from utils.parameters import STARTING_FLOOR, STARTING_STATE
 
-# Main Game class
 class Game:
 
     WEB = False
@@ -40,9 +41,10 @@ class Game:
             "Action": ActionState(self),
             "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),
+            "Elevator" : ElevatorState(self),
         }
         self.current_state: Optional[GameState] = None
-        self.change_state("Splash")
+        self.change_state(STARTING_STATE)
 
         if sys.platform in ['wasi', 'emscripten']:
             Game.WEB = True
@@ -58,7 +60,7 @@ class Game:
         self.game_data = {
             "highscore": 0,
             "score": 0,
-            "floor": 3
+            "floor": STARTING_FLOOR
         }
 
         # clean input map, can be overridden when load_data is called

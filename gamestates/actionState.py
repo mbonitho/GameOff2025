@@ -17,6 +17,7 @@ from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
 from utils.helpers.surface_helper import tint_surface
 from utils.ogmo.ogmoHelper import OgmoHelper
+from utils.parameters import NUMBER_OF_ENEMIES_TO_SPAWN
 
 class ActionState(GameState):
 
@@ -77,7 +78,7 @@ class ActionState(GameState):
         #############################
         # Load a bunch of enemies
         #############################
-        self.NumberOfEnemiesToSpawn = 3
+        self.NumberOfEnemiesToSpawn = NUMBER_OF_ENEMIES_TO_SPAWN
         self.NumberOfEnemiesSpawned = 0 if not room.Cleared else self.NumberOfEnemiesToSpawn
 
         self.enemySpawnDelay = 3 # seconds
@@ -338,7 +339,7 @@ class ActionState(GameState):
             if self.Elevator:
                 if player.Rect.colliderect(self.Elevator.Rect):
                     self.game.game_data['floor'] += 1
-                    self.game.change_state("Action")
+                    self.game.change_state("Elevator")
 
             # check for teleport to adjacent room
             if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
