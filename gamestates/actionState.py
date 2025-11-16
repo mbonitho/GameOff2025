@@ -40,8 +40,7 @@ class ActionState(GameState):
         #############################
         # ENTITIES
         #############################
-        p1_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (23,45,34))
-        self.Players = [Player(p1_surf, 100, 100, (23,45,34))]
+        self.Players = [Player(1, 100, 100, (23,45,34))]
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
@@ -248,8 +247,7 @@ class ActionState(GameState):
                 # player2 joining by pressing start, spawns at p1 pos
                 if event.button == 7 and event.joy == 1:
                     if len(self.Players) == 1:
-                        p2_surf = tint_surface(pygame.image.load('assets/sprites/player/player_1.png').convert_alpha(), (210,120,72))
-                        self.Players.append(Player(p2_surf, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
+                        self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
                         self.NumberOfEnemiesToSpawn *= 3
 
                 # only trigger input if the number of players is sufficient

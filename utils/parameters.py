@@ -2,4 +2,6 @@
 STARTING_FLOOR = 1
 NUMBER_OF_ENEMIES_TO_SPAWN = 3
 
-STARTING_STATE = 'Elevator'
+
+# "Splash","Title","Gameplay","Action","Rebind","GameOver""Elevator"
+STARTING_STATE = 'Action'

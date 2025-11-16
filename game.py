@@ -43,8 +43,6 @@ class Game:
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
         }
-        self.current_state: Optional[GameState] = None
-        self.change_state(STARTING_STATE)
 
         if sys.platform in ['wasi', 'emscripten']:
             Game.WEB = True
@@ -71,6 +69,9 @@ class Game:
 
         self.joysticks = []
 
+        #finally, set current state
+        self.current_state: Optional[GameState] = None
+        self.change_state(STARTING_STATE)
 
     def load_data(self):
         print('loading data')
