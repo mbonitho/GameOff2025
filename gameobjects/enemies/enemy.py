@@ -1,11 +1,23 @@
+from typing import List
 from pygame import Surface
+import pygame
 from gameobjects.blinkingComponent import BlinkingComponent
 from gameobjects.enemies.enemy_behavior import EnemyBehavior
 
 class Enemy:
-    def __init__(self, surface: Surface, x: int, y: int, behaviors: list[EnemyBehavior]):      
-        self.Surface = surface
-        self.Rect = surface.get_rect()
+    def __init__(self, surfaces: List[Surface], x: int, y: int, behaviors: list[EnemyBehavior]):     
+
+        self.animations = surfaces
+
+        # animation
+        self.frame_index = 0
+        self.animation_timer = 0
+        self.animation_speed = .15 # seconds
+        self.looking_right = True
+        self.previous_pos = (x, y)
+
+        self.Surface = self.animations[0]
+        self.Rect = self.Surface.get_rect()
         self.Rect.topleft = (x, y)
         self.Behaviors = behaviors
 
@@ -17,12 +29,27 @@ class Enemy:
 
     def update(self, players, dt: float):
         self.BlinkingComponent.update(dt)
+
+        self.looking_right = self.previous_pos[0] < self.Rect.x
+
+        # animation
+        self.animation_timer += dt
+        if self.animation_timer >= self.animation_speed:
+            self.animation_timer %= self.animation_speed
+            self.frame_index = (self.frame_index + 1) % len(self.animations)
+
+        self.previous_pos = self.Rect.topleft
         for beh in self.Behaviors:
             beh.update(self, players, dt)
 
+
     def draw(self, screen):
         if self.BlinkingComponent.visible:
-            screen.blit(self.Surface, self.Rect.topleft)
+
+            img = self.animations[self.frame_index]
+            if not self.looking_right:
+                img = pygame.transform.flip(img, True, False)
+            screen.blit(img, self.Rect.topleft)
 
             for beh in self.Behaviors:
                 beh.draw(screen, self)

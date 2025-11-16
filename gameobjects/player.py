@@ -60,7 +60,6 @@ class Player:
         self.animation_timer += dt
         if self.animation_timer >= self.animation_speed:
             self.animation_timer %= self.animation_speed
-
             self.frame_index = (self.frame_index + 1) % len(self.animations[self.state])
 
         self.previous_pos = self.Rect.topleft

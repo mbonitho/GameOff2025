@@ -6,9 +6,7 @@ from pygame.locals import *
 
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
-from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
-from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
-from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
+from gameobjects.enemies.enemy_factory import EnemyFactory
 from gameobjects.level import Level, Room
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
@@ -31,8 +29,6 @@ class ActionState(GameState):
         #############################
         self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
         self.BulletSurface = pygame.image.load('assets/sprites/projectiles/bullet.png').convert_alpha()
-        self.WaveBulletSurface = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
-        self.EnemySurface = pygame.image.load('assets/sprites/enemies/enemy_1.png').convert_alpha()
         self.AntennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
         self.ElevatorSurface = pygame.image.load('assets/sprites/objects/elevator_1.png').convert_alpha()
 
@@ -90,7 +86,7 @@ class ActionState(GameState):
         if self.CurrentRoom.Coords in self.Level.CommTowerPositions:
             posX = self.game.screen.get_width() * 0.5 - self.AntennaSurface.get_width() * 0.5
             posY = self.game.screen.get_height() * 0.5 - self.AntennaSurface.get_height() * 0.5
-            self.CommTower = Enemy(self.AntennaSurface, posX, posY, [])
+            self.CommTower = EnemyFactory.GetSameRoomAntennaTower((posX, posY))
             self.Enemies.append(self.CommTower)
             self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
         else:
@@ -167,10 +163,7 @@ class ActionState(GameState):
             elif posXName == 'right' and posYName == 'top':
                 angleRange = (195, 255)
 
-
-            tower = Enemy(self.BulletSurface, posX, posY, [
-                TeleportAndShootWaveBehavior(self.WaveBulletSurface, angleRange)
-            ])
+            tower = EnemyFactory.GetDistantAntennaTower((posX, posY), angleRange)
             self.FarawayTowers.append(tower)
 
         #############################
@@ -406,15 +399,11 @@ class ActionState(GameState):
                     x = random.randrange(int(exit.Rect.centerx * 0.9), int(exit.Rect.centerx * 1.1))
                     y = random.randrange(int(exit.Rect.centery * 0.9), int(exit.Rect.centery * 1.1))
 
-                    self.Enemies.append(
-                        Enemy(
-                            self.EnemySurface, 
-                            x,
-                            y,
-                            [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()]
+                    if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
+                        self.Enemies.append(
+                            EnemyFactory.GetDefaultEnemy((x, y))
                         )
-                    )
-                    self.NumberOfEnemiesSpawned += 1
+                        self.NumberOfEnemiesSpawned += 1
 
         # check for game over
         continueGame = any(p.CurrentLife > 0 for p in self.Players)
