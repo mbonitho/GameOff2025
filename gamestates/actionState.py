@@ -31,6 +31,10 @@ class ActionState(GameState):
         self.BulletSurface = pygame.image.load('assets/sprites/projectiles/bullet.png').convert_alpha()
         self.AntennaSurface = pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
         self.ElevatorSurface = pygame.image.load('assets/sprites/objects/elevator_1.png').convert_alpha()
+        self.RoomSurface: pygame.Surface 
+
+        self.RoomBottomLeftCornerSurface = pygame.image.load('assets/sprites/environment/rooms/roomBottomLeftCorner.png').convert_alpha()
+        self.RoomBottomRightCornerSurface = pygame.image.load('assets/sprites/environment/rooms/roomBottomRightCorner.png').convert_alpha()
 
 
         #############################
@@ -69,6 +73,7 @@ class ActionState(GameState):
             player.Bullets = []
 
         self.CurrentRoom = room
+        self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
 
         #############################
         # Load a bunch of enemies
@@ -414,32 +419,39 @@ class ActionState(GameState):
         screen.fill((64, 64, 64))
 
         #############################################
-        # OGMO LAYERS
+        # OGMO LAYERS (not used anymore)
         #############################################
-        layers = [self.CurrentRoom.Map.layers['floor'], self.CurrentRoom.Map.layers['walls']]
-        for layer in layers:
-            # x_to_draw_to = 0
-            y_to_draw_to = 0
-            for y in range(layer.gridCellsY):
-                x_to_draw_to = 0
-                for x in range(layer.gridCellsX):
-                    index = y * layer.gridCellsX + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
-                    data = layer.data[index]
+        # layers = [self.CurrentRoom.Map.layers['floor'], self.CurrentRoom.Map.layers['walls']]
+        # for layer in layers:
+        #     # x_to_draw_to = 0
+        #     y_to_draw_to = 0
+        #     for y in range(layer.gridCellsY):
+        #         x_to_draw_to = 0
+        #         for x in range(layer.gridCellsX):
+        #             index = y * layer.gridCellsX + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
+        #             data = layer.data[index]
 
-                    if data != -1:
-                        # convert data in x, y in tileset
-                        x_in_tileset = data * layer.gridCellWidth
-                        y_in_tileset = 0
+        #             if data != -1:
+        #                 # convert data in x, y in tileset
+        #                 x_in_tileset = data * layer.gridCellWidth
+        #                 y_in_tileset = 0
 
-                        screen.blit(
-                            self.TilesetSurface, 
-                            (x_to_draw_to, y_to_draw_to), 
-                            area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
-                        )
+        #                 screen.blit(
+        #                     self.TilesetSurface, 
+        #                     (x_to_draw_to, y_to_draw_to), 
+        #                     area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
+        #                 )
 
-                    x_to_draw_to += layer.gridCellWidth
+        #             x_to_draw_to += layer.gridCellWidth
 
-                y_to_draw_to += layer.gridCellHeight
+        #         y_to_draw_to += layer.gridCellHeight
+
+
+        #############################################
+        # DRAW CURRENT ROOM BY NAME
+        #############################################
+        screen.blit(self.RoomSurface, (0,0))
+
 
         #############################################
         # GAME OBJECTS
@@ -462,6 +474,14 @@ class ActionState(GameState):
         for player in self.Players:
             for bullet in player.Bullets:
                 bullet.draw(screen)
+
+
+        #############################################
+        # ROOM BOTTOM CORNERS
+        #############################################
+        screen.blit(self.RoomBottomLeftCornerSurface, (0,self.game.screen.get_height() - self.RoomBottomLeftCornerSurface.get_height()))
+        screen.blit(self.RoomBottomRightCornerSurface, (self.game.screen.get_width() - self.RoomBottomRightCornerSurface.get_width(), self.game.screen.get_height() - self.RoomBottomRightCornerSurface.get_height()))
+
 
         #############################################
         # HUD

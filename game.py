@@ -29,7 +29,7 @@ class Game:
         info = pygame.display.get_desktop_sizes()
         self.physical_screen_width, self.physical_screen_height = info[0]
 
-        pygame.display.set_caption("Template Game")
+        pygame.display.set_caption("Project W.A.V.E.S")
         self.clock = pygame.time.Clock()
         self.running = True
         self.splash_timer = 0.5  # seconds
