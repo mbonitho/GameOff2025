@@ -88,9 +88,13 @@ class ActionState(GameState):
         self.Enemies = []
         self.Objects = []
 
-        self.turret = EnemyFactory.GetPlusTurret((600, 600))
-        self.Enemies.append(self.turret)
-        # self.CurrentRoom.Obstacles.append(self.turret.Rect)
+        turret = EnemyFactory.GetPlusTurret((600, 600))
+        self.Enemies.append(turret)
+
+        minedropper = EnemyFactory.GetMineDropperEnemy((800, 400), self.CurrentRoom.Obstacles, self.Objects)
+        self.Enemies.append(minedropper)
+
+
 
         #############################
         # Add a Comm Tower here if there's one
@@ -392,6 +396,13 @@ class ActionState(GameState):
                 if bullet.lifespan >= bullet.max_lifespan:
                     player.Bullets.remove(bullet)
 
+        # update objects and remove them if needed
+        for object in self.Objects.copy():
+            object.update(dt)
+
+            if object.lifespan >= object.maxlifespan:
+                self.Objects.remove(object)
+
         # Update enemies
         for enemy in self.Enemies.copy():
             if enemy.CurrentLife <= 0:
@@ -492,7 +503,8 @@ class ActionState(GameState):
             self.Elevator.draw(screen)
 
         for o in self.Objects:
-            o.draw(screen)
+            if o.BlinkingComponent.visible:
+                o.draw(screen)
 
         for p in self.Players:
             p.draw(screen)

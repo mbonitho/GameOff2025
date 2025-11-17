@@ -1,7 +1,8 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
 
-class Medkit:
+
+class Landmine:
 
     def __init__(self, surface: Surface, x: int, y: int):
         self.Surface = surface
@@ -9,7 +10,7 @@ class Medkit:
         self.Rect.topleft = (x, y)
 
         self.lifespan = 0
-        self.maxlifespan = 20
+        self.maxlifespan = 5
 
         self.BlinkingComponent = BlinkingComponent()
 
@@ -26,6 +27,5 @@ class Medkit:
 
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
-            player.CurrentLife = min(player.MaxLife, max(player.CurrentLife + 1, round(player.CurrentLife * 1.3)))
-
-    
+            player.CurrentLife = max(0, player.CurrentLife - 1)
+            player.BlinkingComponent.StartBlinking()

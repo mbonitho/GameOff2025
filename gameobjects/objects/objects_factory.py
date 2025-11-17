@@ -1,14 +1,7 @@
-
-
 from typing import Tuple
 import pygame
-from pygame import Surface
 
-from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
-from gameobjects.enemies.enemy import Enemy
-from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
-from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
-from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
+from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
 
 
@@ -23,5 +16,10 @@ class ObjectsFactory:
 
         return  Medkit(cls._textures['medkit'], pos[0], pos[1])
 
+    @classmethod
+    def GetLandmine(cls, pos: Tuple[int, int]):
+        if 'landmine' not in cls._textures:
+            cls._textures['landmine'] =pygame.image.load('assets/sprites/objects/landmine.png').convert_alpha()
 
+        return  Landmine(cls._textures['landmine'], pos[0], pos[1])
    
