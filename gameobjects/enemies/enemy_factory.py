@@ -7,6 +7,7 @@ from pygame import Surface
 from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
+from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
 from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
 
 
@@ -51,3 +52,22 @@ class EnemyFactory:
             cls._textures['antennaSurface'] =pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
 
         return  Enemy([cls._textures['antennaSurface']], pos[0], pos[1], [])
+
+
+    @classmethod
+    def GetPlusTurret(cls, pos: Tuple[int, int]):
+
+        if 'turretPlusSurface' not in cls._textures:
+            cls._textures['turretPlusSurface'] =pygame.image.load('assets/sprites/enemies/turret_plus.png').convert_alpha()
+
+        if 'waveBulletSurface' not in cls._textures:
+            cls._textures['waveBulletSurface'] = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
+
+        turret =  Enemy([cls._textures['turretPlusSurface']], pos[0], pos[1], [
+            ShootPlusPatternBehavior(cls._textures['waveBulletSurface'])
+        ])
+
+        turret.MaxLife = 5
+        turret.CurrentLife =  turret.MaxLife
+
+        return turret

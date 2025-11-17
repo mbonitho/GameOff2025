@@ -31,9 +31,6 @@ class Bullet:
             if self.Rect.colliderect(enemy.Rect):
                 self.lifespan = self.max_lifespan # kill bullet
                 enemy.ReceiveDamage() # hurt enemy
-                if enemy.CurrentLife <= 0:
-                    enemies.remove(enemy)
-
 
     def draw(self, screen):
         screen.blit(self.RotatedSurface, self.Rect.topleft)

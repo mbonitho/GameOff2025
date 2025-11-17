@@ -8,6 +8,7 @@ from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
 from gameobjects.enemies.enemy_factory import EnemyFactory
 from gameobjects.level import Level, Room
+from gameobjects.objects.objects_factory import ObjectsFactory
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
@@ -15,7 +16,7 @@ from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
 from utils.helpers.surface_helper import tint_surface
 from utils.ogmo.ogmoHelper import OgmoHelper
-from utils.parameters import NUMBER_OF_ENEMIES_TO_SPAWN
+from utils.parameters import MEDKIT_CHANCE, NUMBER_OF_ENEMIES_TO_SPAWN
 
 class ActionState(GameState):
 
@@ -44,6 +45,7 @@ class ActionState(GameState):
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
+
 
         #############################
         # UI
@@ -76,7 +78,7 @@ class ActionState(GameState):
         self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
 
         #############################
-        # Load a bunch of enemies
+        # Load a bunch of enemies (todo replace with better code)
         #############################
         self.NumberOfEnemiesToSpawn = NUMBER_OF_ENEMIES_TO_SPAWN
         self.NumberOfEnemiesSpawned = 0 if not room.Cleared else self.NumberOfEnemiesToSpawn
@@ -84,6 +86,11 @@ class ActionState(GameState):
         self.enemySpawnDelay = 3 # seconds
         self.enemySpawningTimer = self.enemySpawnDelay 
         self.Enemies = []
+        self.Objects = []
+
+        self.turret = EnemyFactory.GetPlusTurret((600, 600))
+        self.Enemies.append(self.turret)
+        # self.CurrentRoom.Obstacles.append(self.turret.Rect)
 
         #############################
         # Add a Comm Tower here if there's one
@@ -331,6 +338,12 @@ class ActionState(GameState):
             elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
                 player.Rect.y = self.game.screen.get_height() - player.Rect.height
             
+            # check for items pickups
+            for object in self.Objects.copy():
+                if player.Rect.colliderect(object.Rect):
+                    object.handleCollision(player)
+                    self.Objects.remove(object)
+                    
             # check for teleport to next floor
             if self.Elevator:
                 if player.Rect.colliderect(self.Elevator.Rect):
@@ -371,9 +384,28 @@ class ActionState(GameState):
                                     self.game.screen.get_width() * 0.5,
                                     int(ActionState.EXIT_SIZE + 1)
                                 )
+
+        # Update bullets
+        for player in self.Players:
+            for bullet in player.Bullets.copy():
+                bullet.update(self.Enemies, dt)
+                if bullet.lifespan >= bullet.max_lifespan:
+                    player.Bullets.remove(bullet)
+
         # Update enemies
-        for enemy in self.Enemies:
+        for enemy in self.Enemies.copy():
+            if enemy.CurrentLife <= 0:
+
+                # loot chance!
+                rng = random.random()
+                if rng <= MEDKIT_CHANCE:
+                    self.Objects.append(ObjectsFactory.GetMedkit(enemy.Rect.bottomleft))
+
+                self.Enemies.remove(enemy)
+
             enemy.update(self.Players, dt)
+
+
 
         # Comm towers shoot waves from other rooms
         for tower in self.FarawayTowers:
@@ -384,13 +416,6 @@ class ActionState(GameState):
             self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
             self.Level.CommTowerPositions.remove(self.CurrentRoom.Coords)
             self.CommTower = None
-
-        # Update bullets
-        for player in self.Players:
-            for bullet in player.Bullets.copy():
-                bullet.update(self.Enemies, dt)
-                if bullet.lifespan >= bullet.max_lifespan:
-                    player.Bullets.remove(bullet)
 
         # Spawn enemies
         if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
@@ -456,8 +481,6 @@ class ActionState(GameState):
         #############################################
         # GAME OBJECTS
         #############################################
-        for p in self.Players:
-            p.draw(screen)
 
         for e in self.Enemies:
             e.draw(screen)
@@ -467,6 +490,12 @@ class ActionState(GameState):
 
         if self.Elevator:
             self.Elevator.draw(screen)
+
+        for o in self.Objects:
+            o.draw(screen)
+
+        for p in self.Players:
+            p.draw(screen)
 
         for t in self.FarawayTowers:
             t.draw(screen)
