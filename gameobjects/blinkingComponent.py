@@ -1,7 +1,3 @@
-from pygame import Rect, Surface
-from typing import Tuple
-from utils.helpers.collisions_helper import MoveAndCollide
-
 class BlinkingComponent:
 
     def __init__(self):
