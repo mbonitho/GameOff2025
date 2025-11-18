@@ -103,6 +103,11 @@ class ActionState(GameState):
         summoner = EnemyFactory.GetMiceSummonerEnemy((400, 700), self.CurrentRoom.Obstacles, self.Enemies)
         self.Enemies.append(summoner)
 
+        patrol1 = EnemyFactory.GetPatrollingEnemy((100, 100), self.CurrentRoom.Obstacles, 'h')
+        self.Enemies.append(patrol1)
+
+        patrol2 = EnemyFactory.GetPatrollingEnemy((150, 600), self.CurrentRoom.Obstacles, 'v')
+        self.Enemies.append(patrol2)
 
         #############################
         # Add a Comm Tower here if there's one

@@ -20,7 +20,7 @@ def MoveAndCollide(rect: Rect, dx: int, dy: int, obstacles: list[Rect]):
         rect.y += dy
         for wall in obstacles:
             if rect.colliderect(wall):
-                collisions == (collisions[0], 1)
+                collisions = (collisions[0], 1)
                 if rect.top < wall.top:  # moving down
                     rect.bottom = wall.top
                 elif rect.bottom > wall.bottom:  # moving up

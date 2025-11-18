@@ -6,7 +6,9 @@ import pygame
 from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.enemies.flee_players_behavior import FleePlayersBehavior
+from gameobjects.enemies.hurt_on_contact_behavior import HurtOnContactBehavior
 from gameobjects.enemies.move_randomly_behavior import MoveRandomlyBehavior
+from gameobjects.enemies.patrol_behavior import PatrolBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
 from gameobjects.enemies.spawn_Mines_behavior import SpawnMineBehavior
@@ -126,7 +128,7 @@ class EnemyFactory:
 
 
     @classmethod
-    def GetMineDropperEnemy(cls, pos: Tuple[int, int], obstacles, objects):
+    def GetMineDropperEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects):
 
         if 'raccoon1' not in cls._textures:
             cls._textures['raccoon1'] = pygame.image.load(f'assets/sprites/enemies/raccoon1.png').convert_alpha()
@@ -148,7 +150,7 @@ class EnemyFactory:
     
 
     @classmethod
-    def GetMiceSummonerEnemy(cls, pos: Tuple[int, int], obstacles, enemies):
+    def GetMiceSummonerEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], enemies):
 
         if 'skunk1' not in cls._textures:
             cls._textures['skunk1'] = pygame.image.load(f'assets/sprites/enemies/skunk1.png').convert_alpha()
@@ -164,6 +166,28 @@ class EnemyFactory:
         enemy = Enemy(surfaces, pos[0], pos[1], [FleePlayersBehavior(obstacles), SummonMiceBehavior(enemies)])
     
         enemy.MaxLife = 4
+        enemy.CurrentLife =  enemy.MaxLife
+
+        return enemy
+    
+
+    @classmethod
+    def GetPatrollingEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], dir: str):
+
+        if 'pigeon1' not in cls._textures:
+            cls._textures['pigeon1'] = pygame.image.load(f'assets/sprites/enemies/pigeon1.png').convert_alpha()
+            cls._textures['pigeon2'] = pygame.image.load(f'assets/sprites/enemies/pigeon2.png').convert_alpha()
+            cls._textures['pigeon3'] = pygame.image.load(f'assets/sprites/enemies/pigeon3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['pigeon1'],
+            cls._textures['pigeon2'],
+            cls._textures['pigeon3']
+        ]
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [PatrolBehavior(obstacles, dir), HurtOnContactBehavior()])
+    
+        enemy.MaxLife = 8
         enemy.CurrentLife =  enemy.MaxLife
 
         return enemy
