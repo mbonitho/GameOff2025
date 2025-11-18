@@ -4,7 +4,7 @@ from typing import Counter
 from gameobjects.room import Room
 from utils.ogmo.ogmoHelper import OgmoHelper
 from utils.ogmo.ogmoMap import OgmoMap
-
+from gameobjects.enemyDefinition import EnemyDefinition
 
 class Level:
 
@@ -38,8 +38,8 @@ class Level:
         # generate each room
         levelMap = OgmoHelper.get_map(levelFilenameWithoutExtension, 'levels')
         eventLayer = levelMap.layers['roomsEvents']
-
-        for index, value in enumerate(levelMap.layers['rooms'].data):
+        roomLayer = levelMap.layers['rooms']
+        for index, value in enumerate(roomLayer.data):
             if value >= 0:
                 mapName = Level.tile_lookup[value]
 
@@ -51,10 +51,10 @@ class Level:
 
                 for entity in eventLayer.entities.copy():
 
-                    x = int(entity.x / eventLayer.gridCellWidth) 
-                    y = int(entity.y / eventLayer.gridCellHeight) 
+                    x_in_level_grid = int(entity.x / roomLayer.gridCellWidth) 
+                    y_in_level_grid = int(entity.y / roomLayer.gridCellHeight)
 
-                    if x_in_tileset == x and y_in_tileset == y:
+                    if x_in_tileset == x_in_level_grid and y_in_tileset == y_in_level_grid:
 
                         match(entity.name):
 
@@ -62,10 +62,16 @@ class Level:
                                 self.StartingRoom = room
 
                             case 'roomAntenna':
-                                self.CommTowerPositions.append((x, y))
+                                self.CommTowerPositions.append((x_in_level_grid, y_in_level_grid))
 
                             case 'roomStairsUp':
-                                self.ElevatorCoords = (x, y)
+                                self.ElevatorCoords = (x_in_level_grid, y_in_level_grid)
+
+                            case 'enemy':
+                                x_in_map_grid = (((entity.x % roomLayer.gridCellWidth) / eventLayer.gridCellWidth) + 1) / 16 
+                                y_in_map_grid = (((entity.y % roomLayer.gridCellHeight) / eventLayer.gridCellHeight) + 1) / 16
+
+                                room.EnemiesDefinitions.append(EnemyDefinition(entity.values['Type'], (x_in_map_grid,y_in_map_grid)))
 
                         eventLayer.entities.remove(entity)
 

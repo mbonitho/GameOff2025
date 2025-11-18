@@ -20,16 +20,16 @@
     {
       "definition": "tile",
       "name": "rooms",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {"x": 64, "y": 64},
       "exportID": "82121973",
       "exportMode": 0,
       "arrayMode": 0,
-      "defaultTileset": "New Tileset"
+      "defaultTileset": "LevelTileset"
     },
     {
       "definition": "entity",
       "name": "roomsEvents",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {"x": 4, "y": 4},
       "exportID": "82136541",
       "requiredTags": [],
       "excludedTags": []
@@ -143,9 +143,53 @@
       "nodeGhost": true,
       "tags": [],
       "values": []
+    },
+    {
+      "exportID": "49372066",
+      "name": "enemy",
+      "limit": -1,
+      "size": {"x": 4, "y": 4},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 16, "y": 16},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {
+          "name": "Type",
+          "definition": "Enum",
+          "display": 1,
+          "choices": ["smallFast", "patrollingH", "patrollingV", "mineDropper", "bigSlow", "bombDropper", "default", "miceSummoner"],
+          "defaults": 0
+        }
+      ]
     }
   ],
   "tilesets": [
-    {"label": "LevelTileset", "path": "../../../../../workingFiles/GameOff2025/levelTileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAICAIAAAC9JKxEAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9btaIVBzuIOGSoTtZBRR1rFYpQIdQKrTqYXPoFTRqSFBdHwbXg4Mdi1cHFWVcHV0EQ/ABxF5wUXaTE/yWFFjEeHPfj3b3H3TvAXy8z1eyIAapmGalEXMhkV4XgK3rRhRDGMSMxU58TxSQ8x9c9fHy9i/Is73N/jj4lZzLAJxDHmG5YxBvE05uWznmfOMyKkkJ8Tjxm0AWJH7kuu/zGueCwn2eGjXRqnjhMLBTaWG5jVjRU4iniiKJqlO/PuKxw3uKslquseU/+wlBOW1nmOs1hJLCIJYgQIKOKEsqwEKVVI8VEivbjHv4hxy+SSyZXCYwcC6hAheT4wf/gd7dmfnLCTQrFgc4X2/4YAYK7QKNm29/Htt04AQLPwJXW8lfqwOwn6bWWFjkC+reBi+uWJu8BlzvA4JMuGZIjBWj683ng/Yy+KQsM3AI9a25vzX2cPgBp6ip5AxwcAqMFyl73eHd3e2//nmn29wPktHLUFtJGyQAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLDRcIKnIu/w0AAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAjklEQVRIx2NMSEhgoCqYPzGUgYEhMX81heqpJU4t91NoLxPDKKALYEGOFghAjhyyxedPDKWKejTxIR/QuHIQ5WUFpjnkqSfJMcjm49dOUBmaOKb5RDpytOgY6BQNiTFiUhP+rI1pDnXVk2QsnjSIK2mTbTtaxmWBq8Oao3FZQ0VxXPZSqxUxSMBo0UEnAACaxHqpehPERQAAAABJRU5ErkJggg==", "tileWidth": 8, "tileHeight": 8, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "LevelTileset", "path": "../../../../GameOff2025_WorkingFiles/levelTileset.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA8AAAABACAIAAABa7ImJAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+kLEhMkHmXYjwMAAAICSURBVHja7d1rsoIwDAZQ47D/LccNMGOKUho457fjDS1tPx72xgsWkJn1D0eEFruqCxZv/MpRLHsI9VGw5iF8rd/I5U6Tz9Cy1WUIGMV1b00AAAACNAAACNAAACBAAwCAAA0AAAI0AAA83v52JAc2Z5lRa3nzFPWrX/3qV7/61a9+9av/pPrdgQYAgAECNAAACNAAACBAAwCAAA0AAAI0AAAI0AAAgAANAAACNAAACNAAACBAAwCAAA0AAAI0AAAgQAMAwICt+wFkpl4EAGAad6ABAGDApgkAgFGeACNAw8G5MiIsANofkDV1yvxSLQECNGABUyoAPXgHGgAABrgDDQDAWbo/wdutX4AGoN8C5u1P4EJe4QAAAAEaAAAEaAAAEKABAECABgAAARoAABCgAQBggH2ggcvsbuW75pb79V2H/dNvAAEaAKDxBfBzLuARoAHgzllzlycYOP9b1L/dsldMQK6AAfMPwEncgcaq3PgKGACYzy4cAAAgQAMAgAANAAACNAAACNAAACBAAwAAAjQAAAjQAAAgQAMAgAANAAACNAAACNAAAIAADQAAAjQAAAjQAAAgQAMAQCfxry/KzOG/HaEDYBHFIbz4sK0chZmHH1exNU+hvif/PSafh4yC9Xth2kB2BxoAAARoAAAQoAEAQIAGAIBONk0AvPxABwDKPiwtnI2Otg8tAAAAAElFTkSuQmCC", "tileWidth": 64, "tileHeight": 64, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }

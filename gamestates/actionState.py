@@ -62,14 +62,13 @@ class ActionState(GameState):
         self.Level = Level(f'F{self.game.game_data['floor']}')
         self.LoadRoom(self.Level.StartingRoom)
 
-
-
-
-
     def LoadRoom(self, room: Room | None):
 
         if room == None:
             return
+
+        self.Enemies = []
+        self.Objects = []
 
         for player in self.Players:
             player.Bullets = []
@@ -78,39 +77,39 @@ class ActionState(GameState):
         self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
 
         #############################
-        # Load a bunch of enemies (todo replace with better code)
+        # Load room enemies if room not cleared
         #############################
-        self.NumberOfEnemiesToSpawn = NUMBER_OF_ENEMIES_TO_SPAWN
-        self.NumberOfEnemiesSpawned = 0 if not room.Cleared else self.NumberOfEnemiesToSpawn
+        if not self.CurrentRoom.Cleared:
+            for ed in room.EnemiesDefinitions:
 
-        self.enemySpawnDelay = 3 # seconds
-        self.enemySpawningTimer = self.enemySpawnDelay 
-        self.Enemies = []
-        self.Objects = []
+                pos = (ed.Coords[0] * self.game.GAME_WINDOW_SIZE[0], ed.Coords[1] * self.game.GAME_WINDOW_SIZE[1])
+                match ed.name:
+                    case 'smallFast':
+                        enemy = EnemyFactory.GetSmallFastEnemy(pos)
 
-        turret = EnemyFactory.GetPlusTurret((600, 600))
-        self.Enemies.append(turret)
+                    case 'patrollingH':
+                        enemy = EnemyFactory.GetPatrollingEnemy(pos, self.CurrentRoom.Obstacles, 'h')
 
-        minedropper = EnemyFactory.GetMineDropperEnemy((800, 400), self.CurrentRoom.Obstacles, self.Objects)
-        self.Enemies.append(minedropper)
+                    case 'patrollingV':
+                        enemy = EnemyFactory.GetPatrollingEnemy(pos, self.CurrentRoom.Obstacles, 'v')
 
-        bombDropper = EnemyFactory.GetBombDropperEnemy((700, 400), self.CurrentRoom.Obstacles, self.Objects)
-        self.Enemies.append(bombDropper)
+                    case 'mineDropper':
+                        enemy = EnemyFactory.GetMineDropperEnemy(pos, self.CurrentRoom.Obstacles, self.Objects)
 
-        smallFast = EnemyFactory.GetSmallFastEnemy((600, 700))
-        self.Enemies.append(smallFast)
+                    case 'bigSlow':
+                        enemy = EnemyFactory.GetBigSlowEnemy(pos)
 
-        bigSlow = EnemyFactory.GetBigSlowEnemy((400, 700))
-        self.Enemies.append(bigSlow)
+                    case 'bombDropper':
+                        enemy = EnemyFactory.GetBombDropperEnemy(pos)
 
-        summoner = EnemyFactory.GetMiceSummonerEnemy((400, 700), self.CurrentRoom.Obstacles, self.Enemies)
-        self.Enemies.append(summoner)
+                    case 'miceSummoner':
+                        enemy = EnemyFactory.GetMiceSummonerEnemy(pos)
 
-        patrol1 = EnemyFactory.GetPatrollingEnemy((100, 100), self.CurrentRoom.Obstacles, 'h')
-        self.Enemies.append(patrol1)
+                    case 'default':
+                        enemy = EnemyFactory.GetDefaultEnemy(pos)
 
-        patrol2 = EnemyFactory.GetPatrollingEnemy((150, 600), self.CurrentRoom.Obstacles, 'v')
-        self.Enemies.append(patrol2)
+                if enemy:
+                    self.Enemies.append(enemy)
 
         #############################
         # Add a Comm Tower here if there's one
@@ -371,7 +370,7 @@ class ActionState(GameState):
                     self.game.change_state("Elevator")
 
             # check for teleport to adjacent room
-            if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
+            if len(self.Enemies) == 0:
 
                 # that room is cleared
                 self.CurrentRoom.Cleared = True
@@ -443,24 +442,6 @@ class ActionState(GameState):
             self.CurrentRoom.Obstacles.remove(self.CommTower.Rect)
             self.Level.CommTowerPositions.remove(self.CurrentRoom.Coords)
             self.CommTower = None
-
-        # Spawn enemies
-        if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
-            self.enemySpawningTimer += dt
-            if self.enemySpawningTimer >= self.enemySpawnDelay:
-                self.enemySpawningTimer %= self.enemySpawnDelay
-
-                for i in range(4 * len(self.Players)):
-
-                    exit  = random.choice(self.Exits)
-                    x = random.randrange(int(exit.Rect.centerx * 0.9), int(exit.Rect.centerx * 1.1))
-                    y = random.randrange(int(exit.Rect.centery * 0.9), int(exit.Rect.centery * 1.1))
-
-                    if self.NumberOfEnemiesSpawned < self.NumberOfEnemiesToSpawn:
-                        self.Enemies.append(
-                            EnemyFactory.GetDefaultEnemy((x, y))
-                        )
-                        self.NumberOfEnemiesSpawned += 1
 
         # check for game over
         continueGame = any(p.CurrentLife > 0 for p in self.Players)
