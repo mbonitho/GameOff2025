@@ -94,6 +94,9 @@ class ActionState(GameState):
         minedropper = EnemyFactory.GetMineDropperEnemy((800, 400), self.CurrentRoom.Obstacles, self.Objects)
         self.Enemies.append(minedropper)
 
+        bombDropper = EnemyFactory.GetBombDropperEnemy((700, 400), self.CurrentRoom.Obstacles, self.Objects)
+        self.Enemies.append(bombDropper)
+
         smallFast = EnemyFactory.GetSmallFastEnemy((600, 700))
         self.Enemies.append(smallFast)
 
@@ -357,7 +360,7 @@ class ActionState(GameState):
             
             # check for items pickups
             for object in self.Objects.copy():
-                if player.Rect.colliderect(object.Rect):
+                if player.Rect.colliderect(object.Rect) and object.canBePickedUp:
                     object.handleCollision(player)
                     self.Objects.remove(object)
                     

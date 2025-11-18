@@ -94,11 +94,13 @@ class Player:
     def MoveDown(self, obstacles: list[Rect], ratio: float = 1):
         MoveAndCollide(self.Rect, 0, int(self.Speed * ratio), obstacles)
 
-    def ReceiveDamage(self):
+    def ReceiveDamage(self, dmg: int = 1):
         # invicibility fames
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
-            self.CurrentLife -= 1
+            self.CurrentLife -= dmg
+            return True
+        return False
 
     def TryShootBullet(self, bullet):
 

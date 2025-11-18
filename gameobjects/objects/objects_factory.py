@@ -1,9 +1,10 @@
 from typing import Tuple
 import pygame
 
+from gameobjects.objects.bomb import Bomb
+from gameobjects.objects.explosion import Explosion
 from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
-
 
 class ObjectsFactory:
 
@@ -23,3 +24,18 @@ class ObjectsFactory:
 
         return  Landmine(cls._textures['landmine'], pos[0], pos[1])
    
+    @classmethod
+    def GetExplosion(cls, pos: Tuple[int, int]):
+        if 'explosion' not in cls._textures:
+            cls._textures['explosion'] =pygame.image.load('assets/sprites/objects/explosion.png').convert_alpha()
+
+        return  Explosion(cls._textures['explosion'], pos[0], pos[1])
+
+    @classmethod
+    def GetBomb(cls, pos: Tuple[int, int], objects):
+        if 'bomb' not in cls._textures:
+            cls._textures['bomb'] = pygame.image.load('assets/sprites/objects/bomb.png').convert_alpha()
+        if 'bomb_red' not in cls._textures:
+            cls._textures['bomb_red'] = pygame.image.load('assets/sprites/objects/bomb_red.png').convert_alpha()
+
+        return  Bomb([cls._textures['bomb'], cls._textures['bomb_red']], pos[0], pos[1], objects)

@@ -1,7 +1,7 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
 
-class Medkit:
+class Explosion:
 
     def __init__(self, surface: Surface, x: int, y: int):
         self.Surface = surface
@@ -9,25 +9,20 @@ class Medkit:
         self.Rect.topleft = (x, y)
 
         self.lifespan = 0
-        self.maxlifespan = 20
+        self.maxlifespan = 1
 
+        self.canBePickedUp = False
+
+        # unused for Explosions
         self.BlinkingComponent = BlinkingComponent()
-
-        self.canBePickedUp = True
 
     def update(self, dt: float):
         self.lifespan += dt
-        self.BlinkingComponent.update(dt)
-
-        # blink when about to disappear
-        if self.lifespan >= self.maxlifespan * 0.75 and not self.BlinkingComponent.IsBlinking():
-            self.BlinkingComponent.StartBlinking()
 
     def draw(self, screen):
         screen.blit(self.Surface, self.Rect.topleft)
 
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
-            player.CurrentLife = min(player.MaxLife, max(player.CurrentLife + 1, round(player.CurrentLife * 1.3)))
-
-    
+            if player.ReceiveDamage(2):
+                player.BlinkingComponent.StartBlinking()

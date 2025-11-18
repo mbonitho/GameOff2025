@@ -11,8 +11,8 @@ from gameobjects.enemies.move_randomly_behavior import MoveRandomlyBehavior
 from gameobjects.enemies.patrol_behavior import PatrolBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
-from gameobjects.enemies.spawn_Mines_behavior import SpawnMineBehavior
-from gameobjects.enemies.summon_mice_behavior import SummonMiceBehavior
+from gameobjects.enemies.spawn_items_behavior import SpawnItemBehavior
+from gameobjects.enemies.summon_minion_behavior import SummonMinionBehavior
 from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
 
 
@@ -141,13 +141,39 @@ class EnemyFactory:
             cls._textures['raccoon3']
         ]
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [MoveRandomlyBehavior(obstacles), SpawnMineBehavior(objects)])
+        enemy = Enemy(surfaces, pos[0], pos[1], [MoveRandomlyBehavior(obstacles), 
+                                                 SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MINE)])
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife
 
         return enemy
     
+    @classmethod
+    def GetBombDropperEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects):
+
+        if 'crow1' not in cls._textures:
+            cls._textures['crow1'] = pygame.image.load(f'assets/sprites/enemies/crow1.png').convert_alpha()
+            cls._textures['crow2'] = pygame.image.load(f'assets/sprites/enemies/crow2.png').convert_alpha()
+            cls._textures['crow3'] = pygame.image.load(f'assets/sprites/enemies/crow3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['crow1'],
+            cls._textures['crow2'],
+            cls._textures['crow3']
+        ]
+
+        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.BOMB)
+        spawnBehavior.decisionMinTime = 4
+        spawnBehavior.decisionMaxTime = 6
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [MoveRandomlyBehavior(obstacles), 
+                                                 spawnBehavior])
+    
+        enemy.MaxLife = 4
+        enemy.CurrentLife =  enemy.MaxLife
+
+        return enemy
 
     @classmethod
     def GetMiceSummonerEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], enemies):
@@ -163,7 +189,8 @@ class EnemyFactory:
             cls._textures['skunk3']
         ]
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [FleePlayersBehavior(obstacles), SummonMiceBehavior(enemies)])
+        enemy = Enemy(surfaces, pos[0], pos[1], [FleePlayersBehavior(obstacles), 
+                                                 SummonMinionBehavior(enemies, SummonMinionBehavior.EnemyType.MOUSE)])
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife

@@ -14,6 +14,9 @@ class Landmine:
 
         self.BlinkingComponent = BlinkingComponent()
 
+        self.canBePickedUp = True
+
+
     def update(self, dt: float):
         self.lifespan += dt
         self.BlinkingComponent.update(dt)
@@ -27,5 +30,5 @@ class Landmine:
 
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
-            player.CurrentLife = max(0, player.CurrentLife - 1)
-            player.BlinkingComponent.StartBlinking()
+            if player.ReceiveDamage(1):
+                player.BlinkingComponent.StartBlinking()
