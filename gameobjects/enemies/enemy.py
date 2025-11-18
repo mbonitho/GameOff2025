@@ -27,6 +27,9 @@ class Enemy:
         self.MaxLife = 2
         self.CurrentLife =  self.MaxLife
 
+        self.KilledByPlayerIndex: int | None = None
+        self.ScoreValue = 10
+
     def update(self, players, dt: float):
         self.BlinkingComponent.update(dt)
 
@@ -54,7 +57,9 @@ class Enemy:
             for beh in self.Behaviors:
                 beh.draw(screen, self)
 
-    def ReceiveDamage(self):
+    def ReceiveDamage(self, playerIndex:  int):
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
             self.CurrentLife -= 1
+            self.KilledByPlayerIndex = playerIndex
+

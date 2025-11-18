@@ -7,6 +7,7 @@ class SpawnItemBehavior(EnemyBehavior):
     class ObjectType(Enum):
         MINE = 0
         BOMB = 1
+        MONEY = 2
 
 
     def __init__(self, objects, objectType: ObjectType):
@@ -30,7 +31,7 @@ class SpawnItemBehavior(EnemyBehavior):
         self.decision_timing += dt   
         if self.decision_timing >= self.decision_delay:
             self.decision_timing %= self.decision_delay
-            self.decision_delay = random.randrange(self.decisionMinTime, self.decisionMaxTime)
+            self.decision_delay = self.decisionMinTime + random.random() * (self.decisionMaxTime - self.decisionMinTime)
 
             match self.objectType:
 
@@ -43,3 +44,8 @@ class SpawnItemBehavior(EnemyBehavior):
                     from gameobjects.objects.objects_factory import ObjectsFactory
                     item = ObjectsFactory.GetBomb((enemy.Rect.x, enemy.Rect.y), self.objects)
                     self.objects.append(item)
+
+                case SpawnItemBehavior.ObjectType.MONEY:
+                    from gameobjects.objects.objects_factory import ObjectsFactory
+                    item = ObjectsFactory.GetMoneyBag((enemy.Rect.x, enemy.Rect.y), random.randrange(5, 31, 5))
+                    self.objects.append(item)        

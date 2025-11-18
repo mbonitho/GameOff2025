@@ -4,6 +4,7 @@ from typing import Tuple
 import pygame
 
 from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
+from gameobjects.enemies.dies_after_a_while_behavior import DiesAfterAWhileBehavior
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.enemies.flee_players_behavior import FleePlayersBehavior
 from gameobjects.enemies.hurt_on_contact_behavior import HurtOnContactBehavior
@@ -34,7 +35,11 @@ class EnemyFactory:
             cls._textures['rabbit3']
         ]
 
-        return Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()])
+        enemy = Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()])
+
+        enemy.ScoreValue = 5
+
+        return enemy
     
     @classmethod
     def GetSmallFastEnemy(cls, pos: Tuple[int, int]):
@@ -57,6 +62,8 @@ class EnemyFactory:
 
         enemy.MaxLife = 2
         enemy.CurrentLife = enemy.MaxLife
+
+        enemy.ScoreValue = 10
 
         return enemy
 
@@ -82,6 +89,7 @@ class EnemyFactory:
 
         enemy.MaxLife = 5
         enemy.CurrentLife = enemy.MaxLife
+        enemy.ScoreValue = 25
 
         return enemy
 
@@ -96,17 +104,22 @@ class EnemyFactory:
         if 'waveBulletSurface' not in cls._textures:
             cls._textures['waveBulletSurface'] = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
 
-        return Enemy([cls._textures['bulletSurface']], pos[0], pos[1], [
+        enemy = Enemy([cls._textures['bulletSurface']], pos[0], pos[1], [
                 TeleportAndShootWaveBehavior(cls._textures['waveBulletSurface'], angleRange)
             ])
+        enemy.ScoreValue = 0
+        
+        return enemy
     
     @classmethod
     def GetSameRoomAntennaTower(cls, pos: Tuple[int, int]):
         if 'antennaSurface' not in cls._textures:
             cls._textures['antennaSurface'] =pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
 
-        return  Enemy([cls._textures['antennaSurface']], pos[0], pos[1], [])
+        enemy = Enemy([cls._textures['antennaSurface']], pos[0], pos[1], [])
+        enemy.ScoreValue = 30
 
+        return enemy
 
     @classmethod
     def GetPlusTurret(cls, pos: Tuple[int, int]):
@@ -117,14 +130,14 @@ class EnemyFactory:
         if 'waveBulletSurface' not in cls._textures:
             cls._textures['waveBulletSurface'] = pygame.image.load('assets/sprites/projectiles/antenna_wave.png').convert_alpha()
 
-        turret =  Enemy([cls._textures['turretPlusSurface']], pos[0], pos[1], [
+        enemy =  Enemy([cls._textures['turretPlusSurface']], pos[0], pos[1], [
             ShootPlusPatternBehavior(cls._textures['waveBulletSurface'])
         ])
+        enemy.MaxLife = 5
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 15
 
-        turret.MaxLife = 5
-        turret.CurrentLife =  turret.MaxLife
-
-        return turret
+        return enemy
 
 
     @classmethod
@@ -146,6 +159,7 @@ class EnemyFactory:
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 10
 
         return enemy
     
@@ -172,6 +186,7 @@ class EnemyFactory:
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 15
 
         return enemy
 
@@ -194,9 +209,41 @@ class EnemyFactory:
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 30
 
         return enemy
     
+    @classmethod
+    def GetMoneyDropperEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects):
+
+        if 'raccoon1' not in cls._textures:
+            cls._textures['raccoon1'] = pygame.image.load(f'assets/sprites/enemies/raccoon1.png').convert_alpha()
+            cls._textures['raccoon2'] = pygame.image.load(f'assets/sprites/enemies/raccoon2.png').convert_alpha()
+            cls._textures['raccoon3'] = pygame.image.load(f'assets/sprites/enemies/raccoon3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['raccoon1'],
+            cls._textures['raccoon2'],
+            cls._textures['raccoon3']
+        ]
+
+        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MONEY)
+        spawnBehavior.decisionMinTime = 0.25
+        spawnBehavior.decisionMaxTime = .6
+
+        moveBehavior = MoveRandomlyBehavior(obstacles)
+        moveBehavior.Speed = 150
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [
+                                                 DiesAfterAWhileBehavior(5),
+                                                 moveBehavior,
+                                                 spawnBehavior])
+    
+        enemy.MaxLife = 20
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 250
+
+        return enemy
 
     @classmethod
     def GetPatrollingEnemy(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], dir: str):
@@ -216,5 +263,6 @@ class EnemyFactory:
     
         enemy.MaxLife = 8
         enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 20
 
         return enemy

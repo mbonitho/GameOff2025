@@ -108,6 +108,9 @@ class ActionState(GameState):
                     case 'default':
                         enemy = EnemyFactory.GetDefaultEnemy(pos)
 
+                    case 'moneyDropper':
+                        enemy = EnemyFactory.GetMoneyDropperEnemy(pos, self.CurrentRoom.Obstacles, self.Objects)
+
                 if enemy:
                     self.Enemies.append(enemy)
 
@@ -408,9 +411,9 @@ class ActionState(GameState):
                                     )
 
         # Update bullets
-        for player in self.Players:
+        for index, player in enumerate(self.Players):
             for bullet in player.Bullets.copy():
-                bullet.update(self.Enemies, dt)
+                bullet.update(self.Enemies, dt, index)
                 if bullet.lifespan >= bullet.max_lifespan:
                     player.Bullets.remove(bullet)
 
@@ -424,6 +427,11 @@ class ActionState(GameState):
         # Update enemies
         for enemy in self.Enemies.copy():
             if enemy.CurrentLife <= 0:
+
+                # increase the score of the player who killed the enemy
+                if enemy.KilledByPlayerIndex:
+                    player = self.Players[enemy.KilledByPlayerIndex]
+                    player.Score += enemy.ScoreValue
 
                 # loot chance!
                 rng = random.random()

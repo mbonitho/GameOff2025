@@ -5,6 +5,7 @@ from gameobjects.objects.bomb import Bomb
 from gameobjects.objects.explosion import Explosion
 from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
+from gameobjects.objects.moneyBag import MoneyBag
 
 class ObjectsFactory:
 
@@ -16,6 +17,13 @@ class ObjectsFactory:
             cls._textures['medkit'] =pygame.image.load('assets/sprites/objects/medkit.png').convert_alpha()
 
         return  Medkit(cls._textures['medkit'], pos[0], pos[1])
+
+    @classmethod
+    def GetMoneyBag(cls, pos: Tuple[int, int], value: int):
+        if 'moneybag' not in cls._textures:
+            cls._textures['moneybag'] =pygame.image.load('assets/sprites/objects/moneyBag.png').convert_alpha()
+
+        return  MoneyBag(cls._textures['moneybag'], pos[0], pos[1], value)
 
     @classmethod
     def GetLandmine(cls, pos: Tuple[int, int]):
