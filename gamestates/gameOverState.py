@@ -1,4 +1,5 @@
 import pygame
+from gameobjects.blinking_text import BlinkingText
 from gamestates.gameState import GameState
 from pygame.locals import *
 
@@ -6,6 +7,13 @@ from pygame.locals import *
 class GameOverState(GameState):
     def enter(self):
         print("Entered Title State")
+        self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
+        self.GameOverSurface = pygame.image.load('assets/sprites/environment/gameover/gameOver.png').convert_alpha()
+
+        self.GameOverSurfaceY = -535
+
+        self.RetryText = BlinkingText("Press Space or Start to restart", (400, 900), 48)
+
 
     def handle_events(self, events):
         for event in events:
@@ -20,15 +28,17 @@ class GameOverState(GameState):
     def draw(self, screen):
         screen.fill((30, 30, 60))
 
-        title_font = pygame.font.SysFont(None, 64)
-        title_text = title_font.render("GAME OVER", True, (255, 255, 255))
-        screen.blit(title_text, (100, 100))
+        screen.blit(self.BGSurface, (0,0))
 
+        screen.blit(self.GameOverSurface, (750, self.GameOverSurfaceY))
 
-        subtitle_font = pygame.font.SysFont(None, 32)
-        subtitle_text = subtitle_font.render("Press Space to restart", True, (255, 255, 255))
-        screen.blit(subtitle_text, (100, 300))
+        self.RetryText.draw(screen)
 
-        highscore_font = pygame.font.SysFont(None, 24)
-        score_text = highscore_font.render(f'High score: {self.game.game_data['highscore']}', True, (255, 255, 255))
-        screen.blit(score_text, (500, 440))
+        # highscore_font = pygame.font.SysFont(None, 24)
+        # score_text = highscore_font.render(f'High score: {self.game.game_data['highscore']}', True, (255, 255, 255))
+        # screen.blit(score_text, (500, 440))
+
+    def update(self, dt: float):
+        self.RetryText.update(dt)
+        if self.GameOverSurfaceY < 350:
+            self.GameOverSurfaceY += 800 * dt
