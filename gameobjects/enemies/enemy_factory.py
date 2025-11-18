@@ -20,19 +20,68 @@ class EnemyFactory:
     @classmethod
     def GetDefaultEnemy(cls, pos: Tuple[int, int]):
 
-        if 'enemy_red_0' not in cls._textures:
-            cls._textures['enemy_red_0'] = pygame.image.load(f'assets/sprites/enemies/enemy_red_0.png').convert_alpha()
-            cls._textures['enemy_red_1'] = pygame.image.load(f'assets/sprites/enemies/enemy_red_1.png').convert_alpha()
-            cls._textures['enemy_red_2'] = pygame.image.load(f'assets/sprites/enemies/enemy_red_2.png').convert_alpha()
+        if 'rabbit1' not in cls._textures:
+            cls._textures['rabbit1'] = pygame.image.load(f'assets/sprites/enemies/rabbit1.png').convert_alpha()
+            cls._textures['rabbit2'] = pygame.image.load(f'assets/sprites/enemies/rabbit2.png').convert_alpha()
+            cls._textures['rabbit3'] = pygame.image.load(f'assets/sprites/enemies/rabbit3.png').convert_alpha()
 
         surfaces = [
-            cls._textures['enemy_red_0'],
-            cls._textures['enemy_red_1'],
-            cls._textures['enemy_red_2']
+            cls._textures['rabbit1'],
+            cls._textures['rabbit2'],
+            cls._textures['rabbit3']
         ]
 
         return Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()])
     
+    @classmethod
+    def GetSmallFastEnemy(cls, pos: Tuple[int, int]):
+
+        if 'mouse1' not in cls._textures:
+            cls._textures['mouse1'] = pygame.image.load(f'assets/sprites/enemies/mouse1.png').convert_alpha()
+            cls._textures['mouse2'] = pygame.image.load(f'assets/sprites/enemies/mouse2.png').convert_alpha()
+            cls._textures['mouse3'] = pygame.image.load(f'assets/sprites/enemies/mouse3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['mouse1'],
+            cls._textures['mouse2'],
+            cls._textures['mouse3']
+        ]
+
+        seekBehavior = SeekNearestPlayerBehavior()
+        seekBehavior.Speed = 140
+
+        enemy =  Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior()])
+
+        enemy.MaxLife = 2
+        enemy.CurrentLife = enemy.MaxLife
+
+        return enemy
+
+
+    @classmethod
+    def GetBigSlowEnemy(cls, pos: Tuple[int, int]):
+
+        if 'bear1' not in cls._textures:
+            cls._textures['bear1'] = pygame.image.load(f'assets/sprites/enemies/bear1.png').convert_alpha()
+            cls._textures['bear2'] = pygame.image.load(f'assets/sprites/enemies/bear2.png').convert_alpha()
+            cls._textures['bear3'] = pygame.image.load(f'assets/sprites/enemies/bear3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['bear1'],
+            cls._textures['bear2'],
+            cls._textures['bear3']
+        ]
+
+        seekBehavior = SeekNearestPlayerBehavior()
+        seekBehavior.Speed = 70
+
+        enemy =  Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior()])
+
+        enemy.MaxLife = 5
+        enemy.CurrentLife = enemy.MaxLife
+
+        return enemy
+
 
     @classmethod
     def GetDistantAntennaTower(cls, pos: Tuple[int, int], angleRange: Tuple[int, int]):

@@ -94,7 +94,11 @@ class ActionState(GameState):
         minedropper = EnemyFactory.GetMineDropperEnemy((800, 400), self.CurrentRoom.Obstacles, self.Objects)
         self.Enemies.append(minedropper)
 
+        smallFast = EnemyFactory.GetSmallFastEnemy((600, 700))
+        self.Enemies.append(smallFast)
 
+        bigSlow = EnemyFactory.GetBigSlowEnemy((400, 700))
+        self.Enemies.append(bigSlow)
 
         #############################
         # Add a Comm Tower here if there's one
