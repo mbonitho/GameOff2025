@@ -201,9 +201,9 @@ class ActionState(GameState):
         # Create the exits
         #############################
         exitLeft = RoomExit(pygame.Rect(0,0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'L')
-        exitRight = RoomExit(pygame.Rect(self.game.screen.get_width() - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'R')
-        exitUp = RoomExit(pygame.Rect(0,0, self.game.screen.get_width(), ActionState.EXIT_SIZE), 'U')
-        exitDown = RoomExit(pygame.Rect(0,self.game.screen.get_height() - ActionState.EXIT_SIZE, self.game.screen.get_width(), ActionState.EXIT_SIZE), 'D')
+        exitRight = RoomExit(pygame.Rect(self.game.GAME_WINDOW_SIZE[0] - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, self.game.GAME_WINDOW_SIZE[1]), 'R')
+        exitUp = RoomExit(pygame.Rect(0,0, self.game.GAME_WINDOW_SIZE[0], ActionState.EXIT_SIZE), 'U')
+        exitDown = RoomExit(pygame.Rect(0,self.game.GAME_WINDOW_SIZE[1] - ActionState.EXIT_SIZE, self.game.GAME_WINDOW_SIZE[0], ActionState.EXIT_SIZE), 'D')
         self.Exits = []
 
         match self.CurrentRoom.Map.name:
@@ -349,13 +349,13 @@ class ActionState(GameState):
             # bound player to screen
             if player.Rect.x < 0:
                 player.Rect.x = 0
-            elif player.Rect.x > self.game.screen.get_width() - player.Rect.width:
-                player.Rect.x = self.game.screen.get_width() - player.Rect.width
+            elif player.Rect.x > self.game.GAME_WINDOW_SIZE[0] - player.Rect.width:
+                player.Rect.x = self.game.GAME_WINDOW_SIZE[0] - player.Rect.width
 
             if player.Rect.y < 0:
                 player.Rect.y = 0
-            elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
-                player.Rect.y = self.game.screen.get_height() - player.Rect.height
+            elif player.Rect.y > self.game.GAME_WINDOW_SIZE[1] - player.Rect.height:
+                player.Rect.y = self.game.GAME_WINDOW_SIZE[1] - player.Rect.height
             
             # check for items pickups
             for object in self.Objects.copy():
@@ -382,27 +382,30 @@ class ActionState(GameState):
                                 self.LoadRoom(self.Level.GetRoomByCoords(x=self.CurrentRoom.Coords[0] - 1, y=self.CurrentRoom.Coords[1]))
                                 for player in self.Players:
                                     player.Rect.midright = (
-                                        self.game.screen.get_width() - ActionState.EXIT_SIZE - 1, 
-                                        self.game.screen.get_height() * 0.5
+                                        self.game.GAME_WINDOW_SIZE[0] - ActionState.EXIT_SIZE - 1, 
+                                        self.game.GAME_WINDOW_SIZE[1] * 0.5
                                     )
                             case 'R':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0] + 1, self.CurrentRoom.Coords[1]))
-                                player.Rect.midleft = (
-                                    ActionState.EXIT_SIZE + 1, 
-                                    self.game.screen.get_height() * 0.5
-                                )
+                                for player in self.Players:
+                                    player.Rect.midleft = (
+                                        ActionState.EXIT_SIZE + 1, 
+                                        self.game.GAME_WINDOW_SIZE[1] * 0.5
+                                    )
                             case 'U':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] - 1))
-                                player.Rect.midbottom = (
-                                    self.game.screen.get_width() * 0.5,
-                                    self.game.screen.get_height() - ActionState.EXIT_SIZE - 1
-                                )
+                                for player in self.Players:
+                                    player.Rect.midbottom = (
+                                        self.game.GAME_WINDOW_SIZE[0] * 0.5,
+                                        self.game.GAME_WINDOW_SIZE[1] - ActionState.EXIT_SIZE - 1
+                                    )
                             case 'D':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] + 1))
-                                player.Rect.midtop = (
-                                    self.game.screen.get_width() * 0.5,
-                                    int(ActionState.EXIT_SIZE + 1)
-                                )
+                                for player in self.Players:
+                                    player.Rect.midtop = (
+                                        self.game.GAME_WINDOW_SIZE[0] * 0.5,
+                                        int(ActionState.EXIT_SIZE + 1)
+                                    )
 
         # Update bullets
         for player in self.Players:
