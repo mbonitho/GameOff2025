@@ -100,6 +100,10 @@ class ActionState(GameState):
         bigSlow = EnemyFactory.GetBigSlowEnemy((400, 700))
         self.Enemies.append(bigSlow)
 
+        summoner = EnemyFactory.GetMiceSummonerEnemy((400, 700), self.CurrentRoom.Obstacles, self.Enemies)
+        self.Enemies.append(summoner)
+
+
         #############################
         # Add a Comm Tower here if there's one
         #############################

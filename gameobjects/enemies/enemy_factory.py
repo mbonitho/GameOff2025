@@ -10,6 +10,7 @@ from gameobjects.enemies.move_randomly_behavior import MoveRandomlyBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
 from gameobjects.enemies.spawn_Mines_behavior import SpawnMineBehavior
+from gameobjects.enemies.summon_mice_behavior import SummonMiceBehavior
 from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
 
 
@@ -139,6 +140,28 @@ class EnemyFactory:
         ]
 
         enemy = Enemy(surfaces, pos[0], pos[1], [MoveRandomlyBehavior(obstacles), SpawnMineBehavior(objects)])
+    
+        enemy.MaxLife = 4
+        enemy.CurrentLife =  enemy.MaxLife
+
+        return enemy
+    
+
+    @classmethod
+    def GetMiceSummonerEnemy(cls, pos: Tuple[int, int], obstacles, enemies):
+
+        if 'skunk1' not in cls._textures:
+            cls._textures['skunk1'] = pygame.image.load(f'assets/sprites/enemies/skunk1.png').convert_alpha()
+            cls._textures['skunk2'] = pygame.image.load(f'assets/sprites/enemies/skunk2.png').convert_alpha()
+            cls._textures['skunk3'] = pygame.image.load(f'assets/sprites/enemies/skunk3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['skunk1'],
+            cls._textures['skunk2'],
+            cls._textures['skunk3']
+        ]
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [FleePlayersBehavior(obstacles), SummonMiceBehavior(enemies)])
     
         enemy.MaxLife = 4
         enemy.CurrentLife =  enemy.MaxLife
