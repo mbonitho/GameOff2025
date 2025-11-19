@@ -1,0 +1,117 @@
+{
+  "ogmoVersion": "3.4.0",
+  "width": 192,
+  "height": 192,
+  "offsetX": 0,
+  "offsetY": 0,
+  "layers": [
+    {
+      "name": "rooms",
+      "_eid": "82121973",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 64,
+      "gridCellHeight": 64,
+      "gridCellsX": 3,
+      "gridCellsY": 3,
+      "tileset": "LevelTileset",
+      "data": [9, 10, 0, 5, 5, 5, 3, 8, 7],
+      "exportMode": 0,
+      "arrayMode": 0
+    },
+    {
+      "name": "roomsEvents",
+      "_eid": "82136541",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 4,
+      "gridCellHeight": 4,
+      "gridCellsX": 48,
+      "gridCellsY": 48,
+      "entities": [
+        {
+          "name": "enemy",
+          "id": 0,
+          "_eid": "49372066",
+          "x": 48,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 1,
+          "_eid": "49372066",
+          "x": 40,
+          "y": 84,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 2,
+          "_eid": "49372066",
+          "x": 32,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {"name": "roomStart", "id": 3, "_eid": "82159653", "x": 24, "y": 176, "originX": 0, "originY": 0},
+        {"name": "roomStairsUp", "id": 4, "_eid": "82159742", "x": 160, "y": 8, "originX": 0, "originY": 0},
+        {
+          "name": "enemy",
+          "id": 6,
+          "_eid": "49372066",
+          "x": 140,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "moneyDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 8,
+          "_eid": "49372066",
+          "x": 108,
+          "y": 48,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingH"}
+        },
+        {
+          "name": "enemy",
+          "id": 9,
+          "_eid": "49372066",
+          "x": 16,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 10,
+          "_eid": "49372066",
+          "x": 24,
+          "y": 84,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 11,
+          "_eid": "49372066",
+          "x": 32,
+          "y": 92,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        }
+      ]
+    }
+  ]
+}

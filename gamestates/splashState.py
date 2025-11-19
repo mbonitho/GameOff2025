@@ -6,6 +6,11 @@ import pygame
 class SplashState(GameState):
     def enter(self):
         print("Entered Splash State")
+        self.LogoSurface = pygame.image.load('assets/sprites/cool_poop.png').convert_alpha()
+        self.logoX = self.game.GAME_WINDOW_SIZE[0] / 2 - self.LogoSurface.get_width() / 2
+        self.logoY = self.game.GAME_WINDOW_SIZE[1] / 2 - self.LogoSurface.get_height() / 2
+
+        self.game.splash_timer = 3
 
     def update(self, dt: float):
         # Simulate splash duration
@@ -14,7 +19,9 @@ class SplashState(GameState):
             self.game.change_state("Title")
 
     def draw(self, screen):
-        screen.fill((0, 0, 0))
-        font = pygame.font.SysFont(None, 48)
-        text = font.render("Splash Screen", True, (255, 255, 255))
-        screen.blit(text, (100, 100))
+        screen.fill((72, 55, 55))
+        font = pygame.font.SysFont(None, 72)
+        text = font.render("Cool Poop.", True, (255, 255, 255))
+        screen.blit(text, (self.logoX + self.LogoSurface.get_width() / 2 - text.get_width() / 2, self.logoY + self.LogoSurface.get_height() + 32))
+
+        screen.blit(self.LogoSurface, (self.logoX, self.logoY))

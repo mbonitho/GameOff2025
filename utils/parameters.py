@@ -4,7 +4,7 @@ NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 
 
 # "Splash","Title","Gameplay","Action","Rebind","GameOver""Elevator"
-STARTING_STATE = 'Title'
+STARTING_STATE = 'Splash'
 
 
 MEDKIT_CHANCE = 0.15
