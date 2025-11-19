@@ -5,8 +5,7 @@ from gameobjects.blinking_text import BlinkingText
 from gameobjects.player import Player
 from gameobjects.room import Room
 from gamestates.gameState import GameState
-from utils.helpers.surface_helper import tint_surface
-from utils.ogmo.ogmoHelper import OgmoHelper
+from utils.ogmo.ogmoMap import OgmoMap
 
 class ElevatorState(GameState):
 
@@ -15,35 +14,38 @@ class ElevatorState(GameState):
     def enter(self):
         print("Entered Elevator State")
 
+        self.XOffset = 200
+        self.YOffset = 1000
+        self.scrollingSpeed = -100
+
+
         #############################
         # SURFACES
         #############################
-        self.TilesetSurface = pygame.image.load('assets/sprites/environment/tileset.png').convert_alpha()
-
+        self.RoomSurface = pygame.image.load('assets/sprites/environment/rooms/elevatorRoom.png').convert_alpha()
 
         #############################
         # ENTITIES
         #############################
-        self.Players = [Player(1, 100, 100, (23,45,34))]
+        self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
+        self.Players = [Player(1, self.floorRect.x + self.floorRect.width / 2, self.floorRect.y - self.floorRect.height / 2)]
 
         #############################
         # UI
         #############################
-        self.UIFont = pygame.font.SysFont(None, 48)
+        self.UIFont = pygame.font.SysFont(None, 96)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
+        
+        self.previousFloorText = self.UIFont.render(f"F{self.game.game_data['floor'] - 1}", False, (255,255,255))
+        self.previousFloorTextPos = self.game.GAME_WINDOW_SIZE[1] / 2
 
+        self.nextFloorText = self.UIFont.render(f"F{self.game.game_data['floor']}", False, (255,255,255))
+        self.nextFloorTextPos = self.game.GAME_WINDOW_SIZE[1] * 1.75
 
         #############################
         # Load the elevator
         #############################
-        # self.Level = Level(f'F{self.game.game_data['floor']}')
-        # self.LoadRoom(self.Level.StartingRoom)
-        self.elevatorRoom = Room(OgmoHelper.get_map('elevator', 'rooms/special_rooms'), (0,0))
-        self.elevatorRoom.GenerateObstacles()
-
-        self.XOffset = 200
-        self.YOffset = 0
-
+        self.elevatorRoom = Room(OgmoMap(), (0,0))
 
     def exit(self):
         pass
@@ -77,9 +79,6 @@ class ElevatorState(GameState):
         elif keys[K_DOWN]: #or keys[K_s]:
             self.Players[0].MoveDown(self.elevatorRoom.Obstacles)
 
-        elif keys[K_a]:
-            self.game.change_state("Action")
-
         # GAMEPADS 
         for index, player in enumerate(self.Players):
 
@@ -109,6 +108,18 @@ class ElevatorState(GameState):
 
     def update(self, dt: float):
 
+        # raise everything
+        self.YOffset += self.scrollingSpeed * dt
+        self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
+        self.previousFloorTextPos += self.scrollingSpeed * dt
+        self.nextFloorTextPos += self.scrollingSpeed * dt
+        for p in self.Players:
+            p.Rect.y += self.scrollingSpeed * dt
+
+        # end of animation
+        if self.YOffset <= -360:
+            self.game.change_state("Action")
+
         # blinking text
         if len(self.Players) == 1:
             self.player2PressStartText.update(dt)
@@ -117,49 +128,25 @@ class ElevatorState(GameState):
         for player in self.Players:
             player.update(dt)
 
-            # bound player to screen
-            if player.Rect.x < 0:
-                player.Rect.x = 0
-            elif player.Rect.x > self.game.screen.get_width() - player.Rect.width:
-                player.Rect.x = self.game.screen.get_width() - player.Rect.width
+            # bound player to floor
+            if player.Rect.x < self.floorRect.x:
+                player.Rect.x = self.floorRect.x
+            elif player.Rect.x > self.floorRect.right - player.Rect.width:
+                player.Rect.x = self.floorRect.right - player.Rect.width
 
-            if player.Rect.y < 0:
-                player.Rect.y = 0
-            elif player.Rect.y > self.game.screen.get_height() - player.Rect.height:
-                player.Rect.y = self.game.screen.get_height() - player.Rect.height
+            if player.Rect.y < self.floorRect.y:
+                player.Rect.y = self.floorRect.y
+            elif player.Rect.y > self.floorRect.bottom - player.Rect.height:
+                player.Rect.y = self.floorRect.bottom - player.Rect.height
             
             
 
     def draw(self, screen):
         screen.fill((64, 64, 64))
 
-        #############################################
-        # OGMO LAYERS
-        #############################################
-        layers = [self.elevatorRoom.Map.layers['floor'], self.elevatorRoom.Map.layers['walls']]
-        for layer in layers:
-            # x_to_draw_to = 0
-            y_to_draw_to = self.YOffset
-            for y in range(layer.gridCellsY):
-                x_to_draw_to = self.XOffset
-                for x in range(layer.gridCellsX):
-                    index = y * layer.gridCellsX + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
-                    data = layer.data[index]
+        screen.blit(self.RoomSurface, (self.XOffset, self.YOffset))
 
-                    if data != -1:
-                        # convert data in x, y in tileset
-                        x_in_tileset = data * layer.gridCellWidth
-                        y_in_tileset = 0
-
-                        screen.blit(
-                            self.TilesetSurface, 
-                            (x_to_draw_to, y_to_draw_to), 
-                            area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
-                        )
-
-                    x_to_draw_to += layer.gridCellWidth
-
-                y_to_draw_to += layer.gridCellHeight
+        # pygame.draw.rect(screen, (255, 0, 0), self.floorRect)
 
         #############################################
         # GAME OBJECTS
@@ -184,3 +171,6 @@ class ElevatorState(GameState):
             player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
             screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
     
+        # Floor numbers
+        screen.blit(self.previousFloorText, (700, self.previousFloorTextPos))
+        screen.blit(self.nextFloorText, (700, self.nextFloorTextPos))

@@ -7,8 +7,7 @@ from utils.helpers.collisions_helper import MoveAndCollide
 
 class Player:
 
-    def __init__(self, index: int, x: int, y: int, color: Tuple[int, int, int]):
-
+    def __init__(self, index: int, x: int, y: int):
 
         # load surfaces
         self.animations = {
@@ -35,7 +34,6 @@ class Player:
         self.Surface = surface
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
-        self.Tint = color
 
         self.Speed = 6
         self.MaxLife = 5

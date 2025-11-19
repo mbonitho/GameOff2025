@@ -232,7 +232,7 @@ class EnemyFactory:
         spawnBehavior.decisionMaxTime = .6
 
         moveBehavior = MoveRandomlyBehavior(obstacles)
-        moveBehavior.Speed = 150
+        moveBehavior.Speed = 220
 
         enemy = Enemy(surfaces, pos[0], pos[1], [
                                                  DiesAfterAWhileBehavior(5),

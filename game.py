@@ -9,7 +9,6 @@ from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
 from gamestates.titleState import TitleState
-from gamestates.gameplayState import GameplayState
 from gamestates.rebindState import RebindMenuState
 from gamestates.elevatorState import ElevatorState
 from utils.parameters import STARTING_FLOOR, STARTING_STATE
@@ -37,7 +36,6 @@ class Game:
         self.states: Dict[str, GameState] = {
             "Splash": SplashState(self),
             "Title": TitleState(self),
-            "Gameplay": GameplayState(self),
             "Action": ActionState(self),
             "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),

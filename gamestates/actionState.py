@@ -14,9 +14,7 @@ from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
-from utils.helpers.surface_helper import tint_surface
-from utils.ogmo.ogmoHelper import OgmoHelper
-from utils.parameters import MEDKIT_CHANCE, NUMBER_OF_ENEMIES_TO_SPAWN
+from utils.parameters import MEDKIT_CHANCE
 
 class ActionState(GameState):
 
@@ -41,7 +39,7 @@ class ActionState(GameState):
         #############################
         # ENTITIES
         #############################
-        self.Players = [Player(1, 100, 100, (23,45,34))]
+        self.Players = [Player(1, self.game.GAME_WINDOW_SIZE[0] / 2, self.game.GAME_WINDOW_SIZE[1] / 2)]
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
@@ -51,7 +49,7 @@ class ActionState(GameState):
         # UI
         #############################
         self.UIFont = pygame.font.SysFont(None, 48)
-        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
+        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.GAME_WINDOW_SIZE[0] - 400, 16), font_size=48)
 
 
         #############################
