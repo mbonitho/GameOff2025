@@ -21,6 +21,9 @@ class TitleState(GameState):
         self.blinking_delay = random.randint(1,5)
         self.waited_time = 0
 
+        self.pressStartY = 600
+        self.pressStartDirection = 1
+
     def handle_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
@@ -50,8 +53,8 @@ class TitleState(GameState):
 
         # buttons
         subtitle_font = pygame.font.SysFont(None, 96)
-        subtitle_text = subtitle_font.render("Press Space to start", True, (255, 255, 255))
-        screen.blit(subtitle_text, (600, 600))
+        subtitle_text = subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
+        screen.blit(subtitle_text, (340, self.pressStartY))
 
 
         # highscore_font = pygame.font.SysFont(None, 24)
@@ -61,6 +64,10 @@ class TitleState(GameState):
     def update(self, dt: float):
 
         self.blinkingComponent.update(dt)
+
+        self.pressStartY += self.pressStartDirection * dt * 4 
+        if self.pressStartY <= 598 or self.pressStartY >= 602:
+            self.pressStartDirection *= -1
 
         self.waited_time += dt
         if self.waited_time >= self.blinking_delay:

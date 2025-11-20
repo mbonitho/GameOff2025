@@ -33,13 +33,14 @@ class ElevatorState(GameState):
         #############################
         # UI
         #############################
-        self.UIFont = pygame.font.SysFont(None, 96)
+        self.UIFont = pygame.font.SysFont(None, 48)
+        self.FloorFont = pygame.font.SysFont(None, 96)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
         
-        self.previousFloorText = self.UIFont.render(f"F{self.game.game_data['floor'] - 1}", False, (255,255,255))
+        self.previousFloorText = self.FloorFont.render(f"F{self.game.game_data['floor'] - 1}", False, (255,255,255))
         self.previousFloorTextPos = self.game.GAME_WINDOW_SIZE[1] / 2
 
-        self.nextFloorText = self.UIFont.render(f"F{self.game.game_data['floor']}", False, (255,255,255))
+        self.nextFloorText = self.FloorFont.render(f"F{self.game.game_data['floor']}", False, (255,255,255))
         self.nextFloorTextPos = self.game.GAME_WINDOW_SIZE[1] * 1.75
 
         #############################
