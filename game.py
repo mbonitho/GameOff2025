@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from typing import Dict, Optional
 from gamestates.actionState import ActionState
+from gamestates.configureGamePadState import ConfigureGamePadState
 from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
@@ -40,6 +41,7 @@ class Game:
             "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
+            "Config": ConfigureGamePadState(self)
         }
 
         if sys.platform in ['wasi', 'emscripten']:

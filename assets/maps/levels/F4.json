@@ -1,0 +1,279 @@
+{
+  "ogmoVersion": "3.4.0",
+  "width": 192,
+  "height": 128,
+  "offsetX": 0,
+  "offsetY": 0,
+  "layers": [
+    {
+      "name": "rooms",
+      "_eid": "82121973",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 64,
+      "gridCellHeight": 64,
+      "gridCellsX": 3,
+      "gridCellsY": 2,
+      "tileset": "LevelTileset",
+      "data": [9, 10, 0, 3, 12, 7],
+      "exportMode": 0,
+      "arrayMode": 0
+    },
+    {
+      "name": "roomsEvents",
+      "_eid": "82136541",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 4,
+      "gridCellHeight": 4,
+      "gridCellsX": 48,
+      "gridCellsY": 32,
+      "entities": [
+        {
+          "name": "enemy",
+          "id": 0,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 1,
+          "_eid": "49372066",
+          "x": 104,
+          "y": 84,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 2,
+          "_eid": "49372066",
+          "x": 96,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {"name": "roomStart", "id": 3, "_eid": "82159653", "x": 96, "y": 112, "originX": 0, "originY": 0},
+        {"name": "roomStairsUp", "id": 4, "_eid": "82159742", "x": 156, "y": 8, "originX": 0, "originY": 0},
+        {
+          "name": "enemy",
+          "id": 8,
+          "_eid": "49372066",
+          "x": 80,
+          "y": 100,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingH"}
+        },
+        {
+          "name": "enemy",
+          "id": 9,
+          "_eid": "49372066",
+          "x": 80,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 10,
+          "_eid": "49372066",
+          "x": 88,
+          "y": 84,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 11,
+          "_eid": "49372066",
+          "x": 96,
+          "y": 92,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "smallFast"}
+        },
+        {
+          "name": "enemy",
+          "id": 12,
+          "_eid": "49372066",
+          "x": 144,
+          "y": 108,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 13,
+          "_eid": "49372066",
+          "x": 168,
+          "y": 84,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 14,
+          "_eid": "49372066",
+          "x": 108,
+          "y": 12,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 15,
+          "_eid": "49372066",
+          "x": 92,
+          "y": 12,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 16,
+          "_eid": "49372066",
+          "x": 156,
+          "y": 96,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 17,
+          "_eid": "49372066",
+          "x": 100,
+          "y": 20,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 18,
+          "_eid": "49372066",
+          "x": 172,
+          "y": 96,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 19,
+          "_eid": "49372066",
+          "x": 40,
+          "y": 20,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 20,
+          "_eid": "49372066",
+          "x": 24,
+          "y": 20,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 21,
+          "_eid": "49372066",
+          "x": 32,
+          "y": 20,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {"name": "roomAntenna", "id": 22, "_eid": "82151669", "x": 12, "y": 28, "originX": 0, "originY": 0},
+        {"name": "roomAntenna", "id": 23, "_eid": "82151669", "x": 172, "y": 108, "originX": 0, "originY": 0},
+        {
+          "name": "enemy",
+          "id": 24,
+          "_eid": "49372066",
+          "x": 160,
+          "y": 108,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 25,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingV"}
+        },
+        {
+          "name": "enemy",
+          "id": 26,
+          "_eid": "49372066",
+          "x": 24,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingV"}
+        },
+        {
+          "name": "enemy",
+          "id": 27,
+          "_eid": "49372066",
+          "x": 36,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingV"}
+        },
+        {
+          "name": "enemy",
+          "id": 28,
+          "_eid": "49372066",
+          "x": 48,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingV"}
+        },
+        {
+          "name": "enemy",
+          "id": 29,
+          "_eid": "49372066",
+          "x": 176,
+          "y": 24,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 30,
+          "_eid": "49372066",
+          "x": 140,
+          "y": 24,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        }
+      ]
+    }
+  ]
+}

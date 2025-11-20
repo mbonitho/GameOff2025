@@ -10,7 +10,7 @@ class SplashState(GameState):
         self.logoX = self.game.GAME_WINDOW_SIZE[0] / 2 - self.LogoSurface.get_width() / 2
         self.logoY = self.game.GAME_WINDOW_SIZE[1] / 2 - self.LogoSurface.get_height() / 2
 
-        self.game.splash_timer = 3
+        self.game.splash_timer = 1.5
 
     def update(self, dt: float):
         # Simulate splash duration

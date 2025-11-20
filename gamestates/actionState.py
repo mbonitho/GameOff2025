@@ -81,6 +81,7 @@ class ActionState(GameState):
             for ed in room.EnemiesDefinitions:
 
                 pos = (ed.Coords[0] * self.game.GAME_WINDOW_SIZE[0], ed.Coords[1] * self.game.GAME_WINDOW_SIZE[1])
+                enemy = None
                 match ed.name:
                     case 'smallFast':
                         enemy = EnemyFactory.GetSmallFastEnemy(pos)
@@ -109,7 +110,10 @@ class ActionState(GameState):
                     case 'moneyDropper':
                         enemy = EnemyFactory.GetMoneyDropperEnemy(pos, self.CurrentRoom.Obstacles, self.Objects)
 
-                if enemy:
+                    case 'turretPlus':
+                        enemy = EnemyFactory.GetPlusTurret(pos)
+
+                if enemy is not None:
                     self.Enemies.append(enemy)
 
         #############################
@@ -494,6 +498,28 @@ class ActionState(GameState):
         #############################################
         screen.blit(self.RoomSurface, (0,0))
 
+        #############################################
+        # SPECIAL CASE FOR VERY FIRST ROOM: WRITE INSTRUCTIONS
+        #############################################
+        if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
+
+            lines = [
+                "Welcome to Project W.A.V.E.S!",
+                "",
+                "Use arrow keys to move and W/A/S/D to shoot up/left/down/right",
+                "",
+                "Or use a gamepad (d-pad or left stick to move, A/B/X/Y to shoot)",
+                "",
+                "If your keyboard isn't qwerty or your gamepad buttons are scrambled, fear not!",
+                "Just press the Ctrl key to configure your keyboard or gamepad."
+            ]
+            font = pygame.font.SysFont(None, 32)
+            lineY = 200
+            for line in lines:
+                text = font.render(line, True, (255, 255, 255))
+                screen.blit(text, (200, lineY))
+                lineY += 40
+
 
         #############################################
         # GAME OBJECTS
@@ -545,12 +571,4 @@ class ActionState(GameState):
         else:
             player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
             screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
-
-
-        # # TELEPORTS
-        # if self.NumberOfEnemiesSpawned >= self.NumberOfEnemiesToSpawn and len(self.Enemies) == 0:
-        #     for exit in self.Exits:
-        #         pygame.draw.rect(screen, (255,0,0), exit.Rect)
-
-
     

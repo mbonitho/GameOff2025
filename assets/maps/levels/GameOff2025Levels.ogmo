@@ -183,7 +183,7 @@
           "name": "Type",
           "definition": "Enum",
           "display": 1,
-          "choices": ["smallFast", "patrollingH", "patrollingV", "mineDropper", "bigSlow", "bombDropper", "default", "miceSummoner", "moneyDropper"],
+          "choices": ["smallFast", "patrollingH", "patrollingV", "mineDropper", "bigSlow", "bombDropper", "default", "miceSummoner", "moneyDropper", "turretPlus", "boss1"],
           "defaults": 0
         }
       ]
