@@ -431,7 +431,7 @@ class ActionState(GameState):
             if enemy.CurrentLife <= 0:
 
                 # increase the score of the player who killed the enemy
-                if enemy.KilledByPlayerIndex:
+                if enemy.KilledByPlayerIndex is not None:
                     player = self.Players[enemy.KilledByPlayerIndex]
                     player.Score += enemy.ScoreValue
 

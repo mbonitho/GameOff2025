@@ -28,7 +28,7 @@ class ElevatorState(GameState):
         # ENTITIES
         #############################
         self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
-        self.Players = [Player(1, self.floorRect.x + self.floorRect.width / 2, self.floorRect.y - self.floorRect.height / 2)]
+        self.Players = [Player(1, self.floorRect.x + self.floorRect.width / 2, 0)]
 
         #############################
         # UI
@@ -114,8 +114,6 @@ class ElevatorState(GameState):
         self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
         self.previousFloorTextPos += self.scrollingSpeed * dt
         self.nextFloorTextPos += self.scrollingSpeed * dt
-        for p in self.Players:
-            p.Rect.y += self.scrollingSpeed * dt
 
         # end of animation
         if self.YOffset <= -360:
@@ -135,10 +133,10 @@ class ElevatorState(GameState):
             elif player.Rect.x > self.floorRect.right - player.Rect.width:
                 player.Rect.x = self.floorRect.right - player.Rect.width
 
-            if player.Rect.y < self.floorRect.y:
-                player.Rect.y = self.floorRect.y
-            elif player.Rect.y > self.floorRect.bottom - player.Rect.height:
-                player.Rect.y = self.floorRect.bottom - player.Rect.height
+            if player.Rect.y + self.floorRect.y < self.floorRect.y:
+                player.Rect.y = self.floorRect.y - self.floorRect.y
+            elif player.Rect.y + self.floorRect.y > self.floorRect.bottom - player.Rect.height:
+                player.Rect.y = self.floorRect.bottom - player.Rect.height - self.floorRect.y
             
             
 
@@ -153,8 +151,10 @@ class ElevatorState(GameState):
         # GAME OBJECTS
         #############################################
         for p in self.Players:
-            p.draw(screen)
-
+            img = p.animations[p.state][p.frame_index]
+            if not p.looking_right:
+                img = pygame.transform.flip(img, True, False)
+            screen.blit(img, (p.Rect.x, p.Rect.y + self.floorRect.y))
 
         #############################################
         # HUD
