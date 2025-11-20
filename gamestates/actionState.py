@@ -255,7 +255,9 @@ class ActionState(GameState):
             case '3waysLRD':
                 self.Exits = [exitLeft, exitRight, exitDown]
 
-        pass
+        # special case for very forst room: write basic instructions on the floor
+        if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
+            self.howToMoveTipSurface = pygame.image.load(f'assets/sprites/environment/rooms/moveInstructions.png').convert_alpha()
 
 
     def exit(self):
@@ -515,12 +517,13 @@ class ActionState(GameState):
         # DRAW CURRENT ROOM BY NAME
         #############################################
         screen.blit(self.RoomSurface, (0,0))
+
         #############################################
         # SPECIAL CASE FOR VERY FIRST ROOM: WRITE INSTRUCTIONS
         #############################################
         if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
-            pass
-        
+            screen.blit(self.howToMoveTipSurface, (self.game.GAME_WINDOW_SIZE[0] / 2 - self.howToMoveTipSurface.get_width() / 2, self.game.GAME_WINDOW_SIZE[1] / 2- self.howToMoveTipSurface.get_height() / 2))
+
         #############################################
         # GAME OBJECTS
         #############################################

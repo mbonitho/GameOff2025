@@ -52,7 +52,7 @@ class TitleState(GameState):
         screen.blit(title_text, (850, 920))
 
         # buttons
-        subtitle_font = pygame.font.SysFont(None, 96)
+        subtitle_font = pygame.font.SysFont(None, 64)
         subtitle_text = subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
         screen.blit(subtitle_text, (340, self.pressStartY))
 
