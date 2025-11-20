@@ -126,7 +126,7 @@
           {"x": 1, "y": 1}
         ]
       },
-      "color": "#ff0000ff",
+      "color": "#e500ffff",
       "tileX": false,
       "tileY": false,
       "tileSize": {"x": 16, "y": 16},
@@ -165,7 +165,7 @@
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {"x": 8, "y": 8},
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -186,6 +186,44 @@
           "choices": ["smallFast", "patrollingH", "patrollingV", "mineDropper", "bigSlow", "bombDropper", "default", "miceSummoner", "moneyDropper", "turretPlus", "boss1"],
           "defaults": 0
         }
+      ]
+    },
+    {
+      "exportID": "67683655",
+      "name": "helpButton",
+      "limit": -1,
+      "size": {"x": 4, "y": 4},
+      "origin": {"x": 0, "y": 0},
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {"x": -1, "y": -1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": -1},
+          {"x": -1, "y": 1},
+          {"x": 1, "y": 1}
+        ]
+      },
+      "color": "#001dffff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {"x": 8, "y": 8},
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {"name": "TextKey", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
       ]
     }
   ],

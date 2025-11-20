@@ -8,13 +8,14 @@ from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
 from gameobjects.enemies.enemy_factory import EnemyFactory
 from gameobjects.level import Level, Room
+from gameobjects.objects.helpButton import HelpButton
 from gameobjects.objects.objects_factory import ObjectsFactory
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
-from utils.parameters import MEDKIT_CHANCE
+from utils.parameters import MEDKIT_CHANCE, POPUP_TEXTS
 
 class ActionState(GameState):
 
@@ -43,6 +44,7 @@ class ActionState(GameState):
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
+        self.HelpButton: HelpButton | None = None
 
 
         #############################
@@ -51,6 +53,7 @@ class ActionState(GameState):
         self.UIFont = pygame.font.SysFont(None, 48)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.GAME_WINDOW_SIZE[0] - 400, 16), font_size=48)
 
+        self.PopUpText = ''
 
         #############################
         # Load the full level
@@ -67,6 +70,7 @@ class ActionState(GameState):
 
         self.Enemies = []
         self.Objects = []
+        self.HelpButton = None
 
         for player in self.Players:
             player.Bullets = []
@@ -74,13 +78,21 @@ class ActionState(GameState):
         self.CurrentRoom = room
         self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
 
+
+        #############################
+        # Add an help button when there is one in the room
+        #############################
+        if room.helpButtonDefinition is not None:
+            pos = (room.helpButtonDefinition.coords[0] * self.game.GAME_WINDOW_SIZE[0], room.helpButtonDefinition.coords[1] * self.game.GAME_WINDOW_SIZE[1])
+            self.HelpButton = ObjectsFactory.GetHelpButton(pos, room.helpButtonDefinition.name)
+
         #############################
         # Load room enemies if room not cleared
         #############################
         if not self.CurrentRoom.Cleared:
             for ed in room.EnemiesDefinitions:
 
-                pos = (ed.Coords[0] * self.game.GAME_WINDOW_SIZE[0], ed.Coords[1] * self.game.GAME_WINDOW_SIZE[1])
+                pos = (ed.coords[0] * self.game.GAME_WINDOW_SIZE[0], ed.coords[1] * self.game.GAME_WINDOW_SIZE[1])
                 enemy = None
                 match ed.name:
                     case 'smallFast':
@@ -368,6 +380,12 @@ class ActionState(GameState):
                     object.handleCollision(player)
                     self.Objects.remove(object)
                     
+            # check for collision with help button
+            if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect):
+                self.PopUpText = self.HelpButton.textKey
+            else:
+                self.PopUpText = ''
+
             # check for teleport to next floor
             if self.Elevator:
                 if player.Rect.colliderect(self.Elevator.Rect):
@@ -497,33 +515,18 @@ class ActionState(GameState):
         # DRAW CURRENT ROOM BY NAME
         #############################################
         screen.blit(self.RoomSurface, (0,0))
-
         #############################################
         # SPECIAL CASE FOR VERY FIRST ROOM: WRITE INSTRUCTIONS
         #############################################
         if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
-
-            lines = [
-                "Welcome to Project W.A.V.E.S!",
-                "",
-                "Use arrow keys to move and W/A/S/D to shoot up/left/down/right",
-                "",
-                "Or use a gamepad (d-pad or left stick to move, A/B/X/Y to shoot)",
-                "",
-                "If your keyboard isn't qwerty or your gamepad buttons are scrambled, fear not!",
-                "Just press the Ctrl key to configure your keyboard or gamepad."
-            ]
-            font = pygame.font.SysFont(None, 32)
-            lineY = 200
-            for line in lines:
-                text = font.render(line, True, (255, 255, 255))
-                screen.blit(text, (200, lineY))
-                lineY += 40
-
-
+            pass
+        
         #############################################
         # GAME OBJECTS
         #############################################
+
+        if self.HelpButton is not None:
+            self.HelpButton.draw(screen)
 
         for e in self.Enemies:
             e.draw(screen)
@@ -548,13 +551,27 @@ class ActionState(GameState):
             for bullet in player.Bullets:
                 bullet.draw(screen)
 
-
         #############################################
         # ROOM BOTTOM CORNERS
         #############################################
         screen.blit(self.RoomBottomLeftCornerSurface, (0,self.game.screen.get_height() - self.RoomBottomLeftCornerSurface.get_height()))
         screen.blit(self.RoomBottomRightCornerSurface, (self.game.screen.get_width() - self.RoomBottomRightCornerSurface.get_width(), self.game.screen.get_height() - self.RoomBottomRightCornerSurface.get_height()))
 
+        #############################################
+        # POPUP TEXT WHEN STEPPING ON HELP BUTTONS
+        #############################################
+        if self.PopUpText != '':
+            lines = POPUP_TEXTS[self.PopUpText]
+            lineY = 600
+            lineX = 200
+
+            pygame.draw.rect(screen, (72, 55, 55), pygame.Rect(lineX - 20, lineY - 20, self.game.GAME_WINDOW_SIZE[0] - (lineX - 20) * 2, len(lines) * 40 + 20))
+
+            font = pygame.font.SysFont(None, 32)
+            for line in lines:
+                text = font.render(line, True, (255, 255, 255))
+                screen.blit(text, (lineX, lineY))
+                lineY += 40
 
         #############################################
         # HUD

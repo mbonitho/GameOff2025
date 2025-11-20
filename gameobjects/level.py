@@ -1,10 +1,11 @@
 import random
 from typing import Counter
 
+from gameobjects.objects.helpButton import HelpButton
 from gameobjects.room import Room
 from utils.ogmo.ogmoHelper import OgmoHelper
 from utils.ogmo.ogmoMap import OgmoMap
-from gameobjects.enemyDefinition import EnemyDefinition
+from gameobjects.entityDefinition import EntityDefinition
 
 class Level:
 
@@ -67,11 +68,17 @@ class Level:
                             case 'roomStairsUp':
                                 self.ElevatorCoords = (x_in_level_grid, y_in_level_grid)
 
+                            case 'helpButton':
+                                x_in_map_grid = (((entity.x % roomLayer.gridCellWidth) / eventLayer.gridCellWidth) + 1) / 16 
+                                y_in_map_grid = (((entity.y % roomLayer.gridCellHeight) / eventLayer.gridCellHeight) + 1) / 16
+                                
+                                room.helpButtonDefinition = EntityDefinition(entity.values['TextKey'], (x_in_map_grid,y_in_map_grid))
+                            
                             case 'enemy':
                                 x_in_map_grid = (((entity.x % roomLayer.gridCellWidth) / eventLayer.gridCellWidth) + 1) / 16 
                                 y_in_map_grid = (((entity.y % roomLayer.gridCellHeight) / eventLayer.gridCellHeight) + 1) / 16
 
-                                room.EnemiesDefinitions.append(EnemyDefinition(entity.values['Type'], (x_in_map_grid,y_in_map_grid)))
+                                room.EnemiesDefinitions.append(EntityDefinition(entity.values['Type'], (x_in_map_grid,y_in_map_grid)))
 
                         eventLayer.entities.remove(entity)
 

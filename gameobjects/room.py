@@ -1,7 +1,7 @@
 
 import pygame
 from utils.ogmo.ogmoMap import OgmoMap
-from gameobjects.enemyDefinition import EnemyDefinition
+from gameobjects.entityDefinition import EntityDefinition
 
 
 class Room:
@@ -20,7 +20,9 @@ class Room:
         self.Cleared = False
 
         self.Obstacles = []
-        self.EnemiesDefinitions: list[EnemyDefinition] = []
+        self.EnemiesDefinitions: list[EntityDefinition] = []
+
+        self.helpButtonDefinition: EntityDefinition | None = None
 
         # block walls
         match map.name:

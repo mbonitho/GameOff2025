@@ -3,6 +3,7 @@ import pygame
 
 from gameobjects.objects.bomb import Bomb
 from gameobjects.objects.explosion import Explosion
+from gameobjects.objects.helpButton import HelpButton
 from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
 from gameobjects.objects.moneyBag import MoneyBag
@@ -47,3 +48,10 @@ class ObjectsFactory:
             cls._textures['bomb_red'] = pygame.image.load('assets/sprites/objects/bomb_red.png').convert_alpha()
 
         return  Bomb([cls._textures['bomb'], cls._textures['bomb_red']], pos[0], pos[1], objects)
+    
+    @classmethod
+    def GetHelpButton(cls, pos: Tuple[int, int], textkey: str):
+        if 'helpButton' not in cls._textures:
+            cls._textures['helpButton'] =pygame.image.load('assets/sprites/objects/helpButton.png').convert_alpha()
+
+        return  HelpButton(cls._textures['helpButton'], pos[0], pos[1], textkey)
