@@ -30,6 +30,9 @@ class Enemy:
         self.KilledByPlayerIndex: int | None = None
         self.ScoreValue = 10
 
+        self.Scale = 1
+        self.IsABoss = False
+
     def update(self, players, dt: float):
         self.BlinkingComponent.update(dt)
 
@@ -52,6 +55,10 @@ class Enemy:
             img = self.animations[self.frame_index]
             if not self.looking_right:
                 img = pygame.transform.flip(img, True, False)
+
+            if self.Scale > 1:
+                img = pygame.transform.scale(img, (img.get_width() * self.Scale, img.get_height() * self.Scale))
+
             screen.blit(img, self.Rect.topleft)
 
             for beh in self.Behaviors:

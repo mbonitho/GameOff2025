@@ -125,6 +125,9 @@ class ActionState(GameState):
                     case 'turretPlus':
                         enemy = EnemyFactory.GetPlusTurret(pos)
 
+                    case 'boss1':
+                        enemy = EnemyFactory.GetBoss1(pos, self.CurrentRoom.Obstacles)
+
                 if enemy is not None:
                     self.Enemies.append(enemy)
 
@@ -483,35 +486,6 @@ class ActionState(GameState):
 
     def draw(self, screen):
         screen.fill((64, 64, 64))
-
-        #############################################
-        # OGMO LAYERS (not used anymore)
-        #############################################
-        # layers = [self.CurrentRoom.Map.layers['floor'], self.CurrentRoom.Map.layers['walls']]
-        # for layer in layers:
-        #     # x_to_draw_to = 0
-        #     y_to_draw_to = 0
-        #     for y in range(layer.gridCellsY):
-        #         x_to_draw_to = 0
-        #         for x in range(layer.gridCellsX):
-        #             index = y * layer.gridCellsX + x # inverse: x_in_tileset, y_in_tileset = divmod(index, layer.gridCellX)
-        #             data = layer.data[index]
-
-        #             if data != -1:
-        #                 # convert data in x, y in tileset
-        #                 x_in_tileset = data * layer.gridCellWidth
-        #                 y_in_tileset = 0
-
-        #                 screen.blit(
-        #                     self.TilesetSurface, 
-        #                     (x_to_draw_to, y_to_draw_to), 
-        #                     area=pygame.Rect(x_in_tileset, y_in_tileset, layer.gridCellWidth, layer.gridCellHeight)
-        #                 )
-
-        #             x_to_draw_to += layer.gridCellWidth
-
-        #         y_to_draw_to += layer.gridCellHeight
-
 
         #############################################
         # DRAW CURRENT ROOM BY NAME

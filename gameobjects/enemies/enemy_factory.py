@@ -266,3 +266,34 @@ class EnemyFactory:
         enemy.ScoreValue = 20
 
         return enemy
+    
+
+    @classmethod
+    def GetBoss1(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect]):
+
+        if 'mouse1' not in cls._textures:
+            cls._textures['mouse1'] = pygame.image.load(f'assets/sprites/enemies/mouse1.png').convert_alpha()
+            cls._textures['mouse2'] = pygame.image.load(f'assets/sprites/enemies/mouse2.png').convert_alpha()
+            cls._textures['mouse3'] = pygame.image.load(f'assets/sprites/enemies/mouse3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['mouse1'],
+            cls._textures['mouse2'],
+            cls._textures['mouse3']
+        ]
+
+        move = MoveRandomlyBehavior(obstacles)
+        move.Speed = 240
+
+        hurtOnContact = HurtOnContactBehavior()
+        hurtOnContact.damage = 2
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact])
+    
+        enemy.IsABoss = True
+        enemy.Scale = 3
+        enemy.MaxLife = 20
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 200
+
+        return enemy

@@ -1,7 +1,7 @@
 
-# "Splash","Title","Gameplay","Action","Rebind","GameOver","Elevator","Config"
-STARTING_STATE = 'Splash'
-STARTING_FLOOR = 1
+# "Splash","Title","Action","Rebind","GameOver","Elevator","Config"
+STARTING_STATE = 'Action'
+STARTING_FLOOR = 5
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 MEDKIT_CHANCE = 0.15
 
