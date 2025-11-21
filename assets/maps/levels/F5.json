@@ -34,8 +34,8 @@
           "name": "enemy",
           "id": 1,
           "_eid": "49372066",
-          "x": 24,
-          "y": 16,
+          "x": 28,
+          "y": 20,
           "originX": 0,
           "originY": 0,
           "values": {"Type": "boss1"}

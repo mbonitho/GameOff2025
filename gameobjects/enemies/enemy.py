@@ -33,6 +33,10 @@ class Enemy:
         self.Scale = 1
         self.IsABoss = False
 
+    def setScale(self, scale: int):
+        self.Scale = scale
+        self.Rect = pygame.Rect(self.Rect.x, self.Rect.y, self.Rect.width * scale, self.Rect.height * scale)
+
     def update(self, players, dt: float):
         self.BlinkingComponent.update(dt)
 

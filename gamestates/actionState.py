@@ -68,6 +68,7 @@ class ActionState(GameState):
         if room == None:
             return
 
+        self.TotalBosslife = 0
         self.Enemies = []
         self.Objects = []
         self.HelpButton = None
@@ -130,6 +131,9 @@ class ActionState(GameState):
 
                 if enemy is not None:
                     self.Enemies.append(enemy)
+        
+        # BOSS life bar
+        self.TotalBosslife = sum(boss.MaxLife for boss in self.Enemies if boss.IsABoss)
 
         #############################
         # Add a Comm Tower here if there's one
@@ -392,7 +396,7 @@ class ActionState(GameState):
                 self.PopUpText = ''
 
             # check for teleport to next floor
-            if self.Elevator:
+            if self.Elevator is not None and self.CurrentRoom.Cleared:
                 if player.Rect.colliderect(self.Elevator.Rect):
                     self.game.game_data['floor'] += 1
                     self.game.change_state("Elevator")
@@ -559,6 +563,18 @@ class ActionState(GameState):
         # P1 life bar
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[0].MaxLife * 20 + 6, 24))
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[0].CurrentLife * 20, 18))
+
+        # Boss life bar
+        if self.TotalBosslife > 0:
+            self.CurrentBosslife = sum(boss.CurrentLife for boss in self.Enemies if boss.IsABoss)
+
+            if self.CurrentBosslife > 0:
+                maxWidth = self.game.GAME_WINDOW_SIZE[0] - 394
+                currentWidth = self.CurrentBosslife / self.TotalBosslife * maxWidth - 6
+
+                pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, self.game.GAME_WINDOW_SIZE[1] - 75, maxWidth, 48))
+                pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, self.game.GAME_WINDOW_SIZE[1] - 72, currentWidth, 42))
+
 
         if len(self.Players) == 1:
             self.player2PressStartText.draw(screen)

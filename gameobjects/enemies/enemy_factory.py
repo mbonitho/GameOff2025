@@ -291,7 +291,7 @@ class EnemyFactory:
         enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact])
     
         enemy.IsABoss = True
-        enemy.Scale = 3
+        enemy.setScale(3)
         enemy.MaxLife = 20
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
