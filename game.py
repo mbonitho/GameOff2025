@@ -9,6 +9,7 @@ from gamestates.configureGamePadState import ConfigureGamePadState
 from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
+from gamestates.storyState import StoryState
 from gamestates.titleState import TitleState
 from gamestates.rebindState import RebindMenuState
 from gamestates.elevatorState import ElevatorState
@@ -41,7 +42,8 @@ class Game:
             "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
-            "Config": ConfigureGamePadState(self)
+            "Config": ConfigureGamePadState(self),
+            'Story': StoryState(self)
         }
 
         if sys.platform in ['wasi', 'emscripten']:
