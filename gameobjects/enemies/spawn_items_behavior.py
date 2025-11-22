@@ -18,8 +18,8 @@ class SpawnItemBehavior(EnemyBehavior):
         self.decision_timing = 0
         self.decision_delay = 1
 
-        self.decisionMinTime = 1
-        self.decisionMaxTime = 3
+        self.decisionMinTime: float = 1
+        self.decisionMaxTime: float = 3
 
         self.objectType = objectType
 

@@ -1,18 +1,17 @@
-from pygame import Rect, Surface
-from typing import Tuple
-
 import pygame
+from pygame import Rect
+
 from gameobjects.blinkingComponent import BlinkingComponent
-from gameobjects.bullet import Bullet
+from gameobjects.weapons.weapons_factory import WeaponFactory
 from utils.helpers.collisions_helper import MoveAndCollide
 
 class Player:
 
-
     def __init__(self, index: int, x: int, y: int):
 
+        self.playerIndex = index
+
         # load surfaces
-        self.bulletTexture = pygame.image.load('assets/sprites/projectiles/bullet.png').convert_alpha()
         self.animations = {
             'walk': [
                 pygame.image.load(f'assets/sprites/player/player{index}_walk_0.png').convert_alpha(),
@@ -43,14 +42,14 @@ class Player:
         self.CurrentLife = self.MaxLife
         self.Score = 0
 
-        self.WeaponLevel = 1
-        self.MaxBullets = 3
-        self.Bullets = []
+        self.Weapon = WeaponFactory.GetDefaultWeapon(self)
 
         self.BlinkingComponent = BlinkingComponent()
 
-
-    def update(self, dt: float):
+    def initializeWeapon(self):
+        self.Weapon = WeaponFactory.GetDefaultWeapon(self)
+    
+    def update(self, enemies: list, dt: float):
         self.BlinkingComponent.update(dt)
 
         if self.previous_pos == self.Rect.topleft:
@@ -64,6 +63,9 @@ class Player:
             self.animation_timer %= self.animation_speed
             self.frame_index = (self.frame_index + 1) % len(self.animations[self.state])
 
+        # weapon
+        self.Weapon.update(enemies, dt)
+
         self.previous_pos = self.Rect.topleft
 
 
@@ -74,6 +76,8 @@ class Player:
             if not self.looking_right:
                 img = pygame.transform.flip(img, True, False)
             screen.blit(img, self.Rect.topleft)
+
+        self.Weapon.draw(screen)
 
     def MoveX(self, value, obstacles: list[Rect]):
         MoveAndCollide(self.Rect, self.Speed * value, 0, obstacles)
@@ -105,62 +109,4 @@ class Player:
         return False
 
     def TryShootBullet(self, direction: str):
-
-        factor = 1
-        if self.WeaponLevel == 2:
-            factor = 3
-        elif self.WeaponLevel == 3:
-            factor = 5
-
-        if len(self.Bullets) >= self.MaxBullets * factor:
-            return
-
-        origin = (-1,-1)
-        angles= []
-
-        match direction:
-
-            case 'l':
-                origin = self.Rect.midleft
-                match self.WeaponLevel:
-                    case 1:
-                        angles = [180]
-                    case 2:
-                        angles = [165,180,195]
-                    case 3:
-                        angles = [150,165,180,195, 210]
-
-            case 'r':
-                origin = self.Rect.midright
-                match self.WeaponLevel:
-                    case 1:
-                        angles = [0]
-                    case 2:
-                        angles = [-15,0,15]
-                    case 3:
-                        angles = [-30,-15,0,15,30]
-
-            case 'u':
-                origin = self.Rect.midtop
-                match self.WeaponLevel:
-                    case 1:
-                        angles = [270]
-                    case 2:
-                        angles = [255,270,285]
-                    case 3:
-                        angles = [240,255,270,285,300]
-
-            case 'd':
-                origin = self.Rect.midbottom
-                match self.WeaponLevel:
-                    case 1:
-                        angles = [90]
-                    case 2:
-                        angles = [75,90,105]
-                    case 3:
-                        angles = [60,75,90,105,120]
-
-        for angle in angles:
-            bullet = Bullet(self.bulletTexture, origin, angle)
-            self.Bullets.append(bullet)
-            self.looking_right = bullet.X_dir > 0
+        self.Weapon.TryShootBullet(direction)

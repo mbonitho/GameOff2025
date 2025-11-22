@@ -1,3 +1,4 @@
+import random
 from gameobjects.enemies.enemy_behavior import EnemyBehavior
 from utils.helpers.collisions_helper import MoveAndCollide
 from gameobjects.objects.objects_factory import ObjectsFactory
@@ -15,7 +16,7 @@ class DropTreasureBehavior(EnemyBehavior):
         if not players:
             return
 
-        if enemy.CurrentLife <= 0: # todo drop treasure instead
-            mine = ObjectsFactory.GetLandmine()
-            self.objects.append(mine)
+        if enemy.CurrentLife <= 0:
+            bag = ObjectsFactory.GetMoneyBag(enemy.Rect.topleft, random.randrange(100, 500, step=50))
+            self.objects.append(bag)
 

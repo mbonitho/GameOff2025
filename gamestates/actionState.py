@@ -74,7 +74,7 @@ class ActionState(GameState):
         self.HelpButton = None
 
         for player in self.Players:
-            player.Bullets = []
+            player.Weapon.Bullets = []
 
         self.CurrentRoom = room
         self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
@@ -112,10 +112,10 @@ class ActionState(GameState):
                         enemy = EnemyFactory.GetBigSlowEnemy(pos)
 
                     case 'bombDropper':
-                        enemy = EnemyFactory.GetBombDropperEnemy(pos)
+                        enemy = EnemyFactory.GetBombDropperEnemy(pos, self.CurrentRoom.Obstacles, self.Objects)
 
                     case 'miceSummoner':
-                        enemy = EnemyFactory.GetMiceSummonerEnemy(pos)
+                        enemy = EnemyFactory.GetMiceSummonerEnemy(pos, self.CurrentRoom.Obstacles, self.Enemies)
 
                     case 'default':
                         enemy = EnemyFactory.GetDefaultEnemy(pos)
@@ -151,8 +151,8 @@ class ActionState(GameState):
         # Add the elevator if it's here
         #############################
         if self.CurrentRoom.Coords == self.Level.ElevatorCoords:
-            posX = self.game.screen.get_width() * 0.5 - self.ElevatorSurface.get_width() * 0.5
-            posY = self.ElevatorSurface.get_height() * 0.5
+            posX = int(self.game.screen.get_width() * 0.5 - self.ElevatorSurface.get_width() * 0.5)
+            posY = int(self.ElevatorSurface.get_height() * 0.5)
             self.Elevator = Elevator(self.ElevatorSurface, posX, posY)
             # self.CurrentRoom.Obstacles.append(self.Elevator.Rect)
         else:
@@ -297,7 +297,7 @@ class ActionState(GameState):
                 # player2 joining by pressing start, spawns at p1 pos
                 if event.button == 7 and event.joy == 1:
                     if len(self.Players) == 1:
-                        self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
+                        self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
                         self.NumberOfEnemiesToSpawn *= 3
 
                 # only trigger input if the number of players is sufficient
@@ -370,7 +370,7 @@ class ActionState(GameState):
 
         # Update players
         for player in self.Players:
-            player.update(dt)
+            player.update(self.Enemies, dt)
 
             # bound player to screen
             if player.Rect.x < 0:
@@ -439,13 +439,6 @@ class ActionState(GameState):
                                         int(ActionState.EXIT_SIZE + 1)
                                     )
 
-        # Update bullets
-        for index, player in enumerate(self.Players):
-            for bullet in player.Bullets.copy():
-                bullet.update(self.Enemies, dt, index)
-                if bullet.lifespan >= bullet.max_lifespan:
-                    player.Bullets.remove(bullet)
-
         # update objects and remove them if needed
         for object in self.Objects.copy():
             object.update(dt)
@@ -459,7 +452,7 @@ class ActionState(GameState):
 
                 # increase the score of the player who killed the enemy
                 if enemy.KilledByPlayerIndex is not None:
-                    player = self.Players[enemy.KilledByPlayerIndex]
+                    player = self.Players[enemy.KilledByPlayerIndex - 1]
                     player.Score += enemy.ScoreValue
 
                 # loot chance!
@@ -528,15 +521,11 @@ class ActionState(GameState):
         for t in self.FarawayTowers:
             t.draw(screen)
 
-        for player in self.Players:
-            for bullet in player.Bullets:
-                bullet.draw(screen)
-
         #############################################
         # ROOM BOTTOM CORNERS
         #############################################
-        screen.blit(self.RoomBottomLeftCornerSurface, (0,self.game.screen.get_height() - self.RoomBottomLeftCornerSurface.get_height()))
-        screen.blit(self.RoomBottomRightCornerSurface, (self.game.screen.get_width() - self.RoomBottomRightCornerSurface.get_width(), self.game.screen.get_height() - self.RoomBottomRightCornerSurface.get_height()))
+        screen.blit(self.RoomBottomLeftCornerSurface, (0,self.game.GAME_WINDOW_SIZE[1] - self.RoomBottomLeftCornerSurface.get_height()))
+        screen.blit(self.RoomBottomRightCornerSurface, (self.game.GAME_WINDOW_SIZE[0] - self.RoomBottomRightCornerSurface.get_width(), self.game.GAME_WINDOW_SIZE[1] - self.RoomBottomRightCornerSurface.get_height()))
 
         #############################################
         # POPUP TEXT WHEN STEPPING ON HELP BUTTONS

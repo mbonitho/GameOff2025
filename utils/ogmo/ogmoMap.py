@@ -59,7 +59,6 @@ class OgmoLayer:
                 json_dict['gridCellHeight'],
                 json_dict['data'] if 'data' in json_dict.keys() else [])
         
-        #todo les entities
         for entities_dict in json_dict['entities'] if 'entities' in json_dict.keys() else []:
             instance.entities.append(OgmoEntity.from_json(entities_dict))
 

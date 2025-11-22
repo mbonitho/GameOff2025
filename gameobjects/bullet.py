@@ -24,8 +24,8 @@ class Bullet:
     def update(self, enemies, dt: float, playerIndex: int | None = None):
         self.lifespan += dt
         
-        self.Rect.x += self.Speed * self.X_dir * dt
-        self.Rect.y += self.Speed * self.Y_dir * dt
+        self.Rect.x += int(self.Speed * self.X_dir * dt)
+        self.Rect.y += int(self.Speed * self.Y_dir * dt)
 
         for enemy in enemies.copy():
             if self.Rect.colliderect(enemy.Rect):

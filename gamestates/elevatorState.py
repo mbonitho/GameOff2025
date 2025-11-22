@@ -28,7 +28,7 @@ class ElevatorState(GameState):
         # ENTITIES
         #############################
         self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
-        self.Players = [Player(1, self.floorRect.x + self.floorRect.width / 2, 0)]
+        self.Players = [Player(1, int(self.floorRect.x + self.floorRect.width / 2), 0)]
 
         #############################
         # UI
@@ -62,7 +62,7 @@ class ElevatorState(GameState):
                 # player2 joining by pressing start, spawns at p1 pos
                 if event.button == 7 and event.joy == 1:
                     if len(self.Players) == 1:
-                        self.Players.append(Player(1, self.Players[0].Rect.x, self.Players[0].Rect.y, (210,120,72)))
+                        self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
 
 
         ######################################
@@ -125,7 +125,7 @@ class ElevatorState(GameState):
 
         # Update players
         for player in self.Players:
-            player.update(dt)
+            player.update([], dt)
 
             # bound player to floor
             if player.Rect.x < self.floorRect.x:
