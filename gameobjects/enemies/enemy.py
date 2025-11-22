@@ -68,9 +68,7 @@ class Enemy:
             for beh in self.Behaviors:
                 beh.draw(screen, self)
 
-    def ReceiveDamage(self, playerIndex:  int):
+    def ReceiveDamage(self, dmg: int = 1):
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
-            self.CurrentLife -= 1
-            self.KilledByPlayerIndex = playerIndex
-
+            self.CurrentLife -= dmg

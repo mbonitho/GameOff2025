@@ -61,7 +61,7 @@ class ObjectsFactory:
     @classmethod
     def GetRandomWeaponPickup(cls, pos: Tuple[int, int]):
         from gameobjects.weapons.weapons_factory import WeaponFactory
-        wpnTypes = ['lv1Shotgun', 'lv2Shotgun']
+        wpnTypes = ['lv1Shotgun', 'lv2Shotgun', 'uzi']
 
         match random.choice(wpnTypes):
 
@@ -70,6 +70,9 @@ class ObjectsFactory:
 
             case 'lv2Shotgun':
                 wpn = WeaponFactory.GetLv2Shotgun(None)
+
+            case 'uzi':
+                wpn = WeaponFactory.GetUzi(None)
 
         weaponPickup = WeaponPickup(wpn.WeaponSurface, pos[0], pos[1], wpn)
 

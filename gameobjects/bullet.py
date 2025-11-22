@@ -16,7 +16,8 @@ class Bullet:
         self.X_dir = math.cos(angle_rad)
         self.Y_dir = math.sin(angle_rad)
         
-        self.Speed = 18 * 60 # default speed
+        self.Speed = 1080 # =18 * 60 # default speed
+        self.Damage = 1
 
         self.lifespan = 0
         self.max_lifespan = 0.5 # seconds
@@ -31,9 +32,10 @@ class Bullet:
             if self.Rect.colliderect(enemy.Rect):
                 self.lifespan = self.max_lifespan # kill bullet
                 if playerIndex is not None:
-                    enemy.ReceiveDamage(playerIndex) # hurt enemy, provide the index of the player
+                    enemy.ReceiveDamage(self.Damage) # hurt enemy, provide the index of the player
+                    enemy.KilledByPlayerIndex = playerIndex
                 else:
-                    enemy.ReceiveDamage() # hurt player
+                    enemy.ReceiveDamage(self.Damage) # hurt player
 
     def draw(self, screen):
         screen.blit(self.RotatedSurface, self.Rect.topleft)

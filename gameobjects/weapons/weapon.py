@@ -20,9 +20,9 @@ class Weapon:
         # customizable attributes for this weapon
         self.MaxBulletsOnScreen = 3
         self.TotalAmunition = -1
-        self.BulletDamage = 1 # todo use
-        self.BulletLifespan = 0 # todo use
-        self.BulletSpeed = 0 # todo use
+        self.BulletSpeed = 1080 #1080 # default bullet speed
+        self.BulletDamage = 1 # default damage
+        self.BulletMaxLifespan = 0.5 # default bullet lifespan in seconds
         self.BulletScale = 1 # todo use
         self.Angles = {
             'l': [180],
@@ -95,4 +95,8 @@ class Weapon:
         # self.Rect.topleft = origin
         for angle in self.Angles[direction]:
             bullet = Bullet(self.BulletSurface, origin, angle)
+            bullet.Speed = self.BulletSpeed
+            bullet.Damage = self.BulletDamage
+            bullet.lifespan = 0
+            bullet.max_lifespan = self.BulletMaxLifespan
             self.Bullets.append(bullet)
