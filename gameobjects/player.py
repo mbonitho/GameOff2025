@@ -68,8 +68,6 @@ class Player:
 
         self.previous_pos = self.Rect.topleft
 
-
-
     def draw(self, screen):
         if self.BlinkingComponent.visible:
             img = self.animations[self.state][self.frame_index]

@@ -1,3 +1,4 @@
+import random
 from typing import Tuple
 import pygame
 
@@ -7,6 +8,7 @@ from gameobjects.objects.helpButton import HelpButton
 from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
 from gameobjects.objects.moneyBag import MoneyBag
+from gameobjects.objects.weapon_pickup import WeaponPickup
 
 class ObjectsFactory:
 
@@ -55,3 +57,20 @@ class ObjectsFactory:
             cls._textures['helpButton'] =pygame.image.load('assets/sprites/objects/helpButton.png').convert_alpha()
 
         return  HelpButton(cls._textures['helpButton'], pos[0], pos[1], textkey)
+    
+    @classmethod
+    def GetRandomWeaponPickup(cls, pos: Tuple[int, int]):
+        from gameobjects.weapons.weapons_factory import WeaponFactory
+        wpnTypes = ['lv1Shotgun', 'lv2Shotgun']
+
+        match random.choice(wpnTypes):
+
+            case 'lv1Shotgun':
+                wpn = WeaponFactory.GetLv1Shotgun(None)
+
+            case 'lv2Shotgun':
+                wpn = WeaponFactory.GetLv2Shotgun(None)
+
+        weaponPickup = WeaponPickup(wpn.WeaponSurface, pos[0], pos[1], wpn)
+
+        return weaponPickup

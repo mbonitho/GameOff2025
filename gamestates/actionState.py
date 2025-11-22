@@ -456,15 +456,17 @@ class ActionState(GameState):
                     player.Score += enemy.ScoreValue
 
                 # loot chance!
-                rng = random.random()
-                if rng <= MEDKIT_CHANCE:
-                    self.Objects.append(ObjectsFactory.GetMedkit(enemy.Rect.bottomleft))
-
+                
+                if random.random() <= MEDKIT_CHANCE:
+                    rng = random.random()
+                    if rng < 0.5:
+                        self.Objects.append(ObjectsFactory.GetMedkit(enemy.Rect.bottomleft))
+                    else:
+                        self.Objects.append(ObjectsFactory.GetRandomWeaponPickup(enemy.Rect.bottomleft))
+                        
                 self.Enemies.remove(enemy)
 
             enemy.update(self.Players, dt)
-
-
 
         # Comm towers shoot waves from other rooms
         for tower in self.FarawayTowers:
