@@ -44,13 +44,18 @@ class Weapon:
                 self.Bullets.remove(bullet)
 
     def draw(self, screen):
-        if self.FireTiming >= 0 and self.LastDirection in ['l','r']:
+        if self.FireTiming >= 0:
 
             coords = self.Owner.Rect.center
             img = self.WeaponSurface
             if self.LastDirection == 'l':
                 img = pygame.transform.flip(img, True, False)
                 coords = (self.Owner.Rect.centerx - self.WeaponSurface.get_width(), self.Owner.Rect.centery)
+            elif self.LastDirection == 'u':
+                img = pygame.transform.rotate(img, 90)
+                coords = (self.Owner.Rect.centerx, self.Owner.Rect.centery  - self.WeaponSurface.get_height())
+            elif self.LastDirection == 'd':
+                img = pygame.transform.rotate(img, -90)
 
             screen.blit(img, coords)
         for bullet in self.Bullets:
