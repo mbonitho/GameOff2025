@@ -13,7 +13,7 @@ class DropTreasureBehavior(EnemyBehavior):
 
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         if enemy.CurrentLife <= 0:

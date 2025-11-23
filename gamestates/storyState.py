@@ -2,7 +2,7 @@ import pygame
 from gamestates.gameState import GameState
 from pygame.locals import *
 
-from utils.parameters import POPUP_TEXTS
+from utils.parameters import POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
 
 # Story screen state
 class StoryState(GameState):
@@ -11,13 +11,13 @@ class StoryState(GameState):
         self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
 
         self.linesX = 200
-        self.linesY = self.game.GAME_WINDOW_SIZE[1]
+        self.linesY = WINDOW_HEIGHT
 
         # determine lines
         self.lines = []
         if self.game.game_data['floor'] == 1:
             self.lines = POPUP_TEXTS['INTRO']
-        self.endY = self.linesY - len(self.lines) * 40 - self.game.GAME_WINDOW_SIZE[1] * .5
+        self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5
         pass
 
 
@@ -36,10 +36,10 @@ class StoryState(GameState):
 
         screen.blit(self.BGSurface, (0,0))
 
-        overlay = pygame.Surface((self.game.GAME_WINDOW_SIZE[0] - 200, self.game.GAME_WINDOW_SIZE[1]), pygame.SRCALPHA)
+        overlay = pygame.Surface((WINDOW_WIDTH - 200, WINDOW_HEIGHT), pygame.SRCALPHA)
         pygame.draw.rect(overlay, 
                          (0, 0, 0, 150), 
-                         pygame.Rect(100, 0, self.game.GAME_WINDOW_SIZE[0] - 200, self.game.GAME_WINDOW_SIZE[1]))
+                         pygame.Rect(100, 0, WINDOW_WIDTH - 200, WINDOW_HEIGHT))
         screen.blit(overlay, (100, 0))
 
         lineY = self.linesY
@@ -51,7 +51,7 @@ class StoryState(GameState):
 
         font = pygame.font.SysFont(None, 24)
         text = font.render('(Press space or start to skip)', True, (255, 255, 255))
-        screen.blit(text, (self.game.GAME_WINDOW_SIZE[0] - text.get_width() - 20, 20))
+        screen.blit(text, (WINDOW_WIDTH - text.get_width() - 20, 20))
 
 
     def update(self, dt: float):

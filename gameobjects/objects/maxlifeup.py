@@ -1,15 +1,15 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
 
-class MoneyBag:
+class MaxLifeUp:
 
-    def __init__(self, surface: Surface, x: int, y: int, value: int):
+    def __init__(self, surface: Surface, x: int, y: int, value: int = 2):
         self.Surface = surface
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
 
         self.lifespan = 0
-        self.maxlifespan = 10
+        self.maxlifespan = 20
 
         self.BlinkingComponent = BlinkingComponent()
 
@@ -30,6 +30,7 @@ class MoneyBag:
 
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
-            player.Score += self.value
+            player.MaxLife += self.value
+            player.CurrentLife = player.MaxLife
 
     

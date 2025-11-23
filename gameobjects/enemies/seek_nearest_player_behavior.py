@@ -9,7 +9,7 @@ class SeekNearestPlayerBehavior(EnemyBehavior):
         self.Speed = 100
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         # Find nearest player

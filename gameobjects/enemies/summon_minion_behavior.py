@@ -20,7 +20,7 @@ class SummonMinionBehavior(EnemyBehavior):
         self.enemyType = enemyType
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         # 

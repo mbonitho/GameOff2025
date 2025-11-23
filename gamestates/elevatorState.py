@@ -6,6 +6,7 @@ from gameobjects.player import Player
 from gameobjects.room import Room
 from gamestates.gameState import GameState
 from utils.ogmo.ogmoMap import OgmoMap
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
 
 class ElevatorState(GameState):
 
@@ -38,10 +39,10 @@ class ElevatorState(GameState):
         self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
         
         self.previousFloorText = self.FloorFont.render(f"F{self.game.game_data['floor'] - 1}", False, (255,255,255))
-        self.previousFloorTextPos = self.game.GAME_WINDOW_SIZE[1] / 2
+        self.previousFloorTextPos = WINDOW_HEIGHT / 2
 
         self.nextFloorText = self.FloorFont.render(f"F{self.game.game_data['floor']}", False, (255,255,255))
-        self.nextFloorTextPos = self.game.GAME_WINDOW_SIZE[1] * 1.75
+        self.nextFloorTextPos = WINDOW_HEIGHT * 1.75
 
         #############################
         # Load the elevator
@@ -187,4 +188,4 @@ class ElevatorState(GameState):
         if self.game.game_data['floor'] > 2:
             font = pygame.font.SysFont(None, 24)
             text = font.render('(Press space or start to skip)', True, (255, 255, 255))
-            screen.blit(text, (self.game.GAME_WINDOW_SIZE[0] / 2 - text.get_width()/ 2, 20))
+            screen.blit(text, (WINDOW_WIDTH / 2 - text.get_width()/ 2, 20))

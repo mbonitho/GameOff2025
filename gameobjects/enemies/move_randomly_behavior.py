@@ -16,7 +16,7 @@ class MoveRandomlyBehavior(EnemyBehavior):
         self.destination_y = random.randrange(200, 600)
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         # 

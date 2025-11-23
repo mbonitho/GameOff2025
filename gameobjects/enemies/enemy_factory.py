@@ -13,6 +13,7 @@ from gameobjects.enemies.patrol_behavior import PatrolBehavior
 from gameobjects.enemies.seek_nearest_player_behavior import SeekNearestPlayerBehavior
 from gameobjects.enemies.shoot_plus_pattern_behavior import ShootPlusPatternBehavior
 from gameobjects.enemies.spawn_items_behavior import SpawnItemBehavior
+from gameobjects.enemies.spawn_stats_upgrades_behavior import SpawnStatsUpgradesBehavior
 from gameobjects.enemies.summon_minion_behavior import SummonMinionBehavior
 from gameobjects.enemies.teleport_and_shoot_wave_behavior import TeleportAndShootWaveBehavior
 
@@ -269,7 +270,7 @@ class EnemyFactory:
     
 
     @classmethod
-    def GetBoss1(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect]):
+    def GetBoss1(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list):
 
         if 'mouse1' not in cls._textures:
             cls._textures['mouse1'] = pygame.image.load(f'assets/sprites/enemies/mouse1.png').convert_alpha()
@@ -288,7 +289,7 @@ class EnemyFactory:
         hurtOnContact = HurtOnContactBehavior()
         hurtOnContact.damage = 2
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact])
+        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact, SpawnStatsUpgradesBehavior(2, objects)])
     
         enemy.IsABoss = True
         enemy.setScale(3)

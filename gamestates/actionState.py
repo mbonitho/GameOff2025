@@ -16,7 +16,7 @@ from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
-from utils.parameters import MEDKIT_CHANCE, POPUP_TEXTS
+from utils.parameters import MEDKIT_CHANCE, POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
 
 class ActionState(GameState):
 
@@ -42,7 +42,7 @@ class ActionState(GameState):
         # ENTITIES
         #############################
         if self.game.players == []:
-            self.game.players = [Player(1, self.game.GAME_WINDOW_SIZE[0] / 2, self.game.GAME_WINDOW_SIZE[1] / 2)]
+            self.game.players = [Player(1, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)]
         self.Players = self.game.players
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
@@ -54,7 +54,7 @@ class ActionState(GameState):
         # UI
         #############################
         self.UIFont = pygame.font.SysFont(None, 48)
-        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.GAME_WINDOW_SIZE[0] - 400, 16), font_size=48)
+        self.player2PressStartText = BlinkingText('Player 2 - press start', (WINDOW_WIDTH - 400, 16), font_size=48)
 
         self.PopUpText = ''
 
@@ -88,7 +88,7 @@ class ActionState(GameState):
         # Add an help button when there is one in the room
         #############################
         if room.helpButtonDefinition is not None:
-            pos = (room.helpButtonDefinition.coords[0] * self.game.GAME_WINDOW_SIZE[0], room.helpButtonDefinition.coords[1] * self.game.GAME_WINDOW_SIZE[1])
+            pos = (room.helpButtonDefinition.coords[0] * WINDOW_WIDTH, room.helpButtonDefinition.coords[1] * WINDOW_HEIGHT)
             self.HelpButton = ObjectsFactory.GetHelpButton(pos, room.helpButtonDefinition.name)
 
         #############################
@@ -106,7 +106,7 @@ class ActionState(GameState):
         if not self.CurrentRoom.Cleared:
             for ed in room.EnemiesDefinitions:
 
-                pos = (ed.coords[0] * self.game.GAME_WINDOW_SIZE[0], ed.coords[1] * self.game.GAME_WINDOW_SIZE[1])
+                pos = (ed.coords[0] * WINDOW_WIDTH, ed.coords[1] * WINDOW_HEIGHT)
                 enemy = None
                 match ed.name:
                     case 'smallFast':
@@ -140,7 +140,7 @@ class ActionState(GameState):
                         enemy = EnemyFactory.GetPlusTurret(pos)
 
                     case 'boss1':
-                        enemy = EnemyFactory.GetBoss1(pos, self.CurrentRoom.Obstacles)
+                        enemy = EnemyFactory.GetBoss1(pos, self.CurrentRoom.Obstacles, self.Objects)
 
                 if enemy is not None:
                     self.Enemies.append(enemy)
@@ -238,9 +238,9 @@ class ActionState(GameState):
         # Create the exits
         #############################
         exitLeft = RoomExit(pygame.Rect(0,0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'L')
-        exitRight = RoomExit(pygame.Rect(self.game.GAME_WINDOW_SIZE[0] - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, self.game.GAME_WINDOW_SIZE[1]), 'R')
-        exitUp = RoomExit(pygame.Rect(0,0, self.game.GAME_WINDOW_SIZE[0], ActionState.EXIT_SIZE), 'U')
-        exitDown = RoomExit(pygame.Rect(0,self.game.GAME_WINDOW_SIZE[1] - ActionState.EXIT_SIZE, self.game.GAME_WINDOW_SIZE[0], ActionState.EXIT_SIZE), 'D')
+        exitRight = RoomExit(pygame.Rect(WINDOW_WIDTH - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, WINDOW_HEIGHT), 'R')
+        exitUp = RoomExit(pygame.Rect(0,0, WINDOW_WIDTH, ActionState.EXIT_SIZE), 'U')
+        exitDown = RoomExit(pygame.Rect(0,WINDOW_HEIGHT - ActionState.EXIT_SIZE, WINDOW_WIDTH, ActionState.EXIT_SIZE), 'D')
         self.Exits = []
 
         match self.CurrentRoom.Map.name:
@@ -388,13 +388,13 @@ class ActionState(GameState):
             # bound player to screen
             if player.Rect.x < 0:
                 player.Rect.x = 0
-            elif player.Rect.x > self.game.GAME_WINDOW_SIZE[0] - player.Rect.width:
-                player.Rect.x = self.game.GAME_WINDOW_SIZE[0] - player.Rect.width
+            elif player.Rect.x > WINDOW_WIDTH - player.Rect.width:
+                player.Rect.x = WINDOW_WIDTH - player.Rect.width
 
             if player.Rect.y < 0:
                 player.Rect.y = 0
-            elif player.Rect.y > self.game.GAME_WINDOW_SIZE[1] - player.Rect.height:
-                player.Rect.y = self.game.GAME_WINDOW_SIZE[1] - player.Rect.height
+            elif player.Rect.y > WINDOW_HEIGHT - player.Rect.height:
+                player.Rect.y = WINDOW_HEIGHT - player.Rect.height
             
             # check for items pickups
             for object in self.Objects.copy():
@@ -422,7 +422,7 @@ class ActionState(GameState):
             if len(self.Enemies) == 0:
 
                 # that room is cleared
-                self.CurrentRoom.Cleared = True
+                self.CurrentRoom.Cleared = True                       
 
                 for exit in self.Exits:
                     if player.Rect.colliderect(exit.Rect):
@@ -431,28 +431,28 @@ class ActionState(GameState):
                                 self.LoadRoom(self.Level.GetRoomByCoords(x=self.CurrentRoom.Coords[0] - 1, y=self.CurrentRoom.Coords[1]))
                                 for player in self.Players:
                                     player.Rect.midright = (
-                                        self.game.GAME_WINDOW_SIZE[0] - ActionState.EXIT_SIZE - 1, 
-                                        self.game.GAME_WINDOW_SIZE[1] * 0.5
+                                        WINDOW_WIDTH - ActionState.EXIT_SIZE - 1, 
+                                        WINDOW_HEIGHT * 0.5
                                     )
                             case 'R':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0] + 1, self.CurrentRoom.Coords[1]))
                                 for player in self.Players:
                                     player.Rect.midleft = (
                                         ActionState.EXIT_SIZE + 1, 
-                                        self.game.GAME_WINDOW_SIZE[1] * 0.5
+                                        WINDOW_HEIGHT * 0.5
                                     )
                             case 'U':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] - 1))
                                 for player in self.Players:
                                     player.Rect.midbottom = (
-                                        self.game.GAME_WINDOW_SIZE[0] * 0.5,
-                                        self.game.GAME_WINDOW_SIZE[1] - ActionState.EXIT_SIZE - 1
+                                        WINDOW_WIDTH * 0.5,
+                                        WINDOW_HEIGHT - ActionState.EXIT_SIZE - 1
                                     )
                             case 'D':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] + 1))
                                 for player in self.Players:
                                     player.Rect.midtop = (
-                                        self.game.GAME_WINDOW_SIZE[0] * 0.5,
+                                        WINDOW_WIDTH * 0.5,
                                         int(ActionState.EXIT_SIZE + 1)
                                     )
 
@@ -512,7 +512,7 @@ class ActionState(GameState):
         # SPECIAL CASE FOR VERY FIRST ROOM: WRITE INSTRUCTIONS
         #############################################
         if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
-            screen.blit(self.howToMoveTipSurface, (self.game.GAME_WINDOW_SIZE[0] / 2 - self.howToMoveTipSurface.get_width() / 2, self.game.GAME_WINDOW_SIZE[1] / 2- self.howToMoveTipSurface.get_height() / 2))
+            screen.blit(self.howToMoveTipSurface, (WINDOW_WIDTH / 2 - self.howToMoveTipSurface.get_width() / 2, WINDOW_HEIGHT / 2- self.howToMoveTipSurface.get_height() / 2))
 
         #############################################
         # GAME OBJECTS
@@ -546,8 +546,8 @@ class ActionState(GameState):
         #############################################
         # ROOM BOTTOM CORNERS
         #############################################
-        screen.blit(self.RoomBottomLeftCornerSurface, (0,self.game.GAME_WINDOW_SIZE[1] - self.RoomBottomLeftCornerSurface.get_height()))
-        screen.blit(self.RoomBottomRightCornerSurface, (self.game.GAME_WINDOW_SIZE[0] - self.RoomBottomRightCornerSurface.get_width(), self.game.GAME_WINDOW_SIZE[1] - self.RoomBottomRightCornerSurface.get_height()))
+        screen.blit(self.RoomBottomLeftCornerSurface, (0, WINDOW_HEIGHT - self.RoomBottomLeftCornerSurface.get_height()))
+        screen.blit(self.RoomBottomRightCornerSurface, (WINDOW_WIDTH - self.RoomBottomRightCornerSurface.get_width(), WINDOW_HEIGHT - self.RoomBottomRightCornerSurface.get_height()))
 
         #############################################
         # POPUP TEXT WHEN STEPPING ON HELP BUTTONS
@@ -557,7 +557,7 @@ class ActionState(GameState):
             lineY = 600
             lineX = 200
 
-            pygame.draw.rect(screen, (72, 55, 55), pygame.Rect(lineX - 20, lineY - 20, self.game.GAME_WINDOW_SIZE[0] - (lineX - 20) * 2, len(lines) * 40 + 20))
+            pygame.draw.rect(screen, (72, 55, 55), pygame.Rect(lineX - 20, lineY - 20, WINDOW_WIDTH - (lineX - 20) * 2, len(lines) * 40 + 20))
 
             font = pygame.font.SysFont(None, 32)
             for line in lines:
@@ -580,11 +580,11 @@ class ActionState(GameState):
             self.CurrentBosslife = sum(boss.CurrentLife for boss in self.Enemies if boss.IsABoss)
 
             if self.CurrentBosslife > 0:
-                maxWidth = self.game.GAME_WINDOW_SIZE[0] - 394
+                maxWidth = WINDOW_WIDTH - 394
                 currentWidth = self.CurrentBosslife / self.TotalBosslife * maxWidth - 6
 
-                pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, self.game.GAME_WINDOW_SIZE[1] - 75, maxWidth, 48))
-                pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, self.game.GAME_WINDOW_SIZE[1] - 72, currentWidth, 42))
+                pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, WINDOW_HEIGHT - 75, maxWidth, 48))
+                pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, WINDOW_HEIGHT - 72, currentWidth, 42))
 
 
         if len(self.Players) == 1:

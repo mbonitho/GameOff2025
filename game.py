@@ -13,13 +13,13 @@ from gamestates.storyState import StoryState
 from gamestates.titleState import TitleState
 from gamestates.rebindState import RebindMenuState
 from gamestates.elevatorState import ElevatorState
-from utils.parameters import STARTING_FLOOR, STARTING_STATE
+from utils.parameters import STARTING_FLOOR, STARTING_STATE, WINDOW_HEIGHT, WINDOW_WIDTH
 
 class Game:
 
     WEB = False
-    GAME_WINDOW_SIZE = (1280, 960)
-    TARGET_ASPECT = GAME_WINDOW_SIZE[0] / GAME_WINDOW_SIZE[1]
+    GAME_WINDOW_SIZE = (WINDOW_WIDTH, WINDOW_HEIGHT)
+    TARGET_ASPECT = WINDOW_WIDTH / WINDOW_HEIGHT
 
     def __init__(self):
         pygame.init()
@@ -53,8 +53,8 @@ class Game:
 
         # game settings
         self.is_fullscreen = False
-        self.target_width = Game.GAME_WINDOW_SIZE[0]
-        self.target_height = Game.GAME_WINDOW_SIZE[1]
+        self.target_width = WINDOW_WIDTH
+        self.target_height = WINDOW_HEIGHT
 
         # clean game data, is overridden when load_data is called
         self.game_data = {

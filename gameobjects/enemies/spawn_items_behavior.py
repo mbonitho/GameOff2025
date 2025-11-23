@@ -24,7 +24,7 @@ class SpawnItemBehavior(EnemyBehavior):
         self.objectType = objectType
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         # 

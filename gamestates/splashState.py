@@ -1,14 +1,16 @@
 from gamestates.gameState import GameState
 import pygame
 
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
+
 
 # Splash screen state
 class SplashState(GameState):
     def enter(self):
         print("Entered Splash State")
         self.LogoSurface = pygame.image.load('assets/sprites/cool_poop.png').convert_alpha()
-        self.logoX = self.game.GAME_WINDOW_SIZE[0] / 2 - self.LogoSurface.get_width() / 2
-        self.logoY = self.game.GAME_WINDOW_SIZE[1] / 2 - self.LogoSurface.get_height() / 2
+        self.logoX = WINDOW_WIDTH / 2 - self.LogoSurface.get_width() / 2
+        self.logoY = WINDOW_HEIGHT / 2 - self.LogoSurface.get_height() / 2
 
         self.game.splash_timer = 1.5
 

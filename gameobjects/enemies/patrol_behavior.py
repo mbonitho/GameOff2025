@@ -14,7 +14,7 @@ class PatrolBehavior(EnemyBehavior):
         self.factor = 1
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         x_dest = 0 

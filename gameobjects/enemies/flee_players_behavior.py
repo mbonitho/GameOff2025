@@ -10,7 +10,7 @@ class FleePlayersBehavior(EnemyBehavior):
         self.obstacles = obstacles
 
     def update(self, enemy, players, dt):
-        if not players:
+        if len(players) == 0:
             return
 
         # Find nearest player
