@@ -10,6 +10,7 @@ from gameobjects.enemies.enemy_factory import EnemyFactory
 from gameobjects.level import Level, Room
 from gameobjects.objects.helpButton import HelpButton
 from gameobjects.objects.objects_factory import ObjectsFactory
+from gameobjects.objects.vendingmachine import VendingMachine
 from gameobjects.player import Player
 from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
@@ -45,7 +46,7 @@ class ActionState(GameState):
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
         self.HelpButton: HelpButton | None = None
-
+        self.VendingMachine: VendingMachine | None = None
 
         #############################
         # UI
@@ -72,6 +73,7 @@ class ActionState(GameState):
         self.Enemies = []
         self.Objects = []
         self.HelpButton = None
+        self.VendingMachine = None
 
         for player in self.Players:
             player.Weapon.Bullets = []
@@ -86,6 +88,15 @@ class ActionState(GameState):
         if room.helpButtonDefinition is not None:
             pos = (room.helpButtonDefinition.coords[0] * self.game.GAME_WINDOW_SIZE[0], room.helpButtonDefinition.coords[1] * self.game.GAME_WINDOW_SIZE[1])
             self.HelpButton = ObjectsFactory.GetHelpButton(pos, room.helpButtonDefinition.name)
+
+        #############################
+        # Add a vending machine when there is one in the room
+        #############################
+        if room.vendingMachineDefinition is not None:
+            pos = (900,20)
+            self.VendingMachine = ObjectsFactory.GetVendingMachine(pos)
+            self.CurrentRoom.Obstacles.append(self.VendingMachine.Rect)
+
 
         #############################
         # Load room enemies if room not cleared
@@ -396,7 +407,7 @@ class ActionState(GameState):
                 self.PopUpText = ''
 
             # check for teleport to next floor
-            if self.Elevator is not None and self.CurrentRoom.Cleared:
+            if self.Elevator is not None and self.CurrentRoom.Cleared and len(self.FarawayTowers) == 0:
                 if player.Rect.colliderect(self.Elevator.Rect):
                     self.game.game_data['floor'] += 1
                     self.game.change_state("Elevator")
@@ -503,6 +514,9 @@ class ActionState(GameState):
 
         if self.HelpButton is not None:
             self.HelpButton.draw(screen)
+
+        if self.VendingMachine is not None:
+            self.VendingMachine.draw(screen)
 
         for e in self.Enemies:
             e.draw(screen)

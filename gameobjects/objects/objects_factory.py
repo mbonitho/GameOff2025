@@ -8,6 +8,7 @@ from gameobjects.objects.helpButton import HelpButton
 from gameobjects.objects.landmine import Landmine
 from gameobjects.objects.medkit import Medkit
 from gameobjects.objects.moneyBag import MoneyBag
+from gameobjects.objects.vendingmachine import VendingMachine
 from gameobjects.objects.weapon_pickup import WeaponPickup
 
 class ObjectsFactory:
@@ -58,6 +59,13 @@ class ObjectsFactory:
 
         return  HelpButton(cls._textures['helpButton'], pos[0], pos[1], textkey)
     
+    @classmethod
+    def GetVendingMachine(cls, pos: Tuple[int, int]):
+        if 'vendingMachine' not in cls._textures:
+            cls._textures['vendingMachine'] =pygame.image.load('assets/sprites/objects/vendingMachine.png').convert_alpha()
+
+        return  VendingMachine(cls._textures['vendingMachine'], pos[0], pos[1])
+
     @classmethod
     def GetRandomWeaponPickup(cls, pos: Tuple[int, int]):
         from gameobjects.weapons.weapons_factory import WeaponFactory

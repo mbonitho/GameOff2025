@@ -65,6 +65,7 @@ class WeaponFactory:
         weapon.BulletSpeed = int(weapon.BulletSpeed * .75)
         weapon.BulletMaxLifespan = 0.25
         weapon.TotalAmunition = 50
+        weapon.BulletDamage = 2
 
         return weapon
     
@@ -90,5 +91,6 @@ class WeaponFactory:
         weapon.BulletSpeed = int(weapon.BulletSpeed * .75)
         weapon.BulletMaxLifespan = 0.25
         weapon.TotalAmunition = 30
-
+        weapon.BulletDamage = 3
+        
         return weapon

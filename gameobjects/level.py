@@ -74,6 +74,12 @@ class Level:
                                 
                                 room.helpButtonDefinition = EntityDefinition(entity.values['TextKey'], (x_in_map_grid,y_in_map_grid))
                             
+                            case 'healSpot':
+                                x_in_map_grid = (((entity.x % roomLayer.gridCellWidth) / eventLayer.gridCellWidth) + 1) / 16 
+                                y_in_map_grid = (((entity.y % roomLayer.gridCellHeight) / eventLayer.gridCellHeight) + 1) / 16
+                                
+                                room.vendingMachineDefinition = EntityDefinition('Vendingmachine', (x_in_map_grid,y_in_map_grid))
+                            
                             case 'enemy':
                                 x_in_map_grid = (((entity.x % roomLayer.gridCellWidth) / eventLayer.gridCellWidth) + 1) / 16 
                                 y_in_map_grid = (((entity.y % roomLayer.gridCellHeight) / eventLayer.gridCellHeight) + 1) / 16

@@ -40,7 +40,8 @@
           "originY": 0,
           "values": {"Type": "boss1"}
         },
-        {"name": "roomStart", "id": 2, "_eid": "82159653", "x": 24, "y": 168, "originX": 0, "originY": 0}
+        {"name": "roomStart", "id": 2, "_eid": "82159653", "x": 24, "y": 168, "originX": 0, "originY": 0},
+        {"name": "healSpot", "id": 3, "_eid": "84441124", "x": 40, "y": 80, "originX": 0, "originY": 0}
       ]
     }
   ]

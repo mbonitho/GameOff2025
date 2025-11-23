@@ -26,6 +26,12 @@ POPUP_TEXTS = {
         "",
         "If your keyboard isn't qwerty or your gamepad buttons are scrambled, fear not!",
         "Just press the Ctrl key to configure your keyboard or gamepad."
+    ],
+
+    "TIP2": [
+        "There are communication towers scattered around the different floors.",
+        "Until you destroy them, they will keep shooting harmful waves at you from afar.",
+        "Destroy all towers on a floor to unlock the elevator."
     ]
 
 }

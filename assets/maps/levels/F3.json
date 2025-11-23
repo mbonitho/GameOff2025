@@ -211,6 +211,16 @@
           "originX": 0,
           "originY": 0,
           "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "helpButton",
+          "id": 25,
+          "_eid": "67683655",
+          "x": 12,
+          "y": 44,
+          "originX": 0,
+          "originY": 0,
+          "values": {"TextKey": "TIP2"}
         }
       ]
     }

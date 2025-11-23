@@ -23,6 +23,7 @@ class Room:
         self.EnemiesDefinitions: list[EntityDefinition] = []
 
         self.helpButtonDefinition: EntityDefinition | None = None
+        self.vendingMachineDefinition: EntityDefinition | None = None
 
         # block walls
         match map.name:

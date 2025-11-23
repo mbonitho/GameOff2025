@@ -64,6 +64,14 @@ class ElevatorState(GameState):
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
 
+            if self.game.game_data['floor'] > 2:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == K_SPACE:
+                        self.game.change_state("Action")
+
+                if event.type == pygame.JOYBUTTONUP:
+                    if event.button == 7 and event.joy == 0:
+                        self.game.change_state("Action")
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)
@@ -174,4 +182,9 @@ class ElevatorState(GameState):
     
         # Floor numbers
         screen.blit(self.previousFloorText, (700, self.previousFloorTextPos))
-        screen.blit(self.nextFloorText, (700, self.nextFloorTextPos))
+        screen.blit
+        
+        if self.game.game_data['floor'] > 2:
+            font = pygame.font.SysFont(None, 24)
+            text = font.render('(Press space or start to skip)', True, (255, 255, 255))
+            screen.blit(text, (self.game.GAME_WINDOW_SIZE[0] / 2 - text.get_width()/ 2, 20))
