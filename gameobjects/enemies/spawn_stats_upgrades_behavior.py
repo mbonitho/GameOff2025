@@ -20,10 +20,9 @@ class SpawnStatsUpgradesBehavior(EnemyBehavior):
         if enemy.CurrentLife <= 0:
 
             if players[0].CurrentLife > 0:
-                pickup = ObjectsFactory.GetMaxLifeUp((WINDOW_WIDTH * 0.25, WINDOW_HEIGHT * .25), self.upgradeValue)
+                pickup = ObjectsFactory.GetMaxLifeUp((WINDOW_WIDTH * 0.25, WINDOW_HEIGHT * .5), self.upgradeValue)
                 self.objects.append(pickup)
 
-                pickup = ObjectsFactory.GetMaxLifeUp((WINDOW_WIDTH * 0.75, WINDOW_HEIGHT * .25), self.upgradeValue)
+            if len(players) > 1 and players[1].CurrentLife > 0:
+                pickup = ObjectsFactory.GetMaxLifeUp((WINDOW_WIDTH * 0.75, WINDOW_HEIGHT * .5), self.upgradeValue)
                 self.objects.append(pickup)
-
-            # if len(players) > 1 and players[1].CurrentLife > 0:

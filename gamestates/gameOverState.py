@@ -1,5 +1,6 @@
 import pygame
 from gameobjects.blinking_text import BlinkingText
+from gameobjects.weapons.weapons_factory import WeaponFactory
 from gamestates.gameState import GameState
 from pygame.locals import *
 
@@ -19,11 +20,11 @@ class GameOverState(GameState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
-                    self.game.change_state("Action")
+                    self.continueGame()
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == 7:
-                    self.game.change_state("Action")
+                    self.continueGame()
 
     def draw(self, screen):
         screen.fill((30, 30, 60))
@@ -42,3 +43,10 @@ class GameOverState(GameState):
         self.RetryText.update(dt)
         if self.GameOverSurfaceY < 350:
             self.GameOverSurfaceY += 800 * dt
+
+    def continueGame(self):
+        for p in self.game.players:
+            p.CurrentLife = p.MaxLife
+            p.Weapon = WeaponFactory.GetDefaultWeapon(p)
+            
+        self.game.change_state("Action")
