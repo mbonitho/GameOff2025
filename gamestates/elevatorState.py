@@ -28,7 +28,7 @@ class ElevatorState(GameState):
         # ENTITIES
         #############################
         self.floorRect = pygame.Rect(self.XOffset + 64, self.YOffset + 64, 300, 236)
-        self.Players = [Player(1, int(self.floorRect.x + self.floorRect.width / 2), 0)]
+        self.Players = self.game.players
 
         #############################
         # UI
@@ -182,7 +182,7 @@ class ElevatorState(GameState):
     
         # Floor numbers
         screen.blit(self.previousFloorText, (700, self.previousFloorTextPos))
-        screen.blit
+        screen.blit(self.nextFloorText, (700, self.nextFloorTextPos))
         
         if self.game.game_data['floor'] > 2:
             font = pygame.font.SysFont(None, 24)

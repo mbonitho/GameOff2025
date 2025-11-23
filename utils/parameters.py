@@ -29,7 +29,7 @@ POPUP_TEXTS = {
     ],
 
     "TIP2": [
-        "There are communication towers scattered around the different floors.",
+        "There are communication towers scattered on this floor and others.",
         "Until you destroy them, they will keep shooting harmful waves at you from afar.",
         "Destroy all towers on a floor to unlock the elevator."
     ]

@@ -71,6 +71,8 @@ class Game:
 
         self.joysticks = []
 
+        self.players = []
+
         #finally, set current state
         self.current_state: Optional[GameState] = None
         self.change_state(STARTING_STATE)

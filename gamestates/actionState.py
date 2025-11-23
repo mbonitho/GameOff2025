@@ -41,7 +41,9 @@ class ActionState(GameState):
         #############################
         # ENTITIES
         #############################
-        self.Players = [Player(1, self.game.GAME_WINDOW_SIZE[0] / 2, self.game.GAME_WINDOW_SIZE[1] / 2)]
+        if self.game.players == []:
+            self.game.players = [Player(1, self.game.GAME_WINDOW_SIZE[0] / 2, self.game.GAME_WINDOW_SIZE[1] / 2)]
+        self.Players = self.game.players
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
         self.FarawayTowers: List[Enemy] = []
@@ -401,7 +403,7 @@ class ActionState(GameState):
                     self.Objects.remove(object)
                     
             # check for collision with help button
-            if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect):
+            if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect) and len(self.Enemies) == 0:
                 self.PopUpText = self.HelpButton.textKey
             else:
                 self.PopUpText = ''
