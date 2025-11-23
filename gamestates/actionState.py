@@ -63,7 +63,7 @@ class ActionState(GameState):
         #############################
         # self.NumberOfEnemiesToSpawn = 0
         # self.NumberOfEnemiesSpawned = 0
-        self.Level = Level(f'F{self.game.game_data['floor']}')
+        self.Level = Level(f"F{self.game.game_data['floor']}")
         self.LoadRoom(self.Level.StartingRoom)
 
     def LoadRoom(self, room: Room | None):
