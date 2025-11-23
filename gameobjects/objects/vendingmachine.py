@@ -8,6 +8,8 @@ class VendingMachine:
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
 
+        self.CollissionRect =  self.Rect.inflate(20, 20)
+
         self.lifespan = 0
         self.maxlifespan = 20
 
@@ -22,6 +24,6 @@ class VendingMachine:
         screen.blit(self.Surface, self.Rect.topleft)
 
     def handleCollision(self, player):
-        if player.CurrentLife < player.MaxLife:
+        if player.Rect.colliderect(self.CollissionRect) and player.CurrentLife < player.MaxLife:
             player.CurrentLife = player.MaxLife
     

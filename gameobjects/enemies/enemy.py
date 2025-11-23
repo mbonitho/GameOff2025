@@ -71,4 +71,4 @@ class Enemy:
     def ReceiveDamage(self, dmg: int = 1):
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
-            self.CurrentLife -= dmg
+        self.CurrentLife -= dmg

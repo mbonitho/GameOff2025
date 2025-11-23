@@ -292,7 +292,7 @@ class EnemyFactory:
     
         enemy.IsABoss = True
         enemy.setScale(3)
-        enemy.MaxLife = 20
+        enemy.MaxLife = 60
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
 

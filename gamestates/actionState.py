@@ -408,6 +408,10 @@ class ActionState(GameState):
             else:
                 self.PopUpText = ''
 
+            if self.VendingMachine is not None:
+                self.VendingMachine.handleCollision(player)
+
+
             # check for teleport to next floor
             if self.Elevator is not None and self.CurrentRoom.Cleared and len(self.FarawayTowers) == 0:
                 if player.Rect.colliderect(self.Elevator.Rect):
