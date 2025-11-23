@@ -42,7 +42,7 @@ class Player:
         self.CurrentLife = self.MaxLife
         self.Score = 0
 
-        self.Weapon = WeaponFactory.GetDefaultWeapon(self)
+        self.Weapon = WeaponFactory.GetLv1Shotgun(self)
 
         self.BlinkingComponent = BlinkingComponent()
 

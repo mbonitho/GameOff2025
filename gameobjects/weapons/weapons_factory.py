@@ -46,13 +46,13 @@ class WeaponFactory:
     @classmethod
     def GetLv1Shotgun(cls, owner):
 
-        if 'shotgun' not in cls._textures: #todo correct texture for weapon
-            cls._textures['shotgun'] = pygame.image.load(f'assets/sprites/objects/shotgun.png').convert_alpha()
+        if 'musket' not in cls._textures: #todo correct texture for weapon
+            cls._textures['musket'] = pygame.image.load(f'assets/sprites/objects/musket.png').convert_alpha()
 
         if 'bullet1' not in cls._textures:
             cls._textures['bullet1'] = pygame.image.load('assets/sprites/projectiles/bullet.png').convert_alpha()
 
-        wpnSurface = cls._textures['shotgun']
+        wpnSurface = cls._textures['musket']
         bulletSurface = cls._textures['bullet1']
 
         weapon = Weapon(owner, wpnSurface, bulletSurface)
