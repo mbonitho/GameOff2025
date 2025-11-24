@@ -38,6 +38,8 @@ class Player:
         self.Rect.topleft = (x, y)
 
         self.Lives = 3
+        self.NextLifeThreshold = 500
+
         self.Speed = 6
         self.MaxLife = 5
         self.CurrentLife = self.MaxLife

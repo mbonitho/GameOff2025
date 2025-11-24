@@ -16,7 +16,7 @@ from gameobjects.enemies.enemy import Enemy
 from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
-from utils.parameters import MEDKIT_CHANCE, POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.parameters import LOOT_CHANCE, POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
 
 class ActionState(GameState):
 
@@ -491,9 +491,14 @@ class ActionState(GameState):
                     player = self.Players[enemy.KilledByPlayerIndex - 1]
                     player.Score += enemy.ScoreValue
 
+                    # gain a life if score 
+                    if player.Score > player.NextLifeThreshold:
+                        player.NextLifeThreshold += 500
+                        player.Lives += 1
+
                 # loot chance!
                 
-                if random.random() <= MEDKIT_CHANCE:
+                if random.random() <= LOOT_CHANCE:
                     rng = random.random()
                     if rng < 0.5:
                         self.Objects.append(ObjectsFactory.GetMedkit(enemy.Rect.bottomleft))
