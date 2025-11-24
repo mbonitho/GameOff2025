@@ -38,6 +38,12 @@ class Enemy:
         self.Rect = pygame.Rect(self.Rect.x, self.Rect.y, self.Rect.width * scale, self.Rect.height * scale)
 
     def update(self, players, dt: float):
+
+        # only update enemies if at least one player is alive
+        playersAlive = any(p.CurrentLife > 0 or p.Lives > 0 for p in players)
+        if not playersAlive:
+            return
+
         self.BlinkingComponent.update(dt)
 
         self.looking_right = self.previous_pos[0] < self.Rect.x

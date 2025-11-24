@@ -37,6 +37,7 @@ class Player:
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
 
+        self.Lives = 3
         self.Speed = 6
         self.MaxLife = 5
         self.CurrentLife = self.MaxLife
@@ -50,6 +51,10 @@ class Player:
         self.Weapon = WeaponFactory.GetDefaultWeapon(self)
     
     def update(self, enemies: list, dt: float):
+
+        if self.CurrentLife <= 0:
+            return
+        
         self.BlinkingComponent.update(dt)
 
         if self.previous_pos == self.Rect.topleft:
@@ -69,6 +74,10 @@ class Player:
         self.previous_pos = self.Rect.topleft
 
     def draw(self, screen):
+
+        if self.CurrentLife <= 0:
+            return
+
         if self.BlinkingComponent.visible:
             img = self.animations[self.state][self.frame_index]
             if not self.looking_right:
@@ -78,24 +87,36 @@ class Player:
         self.Weapon.draw(screen)
 
     def MoveX(self, value, obstacles: list[Rect]):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, self.Speed * value, 0, obstacles)
         self.looking_right = value > 0
 
     def MoveY(self, value, obstacles: list[Rect]):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, 0, self.Speed * value, obstacles)
 
     def MoveLeft(self, obstacles: list[Rect], ratio: float = 1):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, int(self.Speed * ratio) * -1, 0, obstacles)
         self.looking_right = False
 
     def MoveRight(self, obstacles: list[Rect], ratio: float = 1):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, int(self.Speed * ratio), 0, obstacles)
         self.looking_right = True
 
     def MoveUp(self, obstacles: list[Rect], ratio: float = 1):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, 0, int(self.Speed * ratio) * -1, obstacles)
 
     def MoveDown(self, obstacles: list[Rect], ratio: float = 1):
+        if self.CurrentLife <= 0:
+            return
         MoveAndCollide(self.Rect, 0, int(self.Speed * ratio), obstacles)
 
     def ReceiveDamage(self, dmg: int = 1):
@@ -107,4 +128,6 @@ class Player:
         return False
 
     def TryShootBullet(self, direction: str):
+        if self.CurrentLife <= 0:
+            return
         self.Weapon.TryShootBullet(direction)

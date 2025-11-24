@@ -32,5 +32,6 @@ class MaxLifeUp:
         if self.lifespan < self.maxlifespan:
             player.MaxLife += self.value
             player.CurrentLife = player.MaxLife
+            player.Lives += 1
 
     

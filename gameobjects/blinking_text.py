@@ -12,11 +12,16 @@ class BlinkingText:
         self.blinking_speed = 1 # s
 
         self.font = pygame.font.SysFont(None, font_size)
-        self.text = self.font.render(text, False, tint)
+        self.renderedText = self.font.render(text, False, tint)
+        self.tint = tint
+        self.text = text
 
         self.position = pos
         
 
+    def renderNewText(self, newText: str):
+        if newText != self.text:
+            self.renderedText = self.font.render(newText, False, self.tint) 
     
     def update(self, dt: float):
         self.blinking_timer += dt
@@ -28,4 +33,4 @@ class BlinkingText:
 
     def draw(self, screen):
         if self.visible:
-            screen.blit(self.text, self.position)
+            screen.blit(self.renderedText, self.position)

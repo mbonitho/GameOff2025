@@ -36,7 +36,6 @@ class ElevatorState(GameState):
         #############################
         self.UIFont = pygame.font.SysFont(None, 48)
         self.FloorFont = pygame.font.SysFont(None, 96)
-        self.player2PressStartText = BlinkingText('Player 2 - press start', (self.game.screen.get_width() - 400, 16), font_size=48)
         
         self.previousFloorText = self.FloorFont.render(f"F{self.game.game_data['floor'] - 1}", False, (255,255,255))
         self.previousFloorTextPos = WINDOW_HEIGHT / 2
@@ -128,10 +127,6 @@ class ElevatorState(GameState):
         if self.YOffset <= -360:
             self.game.change_state("Action")
 
-        # blinking text
-        if len(self.Players) == 1:
-            self.player2PressStartText.update(dt)
-
         # Update players
         for player in self.Players:
             player.update([], dt)
@@ -168,18 +163,6 @@ class ElevatorState(GameState):
         #############################################
         # HUD
         #############################################
-        player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
-        screen.blit(player1ScoreText, (16, 16))
-
-        # P1 life bar
-        pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[0].MaxLife * 20 + 6, 24))
-        pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[0].CurrentLife * 20, 18))
-
-        if len(self.Players) == 1:
-            self.player2PressStartText.draw(screen)
-        else:
-            player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
-            screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
     
         # Floor numbers
         screen.blit(self.previousFloorText, (700, self.previousFloorTextPos))

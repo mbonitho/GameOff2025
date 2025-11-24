@@ -56,6 +56,9 @@ class ActionState(GameState):
         self.UIFont = pygame.font.SysFont(None, 48)
         self.player2PressStartText = BlinkingText('Player 2 - press start', (WINDOW_WIDTH - 400, 16), font_size=48)
 
+        self.Player1DeadText = BlinkingText('Player 1 - press start or space', (20, WINDOW_HEIGHT - 48), font_size=48)
+        self.Player2DeadText = BlinkingText('Player 2 - press start or space', (WINDOW_WIDTH - 400, WINDOW_HEIGHT - 48), font_size=48)
+
         self.PopUpText = ''
 
         #############################
@@ -152,8 +155,8 @@ class ActionState(GameState):
         # Add a Comm Tower here if there's one
         #############################
         if self.CurrentRoom.Coords in self.Level.CommTowerPositions:
-            posX = self.game.screen.get_width() * 0.5 - self.AntennaSurface.get_width() * 0.5
-            posY = self.game.screen.get_height() * 0.5 - self.AntennaSurface.get_height() * 0.5
+            posX = WINDOW_WIDTH * 0.5 - self.AntennaSurface.get_width() * 0.5
+            posY = WINDOW_HEIGHT * 0.5 - self.AntennaSurface.get_height() * 0.5
             self.CommTower = EnemyFactory.GetSameRoomAntennaTower((posX, posY))
             self.Enemies.append(self.CommTower)
             self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
@@ -164,7 +167,7 @@ class ActionState(GameState):
         # Add the elevator if it's here
         #############################
         if self.CurrentRoom.Coords == self.Level.ElevatorCoords:
-            posX = int(self.game.screen.get_width() * 0.5 - self.ElevatorSurface.get_width() * 0.5)
+            posX = int(WINDOW_WIDTH * 0.5 - self.ElevatorSurface.get_width() * 0.5)
             posY = int(self.ElevatorSurface.get_height() * 0.5)
             self.Elevator = Elevator(self.ElevatorSurface, posX, posY)
             # self.CurrentRoom.Obstacles.append(self.Elevator.Rect)
@@ -186,10 +189,10 @@ class ActionState(GameState):
                 posX = -self.BulletSurface.get_width()
                 posXName = 'left'
             elif comTowerpos[0] > self.CurrentRoom.Coords[0]:
-                posX = self.game.screen.get_width()
+                posX = WINDOW_WIDTH
                 posXName = 'right'
             else:
-                posX = self.game.screen.get_width() * .5 - self.BulletSurface.get_width() * .5
+                posX = WINDOW_WIDTH * .5 - self.BulletSurface.get_width() * .5
                 posXName = 'mid'
 
             posY = 0
@@ -198,10 +201,10 @@ class ActionState(GameState):
                 posY = -self.BulletSurface.get_height()
                 posYName = 'top'
             elif comTowerpos[1] > self.CurrentRoom.Coords[1]:
-                posY = self.game.screen.get_height()
+                posY = WINDOW_HEIGHT
                 posYName = 'bottom'
             else:
-                posY = self.game.screen.get_height() * .5 - self.BulletSurface.get_height() * .5               
+                posY = WINDOW_HEIGHT * .5 - self.BulletSurface.get_height() * .5               
                 posYName = 'mid'
 
             angleRange: tuple[int, int]
@@ -237,7 +240,7 @@ class ActionState(GameState):
         #############################
         # Create the exits
         #############################
-        exitLeft = RoomExit(pygame.Rect(0,0, ActionState.EXIT_SIZE, self.game.screen.get_height()), 'L')
+        exitLeft = RoomExit(pygame.Rect(0,0, ActionState.EXIT_SIZE, WINDOW_HEIGHT), 'L')
         exitRight = RoomExit(pygame.Rect(WINDOW_WIDTH - ActionState.EXIT_SIZE, 0, ActionState.EXIT_SIZE, WINDOW_HEIGHT), 'R')
         exitUp = RoomExit(pygame.Rect(0,0, WINDOW_WIDTH, ActionState.EXIT_SIZE), 'U')
         exitDown = RoomExit(pygame.Rect(0,WINDOW_HEIGHT - ActionState.EXIT_SIZE, WINDOW_WIDTH, ActionState.EXIT_SIZE), 'D')
@@ -303,6 +306,9 @@ class ActionState(GameState):
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('d')
 
+                # SPACE, when P1 is dead
+                elif event.key == K_SPACE:
+                    self.tryRespawnPlayer(self.Players[0])
 
             # JOYSTICKS
             if event.type == pygame.JOYBUTTONUP:
@@ -331,6 +337,10 @@ class ActionState(GameState):
                     elif event.button == 0: # SHOOT DOWN
                         player = self.Players[event.joy]
                         player.TryShootBullet('d')
+
+                    # START BUTTON, try respawning player 
+                    elif event.button == 7: 
+                        self.tryRespawnPlayer(self.Players[event.joy])
 
 
         ######################################
@@ -378,8 +388,17 @@ class ActionState(GameState):
     def update(self, dt: float):
 
         # blinking text
+        if self.Players[0].CurrentLife <= 0:
+            text = 'Player 1 - press start or space' if self.Players[0].Lives > 0 else 'Player 1 - GAME OVER'
+            self.Player1DeadText.renderNewText(text)
+            self.Player1DeadText.update(dt)
+
         if len(self.Players) == 1:
             self.player2PressStartText.update(dt)
+        elif self.Players[1].CurrentLife <= 0:
+            text = 'Player 2 - press start or space' if self.Players[1].Lives > 0 else 'Player 2 - GAME OVER'
+            self.Player2DeadText.renderNewText(text)
+            self.Player2DeadText.update(dt)
 
         # Update players
         for player in self.Players:
@@ -496,8 +515,9 @@ class ActionState(GameState):
             self.CommTower = None
 
         # check for game over
-        continueGame = any(p.CurrentLife > 0 for p in self.Players)
+        continueGame = any(p.CurrentLife > 0 or p.Lives > 0 for p in self.Players)
         if not continueGame:
+            print(self.Players[0].Lives)
             self.game.change_state("GameOver")
 
     def draw(self, screen):
@@ -568,12 +588,26 @@ class ActionState(GameState):
         #############################################
         # HUD
         #############################################
-        player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score}', False, (255,255, 255))
+        
+        # P1 score & life bar
+        player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score} ({self.Players[0].Lives} lives)', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))
-
-        # P1 life bar
         pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[0].MaxLife * 20 + 6, 24))
         pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[0].CurrentLife * 20, 18))
+
+        if self.Players[0].CurrentLife <= 0:
+            self.Player1DeadText.draw(screen)
+
+        if len(self.Players) == 1:
+            self.player2PressStartText.draw(screen)
+        else:
+            player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[1].Score} ({self.Players[1].Lives} lives)', False, (255, 255, 255))
+            screen.blit(player2ScoreText, (WINDOW_WIDTH - 200, 16))
+            pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[1].MaxLife * 20 + 6, 24))
+            pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[1].CurrentLife * 20, 18))
+
+            if self.Players[1].CurrentLife <= 0:
+                self.Player2DeadText.draw(screen)
 
         # Boss life bar
         if self.TotalBosslife > 0:
@@ -587,9 +621,11 @@ class ActionState(GameState):
                 pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, WINDOW_HEIGHT - 72, currentWidth, 42))
 
 
-        if len(self.Players) == 1:
-            self.player2PressStartText.draw(screen)
-        else:
-            player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[0].Score}', False, (255, 255, 255))
-            screen.blit(player2ScoreText, (self.game.screen.get_width() - 200, 16))
-    
+    def tryRespawnPlayer(self, player: Player):
+        if player.Lives <= 0:
+            return
+        
+        player.Lives -= 1
+        player.CurrentLife = player.MaxLife
+        player.initializeWeapon()
+        player.BlinkingComponent.StartBlinking()
