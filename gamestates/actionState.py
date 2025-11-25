@@ -145,6 +145,12 @@ class ActionState(GameState):
                     case 'boss1':
                         enemy = EnemyFactory.GetBoss1(pos, self.CurrentRoom.Obstacles, self.Objects)
 
+                    case 'boss2':
+                        enemy = EnemyFactory.GetBoss2(pos, self.Objects)
+
+                    case 'boss3':
+                        enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects)
+
                 if enemy is not None:
                     self.Enemies.append(enemy)
         

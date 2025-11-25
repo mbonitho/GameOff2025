@@ -298,3 +298,61 @@ class EnemyFactory:
         enemy.ScoreValue = 200
 
         return enemy
+    
+    @classmethod
+    def GetBoss2(cls, pos: Tuple[int, int], objects: list):
+
+        if 'rabbit1' not in cls._textures:
+            cls._textures['rabbit1'] = pygame.image.load(f'assets/sprites/enemies/rabbit1.png').convert_alpha()
+            cls._textures['rabbit2'] = pygame.image.load(f'assets/sprites/enemies/rabbit2.png').convert_alpha()
+            cls._textures['rabbit3'] = pygame.image.load(f'assets/sprites/enemies/rabbit3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['rabbit1'],
+            cls._textures['rabbit2'],
+            cls._textures['rabbit3']
+        ]
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior(), SpawnStatsUpgradesBehavior(1, objects)])
+
+        enemy.IsABoss = True
+        enemy.setScale(2)
+        enemy.MaxLife = 60
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 200
+
+        return enemy
+
+    @classmethod
+    def GetBoss3(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list):
+
+        if 'mouse1' not in cls._textures:
+            cls._textures['mouse1'] = pygame.image.load(f'assets/sprites/enemies/mouse1.png').convert_alpha()
+            cls._textures['mouse2'] = pygame.image.load(f'assets/sprites/enemies/mouse2.png').convert_alpha()
+            cls._textures['mouse3'] = pygame.image.load(f'assets/sprites/enemies/mouse3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['mouse1'],
+            cls._textures['mouse2'],
+            cls._textures['mouse3']
+        ]
+
+        move = MoveRandomlyBehavior(obstacles)
+        move.Speed = 240
+
+        hurtOnContact = HurtOnContactBehavior()
+        hurtOnContact.damage = 2
+
+        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.BOMB)
+        spawnBehavior.decisionMinTime = 4
+        spawnBehavior.decisionMaxTime = 6
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact, spawnBehavior, SpawnStatsUpgradesBehavior(2, objects)])
+    
+        enemy.IsABoss = True
+        enemy.setScale(3)
+        enemy.MaxLife = 60
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 200
+
+        return enemy
