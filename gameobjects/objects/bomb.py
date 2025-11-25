@@ -34,8 +34,9 @@ class Bomb:
         # spawn explosion when at the end of lifespan
         if self.lifespan >= self.explosionLifespan and not self.exploded:
             self.exploded = True
+            self.lifespan = self.maxlifespan
             from gameobjects.objects.objects_factory import ObjectsFactory
-            explo = ObjectsFactory.GetExplosion(self.Rect.bottomleft)
+            explo = ObjectsFactory.GetExplosion(self.Rect.center)
             self.objects.append(explo)
 
     def draw(self, screen):

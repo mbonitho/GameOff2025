@@ -423,9 +423,10 @@ class ActionState(GameState):
             
             # check for items pickups
             for object in self.Objects.copy():
-                if player.Rect.colliderect(object.Rect) and object.canBePickedUp:
+                if player.Rect.colliderect(object.Rect):
                     object.handleCollision(player)
-                    self.Objects.remove(object)
+                    if object.canBePickedUp:
+                        self.Objects.remove(object)
                     
             # check for collision with help button
             if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect) and len(self.Enemies) == 0:

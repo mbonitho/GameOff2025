@@ -49,7 +49,7 @@ class ObjectsFactory:
         if 'explosion' not in cls._textures:
             cls._textures['explosion'] = pygame.image.load('assets/sprites/objects/explosion.png').convert_alpha()
 
-        return  Explosion(cls._textures['explosion'], pos[0], pos[1])
+        return  Explosion(cls._textures['explosion'], pos[0] - cls._textures['explosion'].get_width() / 2, pos[1] - cls._textures['explosion'].get_height() / 2)
 
     @classmethod
     def GetBomb(cls, pos: Tuple[int, int], objects):

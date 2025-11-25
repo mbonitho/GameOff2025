@@ -2,7 +2,7 @@
 # "Splash","Title","Action","Rebind","GameOver","Elevator","Config", "Story"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 960
-STARTING_STATE = 'Action'
+STARTING_STATE = 'Splash'
 STARTING_FLOOR = 1
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 LOOT_CHANCE = 0.15
