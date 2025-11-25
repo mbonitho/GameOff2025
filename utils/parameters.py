@@ -13,8 +13,10 @@ POPUP_TEXTS = {
         "Project W.A.V.E.S...",
         "Behind that name lies a mysterious string of disappearances we came here to investigate.",
         "",
-        "The folks in town were helpful enough to point us to a large building",
-        "standing ominously atop the highest hill.",
+        "The folks in town were helpful enough to point us to a large building standing ominously",
+        "atop the highest hill.",
+        "",
+        "They say this is \"Where All Victims End Silently\".",
         "",
         "Armed only with our trusty M9s, we entered. What we found there... astonished us."
     ],

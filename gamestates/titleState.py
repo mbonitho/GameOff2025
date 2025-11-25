@@ -28,11 +28,11 @@ class TitleState(GameState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
-                    self.game.change_state("Action")
+                    self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == 7:
-                    self.game.change_state("Action")
+                    self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
     def draw(self, screen):
         screen.fill((30, 30, 60))
