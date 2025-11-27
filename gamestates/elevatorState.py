@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.player import Player
@@ -66,7 +65,7 @@ class ElevatorState(GameState):
 
             if self.game.game_data['floor'] > 2:
                 if event.type == pygame.KEYDOWN:
-                    if event.key == K_SPACE:
+                    if event.key == pygame.K_SPACE:
                         self.game.change_state("Action")
 
                 if event.type == pygame.JOYBUTTONUP:
@@ -79,13 +78,13 @@ class ElevatorState(GameState):
 
         # KEYBOARD
         keys = pygame.key.get_pressed()
-        if keys[K_LEFT]: #or keys[K_a]:
+        if keys[pygame.K_LEFT]: #or keys[K_a]:
             self.Players[0].MoveLeft(self.elevatorRoom.Obstacles)
-        elif keys[K_RIGHT]: #or keys[K_d]:
+        elif keys[pygame.K_RIGHT]: #or keys[K_d]:
             self.Players[0].MoveRight(self.elevatorRoom.Obstacles)
-        if keys[K_UP]: #or keys[K_w]:
+        if keys[pygame.K_UP]: #or keys[K_w]:
             self.Players[0].MoveUp(self.elevatorRoom.Obstacles)
-        elif keys[K_DOWN]: #or keys[K_s]:
+        elif keys[pygame.K_DOWN]: #or keys[K_s]:
             self.Players[0].MoveDown(self.elevatorRoom.Obstacles)
 
         # GAMEPADS 

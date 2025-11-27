@@ -10,7 +10,7 @@ class Landmine:
         self.Rect.topleft = (x, y)
 
         self.lifespan = 0
-        self.maxlifespan = 5
+        self.maxlifespan = 15
 
         self.BlinkingComponent = BlinkingComponent()
 

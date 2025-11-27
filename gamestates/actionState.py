@@ -2,7 +2,6 @@
 import random
 from typing import List
 import pygame
-from pygame.locals import *
 
 from gameobjects.blinking_text import BlinkingText
 from gameobjects.bullet import Bullet
@@ -37,12 +36,13 @@ class ActionState(GameState):
         self.RoomBottomLeftCornerSurface = pygame.image.load('assets/sprites/environment/rooms/roomBottomLeftCorner.png').convert_alpha()
         self.RoomBottomRightCornerSurface = pygame.image.load('assets/sprites/environment/rooms/roomBottomRightCorner.png').convert_alpha()
 
+        self.FloorRect = pygame.Rect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT)
 
         #############################
         # ENTITIES
         #############################
         if self.game.players == []:
-            self.game.players = [Player(1, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)]
+            self.game.players = [Player(1, int(WINDOW_WIDTH / 2), int(WINDOW_HEIGHT / 2))]
         self.Players = self.game.players
         self.CommTower: Enemy | None = None
         self.Elevator: Elevator | None = None
@@ -64,8 +64,6 @@ class ActionState(GameState):
         #############################
         # Load the full level
         #############################
-        # self.NumberOfEnemiesToSpawn = 0
-        # self.NumberOfEnemiesSpawned = 0
         self.Level = Level(f"F{self.game.game_data['floor']}")
         self.LoadRoom(self.Level.StartingRoom)
 
@@ -163,7 +161,7 @@ class ActionState(GameState):
         if self.CurrentRoom.Coords in self.Level.CommTowerPositions:
             posX = WINDOW_WIDTH * 0.5 - self.AntennaSurface.get_width() * 0.5
             posY = WINDOW_HEIGHT * 0.5 - self.AntennaSurface.get_height() * 0.5
-            self.CommTower = EnemyFactory.GetSameRoomAntennaTower((posX, posY))
+            self.CommTower = EnemyFactory.GetSameRoomAntennaTower((int(posX), int(posY)))
             self.Enemies.append(self.CommTower)
             self.CurrentRoom.Obstacles.append(self.CommTower.Rect)
         else:
@@ -240,7 +238,7 @@ class ActionState(GameState):
             elif posXName == 'right' and posYName == 'top':
                 angleRange = (195, 255)
 
-            tower = EnemyFactory.GetDistantAntennaTower((posX, posY), angleRange)
+            tower = EnemyFactory.GetDistantAntennaTower((int(posX), int(posY)), angleRange)
             self.FarawayTowers.append(tower)
 
         #############################
@@ -299,21 +297,21 @@ class ActionState(GameState):
 
             # KEYBOARD
             if event.type == pygame.KEYDOWN:
-                if event.key == K_a: # SHOOT LEFT
+                if event.key == pygame.K_a: # SHOOT LEFT
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('l')
-                elif event.key == K_d: # SHOOT RIGHT 
+                elif event.key == pygame.K_d: # SHOOT RIGHT 
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('r')
-                elif event.key == K_w: # SHOOT UP
+                elif event.key == pygame.K_w: # SHOOT UP
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('u')
-                elif event.key == K_s: # SHOOT DOWN
+                elif event.key == pygame.K_s: # SHOOT DOWN
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('d')
 
                 # SPACE, when P1 is dead
-                elif event.key == K_SPACE:
+                elif event.key == pygame.K_SPACE:
                     self.tryRespawnPlayer(self.Players[0])
 
             # JOYSTICKS
@@ -355,13 +353,13 @@ class ActionState(GameState):
 
         # KEYBOARD
         keys = pygame.key.get_pressed()
-        if keys[K_LEFT]: #or keys[K_a]:
+        if keys[pygame.K_LEFT]: #or keys[K_a]:
             self.Players[0].MoveLeft(self.CurrentRoom.Obstacles)
-        elif keys[K_RIGHT]: #or keys[K_d]:
+        elif keys[pygame.K_RIGHT]: #or keys[K_d]:
             self.Players[0].MoveRight(self.CurrentRoom.Obstacles)
-        if keys[K_UP]: #or keys[K_w]:
+        if keys[pygame.K_UP]: #or keys[K_w]:
             self.Players[0].MoveUp(self.CurrentRoom.Obstacles)
-        elif keys[K_DOWN]: #or keys[K_s]:
+        elif keys[pygame.K_DOWN]: #or keys[K_s]:
             self.Players[0].MoveDown(self.CurrentRoom.Obstacles)
 
         # GAMEPADS 
@@ -458,27 +456,27 @@ class ActionState(GameState):
                                 for player in self.Players:
                                     player.Rect.midright = (
                                         WINDOW_WIDTH - ActionState.EXIT_SIZE - 1, 
-                                        WINDOW_HEIGHT * 0.5
+                                        int(WINDOW_HEIGHT * 0.5)
                                     )
                             case 'R':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0] + 1, self.CurrentRoom.Coords[1]))
                                 for player in self.Players:
                                     player.Rect.midleft = (
                                         ActionState.EXIT_SIZE + 1, 
-                                        WINDOW_HEIGHT * 0.5
+                                        int(WINDOW_HEIGHT * 0.5)
                                     )
                             case 'U':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] - 1))
                                 for player in self.Players:
                                     player.Rect.midbottom = (
-                                        WINDOW_WIDTH * 0.5,
+                                        int(WINDOW_WIDTH * 0.5),
                                         WINDOW_HEIGHT - ActionState.EXIT_SIZE - 1
                                     )
                             case 'D':
                                 self.LoadRoom(self.Level.GetRoomByCoords(self.CurrentRoom.Coords[0], self.CurrentRoom.Coords[1] + 1))
                                 for player in self.Players:
                                     player.Rect.midtop = (
-                                        WINDOW_WIDTH * 0.5,
+                                        int(WINDOW_WIDTH * 0.5),
                                         int(ActionState.EXIT_SIZE + 1)
                                     )
 
@@ -491,6 +489,11 @@ class ActionState(GameState):
 
         # Update enemies
         for enemy in self.Enemies.copy():
+
+            if not enemy.Rect.colliderect(self.FloorRect):
+                self.Enemies.remove(enemy)
+                break
+
             if enemy.CurrentLife <= 0:
 
                 # increase the score of the player who killed the enemy
@@ -634,7 +637,7 @@ class ActionState(GameState):
 
 
     def tryRespawnPlayer(self, player: Player):
-        if player.Lives <= 0:
+        if player.Lives <= 0 or player.CurrentLife > 0:
             return
         
         player.Lives -= 1
