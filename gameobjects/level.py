@@ -25,6 +25,7 @@ class Level:
         12: "3waysLUR",
         13: "3waysURD",
         14: "3waysLRD",
+        15: "0way"
     }
 
     MAX_SIZE = 8

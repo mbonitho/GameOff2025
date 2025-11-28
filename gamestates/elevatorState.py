@@ -65,14 +65,14 @@ class ElevatorState(GameState):
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
 
-        if self.canSkip:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.moveToNextState()
+            if self.canSkip:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.moveToNextState()
 
-            if event.type == pygame.JOYBUTTONUP:
-                if event.button == 7 and event.joy == 0:
-                    self.moveToNextState()
+                if event.type == pygame.JOYBUTTONUP:
+                    if event.button == 7 and event.joy == 0:
+                        self.moveToNextState()
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)

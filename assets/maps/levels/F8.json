@@ -15,7 +15,7 @@
       "gridCellsX": 2,
       "gridCellsY": 3,
       "tileset": "LevelTileset",
-      "data": [0, -1, 5, -1, 3, -1],
+      "data": [15, -1, 5, -1, 3, -1],
       "exportMode": 0,
       "arrayMode": 0
     },
