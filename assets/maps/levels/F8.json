@@ -30,24 +30,14 @@
       "gridCellsY": 48,
       "entities": [
         {"name": "roomStairsUp", "id": 0, "_eid": "82159742", "x": 48, "y": 8, "originX": 0, "originY": 0},
-        {
-          "name": "enemy",
-          "id": 1,
-          "_eid": "49372066",
-          "x": 36,
-          "y": 16,
-          "originX": 0,
-          "originY": 0,
-          "values": {"Type": "boss2"}
-        },
         {"name": "roomStart", "id": 2, "_eid": "82159653", "x": 24, "y": 168, "originX": 0, "originY": 0},
         {"name": "healSpot", "id": 3, "_eid": "84441124", "x": 40, "y": 80, "originX": 0, "originY": 0},
         {
           "name": "enemy",
           "id": 4,
           "_eid": "49372066",
-          "x": 16,
-          "y": 16,
+          "x": 12,
+          "y": 12,
           "originX": 0,
           "originY": 0,
           "values": {"Type": "boss2"}

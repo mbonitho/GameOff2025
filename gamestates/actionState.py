@@ -144,7 +144,7 @@ class ActionState(GameState):
                         enemy = EnemyFactory.GetBoss1(pos, self.CurrentRoom.Obstacles, self.Objects)
 
                     case 'boss2':
-                        enemy = EnemyFactory.GetBoss2(pos, self.Objects)
+                        enemy = EnemyFactory.GetBoss2(pos, self.Objects, self.Enemies)
 
                     case 'boss3':
                         enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects)
@@ -559,8 +559,6 @@ class ActionState(GameState):
         if self.VendingMachine is not None:
             self.VendingMachine.draw(screen)
 
-        for e in self.Enemies:
-            e.draw(screen)
 
         if self.CommTower:
             self.CommTower.draw(screen)
@@ -571,6 +569,9 @@ class ActionState(GameState):
         for o in self.Objects:
             if o.BlinkingComponent.visible:
                 o.draw(screen)
+
+        for e in self.Enemies:
+            e.draw(screen)
 
         for p in self.Players:
             p.draw(screen)

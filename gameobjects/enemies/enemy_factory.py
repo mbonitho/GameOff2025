@@ -36,7 +36,10 @@ class EnemyFactory:
             cls._textures['rabbit3']
         ]
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior()])
+        seekBehavior = SeekNearestPlayerBehavior()
+        seekBehavior.Speed = 120
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior()])
 
         enemy.ScoreValue = 5
 
@@ -84,11 +87,11 @@ class EnemyFactory:
         ]
 
         seekBehavior = SeekNearestPlayerBehavior()
-        seekBehavior.Speed = 70
+        seekBehavior.Speed = 100
 
         enemy =  Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior()])
 
-        enemy.MaxLife = 5
+        enemy.MaxLife = 7
         enemy.CurrentLife = enemy.MaxLife
         enemy.ScoreValue = 25
 
@@ -109,7 +112,8 @@ class EnemyFactory:
                 TeleportAndShootWaveBehavior(cls._textures['waveBulletSurface'], angleRange)
             ])
         enemy.ScoreValue = 0
-        
+        enemy.MaxLife = 20
+        enemy.CurrentLife = enemy.MaxLife
         return enemy
     
     @classmethod
@@ -283,13 +287,17 @@ class EnemyFactory:
             cls._textures['mouse3']
         ]
 
-        move = MoveRandomlyBehavior(obstacles)
+        move = MoveRandomlyBehavior(obstacles, 5)
         move.Speed = 240
+        # move.decision_delay = 8
 
         hurtOnContact = HurtOnContactBehavior()
         hurtOnContact.damage = 2
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact, SpawnStatsUpgradesBehavior(2, objects)])
+        enemy = Enemy(surfaces, pos[0], pos[1], [move, 
+                                                 hurtOnContact, 
+                                                 SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MINE),
+                                                 SpawnStatsUpgradesBehavior(2, objects)])
     
         enemy.IsABoss = True
         enemy.setScale(3)
@@ -300,7 +308,7 @@ class EnemyFactory:
         return enemy
     
     @classmethod
-    def GetBoss2(cls, pos: Tuple[int, int], objects: list):
+    def GetBoss2(cls, pos: Tuple[int, int], objects: list, enemies: list):
 
         if 'rabbit1' not in cls._textures:
             cls._textures['rabbit1'] = pygame.image.load(f'assets/sprites/enemies/rabbit1.png').convert_alpha()
@@ -313,11 +321,16 @@ class EnemyFactory:
             cls._textures['rabbit3']
         ]
 
-        enemy = Enemy(surfaces, pos[0], pos[1], [SeekNearestPlayerBehavior(), AttackPlayerInRadiusBehavior(), SpawnStatsUpgradesBehavior(1, objects)])
+        enemy = Enemy(surfaces, pos[0], pos[1], [
+            SeekNearestPlayerBehavior(), 
+            AttackPlayerInRadiusBehavior(),
+            SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MINE),
+            SummonMinionBehavior(enemies, SummonMinionBehavior.EnemyType.MOUSE),
+            SpawnStatsUpgradesBehavior(1, objects)])
 
         enemy.IsABoss = True
         enemy.setScale(2)
-        enemy.MaxLife = 60
+        enemy.MaxLife = 120
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
 
@@ -351,7 +364,7 @@ class EnemyFactory:
     
         enemy.IsABoss = True
         enemy.setScale(3)
-        enemy.MaxLife = 60
+        enemy.MaxLife = 120
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
 

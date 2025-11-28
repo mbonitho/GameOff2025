@@ -2,16 +2,17 @@ import math
 import random
 from gameobjects.enemies.enemy_behavior import EnemyBehavior
 from utils.helpers.collisions_helper import MoveAndCollide
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
 
 class MoveRandomlyBehavior(EnemyBehavior):
 
-    def __init__(self, obstacles):
+    def __init__(self, obstacles, decisionDelay: int = 1):
         super().__init__()
         self.Speed = 100
         self.obstacles = obstacles
 
         self.decision_timing = 0
-        self.decision_delay = 1
+        self.decision_delay = decisionDelay
         self.destination_x = random.randrange(200, 800)
         self.destination_y = random.randrange(200, 600)
 
@@ -25,9 +26,9 @@ class MoveRandomlyBehavior(EnemyBehavior):
         destinationReached = abs(enemy.Rect.x - self.destination_x) < 5 and abs(enemy.Rect.y - self.destination_y) < 5
         if self.decision_timing >= self.decision_delay or destinationReached:
             self.decision_timing %= self.decision_delay
-            self.decision_delay = 5
-            self.destination_x = random.randrange(200, 800)
-            self.destination_y = random.randrange(200, 600)
+            # self.decision_delay = 5
+            self.destination_x = random.randrange(64, WINDOW_WIDTH - 64)
+            self.destination_y = random.randrange(64, WINDOW_HEIGHT - 64)
 
         dx = self.destination_x - enemy.Rect.x
         dy = self.destination_y - enemy.Rect.y

@@ -11,7 +11,7 @@ class AttackPlayerInRadiusBehavior(EnemyBehavior):
         self.in_attack_range = False
 
         self.contact_timers = {}  # player -> time in contact
-        self.attack_cooldown = 1.0  # seconds before damage
+        self.attack_cooldown = .75  # seconds before damage
 
     def update(self, enemy, players, dt):
         # hurt players that stay too long in attack range

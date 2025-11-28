@@ -1,0 +1,402 @@
+{
+  "ogmoVersion": "3.4.0",
+  "width": 192,
+  "height": 240,
+  "offsetX": 0,
+  "offsetY": 0,
+  "layers": [
+    {
+      "name": "rooms",
+      "_eid": "82121973",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 64,
+      "gridCellHeight": 64,
+      "gridCellsX": 3,
+      "gridCellsY": 5,
+      "tileset": "LevelTileset",
+      "data": [0, 0, -1, 5, 5, -1, 8, 7, -1, -1, -1, -1],
+      "exportMode": 0,
+      "arrayMode": 0
+    },
+    {
+      "name": "roomsEvents",
+      "_eid": "82136541",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 4,
+      "gridCellHeight": 4,
+      "gridCellsX": 48,
+      "gridCellsY": 60,
+      "entities": [
+        {"name": "roomAntenna", "id": 0, "_eid": "82151669", "x": 96, "y": 36, "originX": 0, "originY": 0},
+        {"name": "roomAntenna", "id": 1, "_eid": "82151669", "x": 88, "y": 88, "originX": 0, "originY": 0},
+        {"name": "roomAntenna", "id": 2, "_eid": "82151669", "x": 88, "y": 160, "originX": 0, "originY": 0},
+        {"name": "roomAntenna", "id": 3, "_eid": "82151669", "x": 20, "y": 160, "originX": 0, "originY": 0},
+        {"name": "roomAntenna", "id": 4, "_eid": "82151669", "x": 20, "y": 88, "originX": 0, "originY": 0},
+        {"name": "roomStart", "id": 5, "_eid": "82159653", "x": 16, "y": 36, "originX": 0, "originY": 0},
+        {"name": "roomStairsUp", "id": 6, "_eid": "82159742", "x": 40, "y": 12, "originX": 0, "originY": 0},
+        {
+          "name": "enemy",
+          "id": 7,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 12,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 8,
+          "_eid": "49372066",
+          "x": 76,
+          "y": 12,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 9,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 48,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 10,
+          "_eid": "49372066",
+          "x": 76,
+          "y": 48,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 11,
+          "_eid": "49372066",
+          "x": 96,
+          "y": 20,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        },
+        {
+          "name": "enemy",
+          "id": 12,
+          "_eid": "49372066",
+          "x": 104,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        },
+        {
+          "name": "enemy",
+          "id": 13,
+          "_eid": "49372066",
+          "x": 80,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        },
+        {
+          "name": "enemy",
+          "id": 14,
+          "_eid": "49372066",
+          "x": 92,
+          "y": 80,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        },
+        {
+          "name": "enemy",
+          "id": 15,
+          "_eid": "49372066",
+          "x": 108,
+          "y": 100,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 16,
+          "_eid": "49372066",
+          "x": 76,
+          "y": 100,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 17,
+          "_eid": "49372066",
+          "x": 96,
+          "y": 144,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 18,
+          "_eid": "49372066",
+          "x": 104,
+          "y": 152,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 19,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 160,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 20,
+          "_eid": "49372066",
+          "x": 104,
+          "y": 168,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 21,
+          "_eid": "49372066",
+          "x": 96,
+          "y": 176,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 22,
+          "_eid": "49372066",
+          "x": 88,
+          "y": 168,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 23,
+          "_eid": "49372066",
+          "x": 80,
+          "y": 160,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 24,
+          "_eid": "49372066",
+          "x": 88,
+          "y": 152,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bombDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 25,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 180,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "mineDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 26,
+          "_eid": "49372066",
+          "x": 112,
+          "y": 140,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "mineDropper"}
+        },
+        {
+          "name": "enemy",
+          "id": 27,
+          "_eid": "49372066",
+          "x": 44,
+          "y": 144,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 28,
+          "_eid": "49372066",
+          "x": 44,
+          "y": 156,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 29,
+          "_eid": "49372066",
+          "x": 44,
+          "y": 168,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 30,
+          "_eid": "49372066",
+          "x": 32,
+          "y": 168,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 31,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 144,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 32,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 152,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 33,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 160,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 34,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 168,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 35,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 176,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "default"}
+        },
+        {
+          "name": "enemy",
+          "id": 36,
+          "_eid": "49372066",
+          "x": 24,
+          "y": 176,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "bigSlow"}
+        },
+        {
+          "name": "enemy",
+          "id": 37,
+          "_eid": "49372066",
+          "x": 44,
+          "y": 80,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingH"}
+        },
+        {
+          "name": "enemy",
+          "id": 38,
+          "_eid": "49372066",
+          "x": 44,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingH"}
+        },
+        {
+          "name": "enemy",
+          "id": 39,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 76,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "patrollingV"}
+        },
+        {
+          "name": "enemy",
+          "id": 40,
+          "_eid": "49372066",
+          "x": 36,
+          "y": 100,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "turretPlus"}
+        },
+        {
+          "name": "enemy",
+          "id": 41,
+          "_eid": "49372066",
+          "x": 20,
+          "y": 100,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        },
+        {
+          "name": "enemy",
+          "id": 42,
+          "_eid": "49372066",
+          "x": 12,
+          "y": 112,
+          "originX": 0,
+          "originY": 0,
+          "values": {"Type": "miceSummoner"}
+        }
+      ]
+    }
+  ]
+}
