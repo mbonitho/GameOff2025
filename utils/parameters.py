@@ -2,8 +2,8 @@
 # "Splash","Title","Action","Rebind","GameOver","Elevator","Config", "Story"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 960
-STARTING_STATE = 'Splash'
-STARTING_FLOOR = 1
+STARTING_STATE = 'Splash' # default Splash
+STARTING_FLOOR = 1 # default 1 # bosses: 5, 8, 13, 15
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 LOOT_CHANCE = 0.15
 
@@ -21,6 +21,14 @@ POPUP_TEXTS = {
         "Armed only with our trusty M9s, we entered. What we found there... astonished us."
     ],
 
+    "BEFORE_FINAL_BOSS": [
+        "This is it. The last floor.",
+        "",
+        "Ready your guns and confront the mastermind!",
+        "",
+        "It's time to end this sordid affair once and for all."
+    ],
+
     "TIP1": [
         "Welcome to Project W.A.V.E.S!",
         "",
@@ -34,6 +42,9 @@ POPUP_TEXTS = {
 
     "TIP2": [
         "There are communication towers scattered on this floor and others.",
+        "It seems they are sending brainwashing waves that force the cultists", 
+        "to attack you on sight",
+        "",
         "Until you destroy them, they will keep shooting harmful waves at you from afar.",
         "Destroy all towers on a floor to unlock the elevator."
     ]

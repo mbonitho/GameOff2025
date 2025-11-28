@@ -47,6 +47,8 @@ class ElevatorState(GameState):
         #############################
         self.elevatorRoom = Room(OgmoMap(), (0,0))
 
+        self.canSkip = self.game.game_data['floor'] > 2 and self.game.game_data['floor'] != 15
+
     def exit(self):
         pass
 
@@ -63,14 +65,14 @@ class ElevatorState(GameState):
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
 
-            if self.game.game_data['floor'] > 2:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        self.game.change_state("Action")
+        if self.canSkip:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.moveToNextState()
 
-                if event.type == pygame.JOYBUTTONUP:
-                    if event.button == 7 and event.joy == 0:
-                        self.game.change_state("Action")
+            if event.type == pygame.JOYBUTTONUP:
+                if event.button == 7 and event.joy == 0:
+                    self.moveToNextState()
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)
@@ -124,7 +126,7 @@ class ElevatorState(GameState):
 
         # end of animation
         if self.YOffset <= -360:
-            self.game.change_state("Action")
+            self.moveToNextState()
 
         # Update players
         for player in self.Players:
@@ -167,7 +169,11 @@ class ElevatorState(GameState):
         screen.blit(self.previousFloorText, (700, self.previousFloorTextPos))
         screen.blit(self.nextFloorText, (700, self.nextFloorTextPos))
         
-        if self.game.game_data['floor'] > 2:
+        if self.canSkip:
             font = pygame.font.SysFont(None, 24)
             text = font.render('(Press space or start to skip)', True, (255, 255, 255))
             screen.blit(text, (WINDOW_WIDTH / 2 - text.get_width()/ 2, 20))
+
+    def moveToNextState(self):
+        self.game.change_state("Story" if self.game.game_data['floor'] == 15 else "Action")
+        

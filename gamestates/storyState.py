@@ -17,6 +17,9 @@ class StoryState(GameState):
         self.lines = []
         if self.game.game_data['floor'] == 1:
             self.lines = POPUP_TEXTS['INTRO']
+        elif self.game.game_data['floor'] == 15:
+            self.lines = POPUP_TEXTS['BEFORE_FINAL_BOSS']
+
         self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5
         pass
 
