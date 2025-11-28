@@ -4,7 +4,6 @@ from typing import List
 import pygame
 
 from gameobjects.blinking_text import BlinkingText
-from gameobjects.bullet import Bullet
 from gameobjects.enemies.enemy_factory import EnemyFactory
 from gameobjects.level import Level, Room
 from gameobjects.objects.helpButton import HelpButton
@@ -503,7 +502,7 @@ class ActionState(GameState):
 
                     # gain a life if score 
                     if player.Score > player.NextLifeThreshold:
-                        player.NextLifeThreshold += 500
+                        player.NextLifeThreshold += 1500
                         player.Lives += 1
 
                 # loot chance!

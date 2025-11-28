@@ -37,8 +37,8 @@ class Player:
         self.Rect = surface.get_rect()
         self.Rect.topleft = (x, y)
 
-        self.Lives = 3
-        self.NextLifeThreshold = 500
+        self.Lives = 1
+        self.NextLifeThreshold = 1500
 
         self.Speed = 6
         self.MaxLife = 5
