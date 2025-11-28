@@ -294,8 +294,13 @@ class EnemyFactory:
         hurtOnContact = HurtOnContactBehavior()
         hurtOnContact.damage = 2
 
+        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.BOMB)
+        spawnBehavior.decisionMinTime = 2
+        spawnBehavior.decisionMaxTime = 5
+
         enemy = Enemy(surfaces, pos[0], pos[1], [move, 
                                                  hurtOnContact, 
+                                                 spawnBehavior,
                                                  SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MINE),
                                                  SpawnStatsUpgradesBehavior(2, objects)])
     
@@ -337,17 +342,58 @@ class EnemyFactory:
         return enemy
 
     @classmethod
-    def GetBoss3(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list):
+    def GetBoss3(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list, enemies: list):
 
-        if 'mouse1' not in cls._textures:
-            cls._textures['mouse1'] = pygame.image.load(f'assets/sprites/enemies/mouse1.png').convert_alpha()
-            cls._textures['mouse2'] = pygame.image.load(f'assets/sprites/enemies/mouse2.png').convert_alpha()
-            cls._textures['mouse3'] = pygame.image.load(f'assets/sprites/enemies/mouse3.png').convert_alpha()
+        if 'crow1' not in cls._textures:
+            cls._textures['crow1'] = pygame.image.load(f'assets/sprites/enemies/crow1.png').convert_alpha()
+            cls._textures['crow2'] = pygame.image.load(f'assets/sprites/enemies/crow2.png').convert_alpha()
+            cls._textures['crow3'] = pygame.image.load(f'assets/sprites/enemies/crow3.png').convert_alpha()
 
         surfaces = [
-            cls._textures['mouse1'],
-            cls._textures['mouse2'],
-            cls._textures['mouse3']
+            cls._textures['crow1'],
+            cls._textures['crow2'],
+            cls._textures['crow3']
+        ]
+
+        moveRandmonly = MoveRandomlyBehavior(obstacles)
+        moveRandmonly.Speed = 240
+
+        hurtOnContact = HurtOnContactBehavior()
+        hurtOnContact.damage = 2
+
+        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.BOMB)
+        spawnBehavior.decisionMinTime = 4
+        spawnBehavior.decisionMaxTime = 6
+
+        summonBehavior = SummonMinionBehavior(enemies, SummonMinionBehavior.EnemyType.CROW, obstacles, objects)
+
+        enemy = Enemy(surfaces, pos[0], pos[1], [moveRandmonly,
+                                                 hurtOnContact, 
+                                                 spawnBehavior,
+                                                 summonBehavior,
+                                                 SpawnStatsUpgradesBehavior(2, objects)])
+    
+        enemy.IsABoss = True
+        enemy.setScale(3)
+        enemy.MaxLife = 120
+        enemy.CurrentLife =  enemy.MaxLife
+        enemy.ScoreValue = 200
+
+        return enemy
+    
+
+    @classmethod
+    def GetBoss4(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list):
+
+        if 'crow1' not in cls._textures:
+            cls._textures['crow1'] = pygame.image.load(f'assets/sprites/enemies/crow1.png').convert_alpha()
+            cls._textures['crow2'] = pygame.image.load(f'assets/sprites/enemies/crow2.png').convert_alpha()
+            cls._textures['crow3'] = pygame.image.load(f'assets/sprites/enemies/crow3.png').convert_alpha()
+
+        surfaces = [
+            cls._textures['crow1'],
+            cls._textures['crow2'],
+            cls._textures['crow3']
         ]
 
         move = MoveRandomlyBehavior(obstacles)

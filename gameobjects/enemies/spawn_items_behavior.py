@@ -2,6 +2,8 @@ import random
 from gameobjects.enemies.enemy_behavior import EnemyBehavior
 from enum import Enum
 
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
+
 class SpawnItemBehavior(EnemyBehavior):
 
     class ObjectType(Enum):
@@ -33,19 +35,27 @@ class SpawnItemBehavior(EnemyBehavior):
             self.decision_timing %= self.decision_delay
             self.decision_delay = self.decisionMinTime + random.random() * (self.decisionMaxTime - self.decisionMinTime)
 
+            x = int(random.randrange(enemy.Rect.x - enemy.Surface.get_width(), enemy.Rect.x + enemy.Surface.get_width()))
+            if x <= 0 or x >= WINDOW_WIDTH:
+                x = enemy.Rect.x
+
+            y = int(random.randrange(enemy.Rect.y - enemy.Surface.get_height(), enemy.Rect.y + enemy.Surface.get_height()))
+            if y <= 0 or y >= WINDOW_HEIGHT:
+                y = enemy.Rect.y
+
             match self.objectType:
 
                 case SpawnItemBehavior.ObjectType.MINE:
                     from gameobjects.objects.objects_factory import ObjectsFactory
-                    item = ObjectsFactory.GetLandmine((enemy.Rect.x, enemy.Rect.y))
+                    item = ObjectsFactory.GetLandmine((x, y))
                     self.objects.append(item)
 
                 case SpawnItemBehavior.ObjectType.BOMB:
                     from gameobjects.objects.objects_factory import ObjectsFactory
-                    item = ObjectsFactory.GetBomb((enemy.Rect.x, enemy.Rect.y), self.objects)
+                    item = ObjectsFactory.GetBomb((x, y), self.objects)
                     self.objects.append(item)
 
                 case SpawnItemBehavior.ObjectType.MONEY:
                     from gameobjects.objects.objects_factory import ObjectsFactory
-                    item = ObjectsFactory.GetMoneyBag((enemy.Rect.x, enemy.Rect.y), random.randrange(5, 31, 5))
+                    item = ObjectsFactory.GetMoneyBag((x, y), random.randrange(5, 31, 5))
                     self.objects.append(item)        

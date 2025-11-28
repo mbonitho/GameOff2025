@@ -20,7 +20,7 @@ class WeaponFactory:
         bulletSurface = cls._textures['bullet1']
 
         weapon = Weapon(owner, wpnSurface, bulletSurface)
-
+        weapon.BulletMaxLifespan *= .7
         return weapon
     
     @classmethod
@@ -64,7 +64,7 @@ class WeaponFactory:
         }
         weapon.BulletSpeed = int(weapon.BulletSpeed * .75)
         weapon.BulletMaxLifespan = 0.25
-        weapon.TotalAmunition = 50
+        weapon.TotalAmunition = 150
         weapon.BulletDamage = 1
 
         return weapon
@@ -90,7 +90,7 @@ class WeaponFactory:
         }
         weapon.BulletSpeed = int(weapon.BulletSpeed * .75)
         weapon.BulletMaxLifespan = 0.25
-        weapon.TotalAmunition = 30
+        weapon.TotalAmunition = 130
         weapon.BulletDamage = 1
         
         return weapon

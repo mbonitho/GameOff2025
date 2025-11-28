@@ -147,7 +147,7 @@ class ActionState(GameState):
                         enemy = EnemyFactory.GetBoss2(pos, self.Objects, self.Enemies)
 
                     case 'boss3':
-                        enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects)
+                        enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects, self.Enemies)
 
                 if enemy is not None:
                     self.Enemies.append(enemy)
