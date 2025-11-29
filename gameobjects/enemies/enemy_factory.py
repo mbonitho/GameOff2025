@@ -383,17 +383,17 @@ class EnemyFactory:
     
 
     @classmethod
-    def GetBoss4(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list):
+    def GetBoss4(cls, pos: Tuple[int, int], obstacles: list[pygame.Rect], objects: list, enemies: list):
 
-        if 'crow1' not in cls._textures:
-            cls._textures['crow1'] = pygame.image.load(f'assets/sprites/enemies/crow1.png').convert_alpha()
-            cls._textures['crow2'] = pygame.image.load(f'assets/sprites/enemies/crow2.png').convert_alpha()
-            cls._textures['crow3'] = pygame.image.load(f'assets/sprites/enemies/crow3.png').convert_alpha()
+        if 'lastBoss1' not in cls._textures:
+            cls._textures['lastBoss1'] = pygame.image.load(f'assets/sprites/enemies/lastBoss1.png').convert_alpha()
+            cls._textures['lastBoss2'] = pygame.image.load(f'assets/sprites/enemies/lastBoss2.png').convert_alpha()
+            cls._textures['lastBoss3'] = pygame.image.load(f'assets/sprites/enemies/lastBoss3.png').convert_alpha()
 
         surfaces = [
-            cls._textures['crow1'],
-            cls._textures['crow2'],
-            cls._textures['crow3']
+            cls._textures['lastBoss1'],
+            cls._textures['lastBoss2'],
+            cls._textures['lastBoss3']
         ]
 
         move = MoveRandomlyBehavior(obstacles)
@@ -409,7 +409,6 @@ class EnemyFactory:
         enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact, spawnBehavior, SpawnStatsUpgradesBehavior(2, objects)])
     
         enemy.IsABoss = True
-        enemy.setScale(3)
         enemy.MaxLife = 120
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200

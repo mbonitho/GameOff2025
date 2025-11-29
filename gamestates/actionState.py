@@ -151,6 +151,9 @@ class ActionState(GameState):
                     case 'boss3':
                         enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects, self.Enemies)
 
+                    case 'boss4':
+                        enemy = EnemyFactory.GetBoss4(pos, self.CurrentRoom.Obstacles, self.Objects, self.Enemies)
+
                 if enemy is not None:
                     if len(self.Players) > 1:
                         enemy.multiplyLife()

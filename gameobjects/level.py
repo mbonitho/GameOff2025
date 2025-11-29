@@ -33,7 +33,7 @@ class Level:
     def __init__(self, levelFilenameWithoutExtension: str):
         self.Rooms = []
         self.CommTowerPositions: list[tuple[int, int]] = []
-        self.ElevatorCoords: tuple[int, int]
+        self.ElevatorCoords: tuple[int, int] = (10000, 10000) # unreachable coordinates
 
         self.StartingRoom = None
         
