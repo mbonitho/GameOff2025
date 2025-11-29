@@ -42,8 +42,8 @@ POPUP_TEXTS = {
         "",
         "Or use a gamepad (d-pad or left stick to move, A/B/X/Y to shoot)",
         "",
-        "If your keyboard isn't qwerty or your gamepad buttons are scrambled, fear not!",
-        "Just press the Ctrl key to configure your keyboard or gamepad."
+        "If your keyboard uses the AZERTY layout, fear not!",
+        "Just press the F1 key to switch to ZQSD"
     ],
 
     "TIP2": [

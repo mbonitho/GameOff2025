@@ -58,7 +58,8 @@ class Game:
         self.game_data = {
             "highscore": 0,
             "score": 0,
-            "floor": STARTING_FLOOR
+            "floor": STARTING_FLOOR,
+            "keyboard_layout": "WASD"
         }
 
         # gamepad input maps

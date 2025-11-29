@@ -66,6 +66,9 @@ class ActionState(GameState):
         self.Level = Level(f"F{self.game.game_data['floor']}")
         self.LoadRoom(self.Level.StartingRoom)
 
+        self.shoot_up_key = pygame.K_w if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_z
+        self.shoot_left_key = pygame.K_a if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_q
+
     def LoadRoom(self, room: Room | None):
 
         if room == None:
@@ -296,18 +299,23 @@ class ActionState(GameState):
 
             # KEYBOARD
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a: # SHOOT LEFT
+                if event.key == self.shoot_left_key: # SHOOT LEFT
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('l')
                 elif event.key == pygame.K_d: # SHOOT RIGHT 
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('r')
-                elif event.key == pygame.K_w: # SHOOT UP
+                elif event.key == self.shoot_up_key: # SHOOT UP
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('u')
                 elif event.key == pygame.K_s: # SHOOT DOWN
                     player = self.Players[0]
                     self.Players[0].TryShootBullet('d')
+                elif event.key == pygame.K_F1:
+                    self.game.game_data["keyboard_layout"] = "ZQSD" if self.game.game_data["keyboard_layout"] == "WASD" else "WASD"
+                    self.shoot_up_key = pygame.K_w if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_z
+                    self.shoot_left_key = pygame.K_a if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_q
+                    print(self.game.game_data["keyboard_layout"])
 
                 # SPACE, when P1 is dead
                 elif event.key == pygame.K_SPACE:
