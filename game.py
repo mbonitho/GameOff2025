@@ -10,7 +10,6 @@ from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
 from gamestates.storyState import StoryState
 from gamestates.titleState import TitleState
-from gamestates.rebindState import RebindMenuState
 from gamestates.elevatorState import ElevatorState
 from utils.parameters import INPUT_MAPS, STARTING_FLOOR, STARTING_STATE, WINDOW_HEIGHT, WINDOW_WIDTH
 
@@ -38,7 +37,6 @@ class Game:
             "Splash": SplashState(self),
             "Title": TitleState(self),
             "Action": ActionState(self),
-            "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
             'Story': StoryState(self)
