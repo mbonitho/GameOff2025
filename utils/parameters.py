@@ -7,6 +7,12 @@ STARTING_FLOOR = 1 # default 1 # bosses: 5, 8, 13, 15
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 LOOT_CHANCE = 0.15
 
+INPUT_MAPS = {
+    "xbox": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 2, "SHOOT_UP": 3, "START": 7},
+    "playstation": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 2, "SHOOT_UP": 3, "START": 7},
+    "switch": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 3, "SHOOT_UP": 2, "START": 10},
+}
+
 POPUP_TEXTS = {
 
     "INTRO": [

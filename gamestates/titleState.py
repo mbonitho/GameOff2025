@@ -31,7 +31,7 @@ class TitleState(GameState):
                     self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
             if event.type == pygame.JOYBUTTONUP:
-                if event.button == 7:
+                if event.button == self.game.input_maps[event.joy]["START"]:
                     self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
     def draw(self, screen):

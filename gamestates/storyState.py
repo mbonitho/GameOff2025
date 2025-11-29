@@ -31,7 +31,7 @@ class StoryState(GameState):
                     self.game.change_state("Action")
 
             if event.type == pygame.JOYBUTTONUP:
-                if event.button == 7:
+                if event.button == self.game.input_maps[event.joy]["START"]:
                     self.game.change_state("Action")
 
     def draw(self, screen):

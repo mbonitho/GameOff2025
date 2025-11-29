@@ -23,7 +23,7 @@ class GameOverState(GameState):
                     self.continueGame()
 
             if event.type == pygame.JOYBUTTONUP:
-                if event.button == 7:
+                if event.button == self.game.input_maps[event.joy]["START"]:
                     self.continueGame()
 
     def draw(self, screen):

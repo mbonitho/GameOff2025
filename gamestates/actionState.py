@@ -315,9 +315,9 @@ class ActionState(GameState):
 
             # JOYSTICKS
             if event.type == pygame.JOYBUTTONUP:
-
+                print(event.button)
                 # player2 joining by pressing start, spawns at p1 pos
-                if event.button == 7 and event.joy == 1:
+                if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 1:
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
                         self.NumberOfEnemiesToSpawn *= 3
@@ -325,24 +325,24 @@ class ActionState(GameState):
                 # only trigger input if the number of players is sufficient
                 if event.joy == 0 or (event.joy == 1 and len(self.Players) == 2):
                     
-                    if event.button == 2: # SHOOT LEFT
+                    if event.button == self.game.input_maps[event.joy]["SHOOT_LEFT"]: # SHOOT LEFT
                         player = self.Players[event.joy]
                         player.TryShootBullet('l')
 
-                    elif event.button == 1: # SHOOT RIGHT
+                    elif event.button == self.game.input_maps[event.joy]["SHOOT_RIGHT"]: # SHOOT RIGHT
                         player = self.Players[event.joy]
                         player.TryShootBullet('r')
 
-                    elif event.button == 3: # SHOOT UP
+                    elif event.button == self.game.input_maps[event.joy]["SHOOT_UP"]: # SHOOT UP
                         player = self.Players[event.joy]
                         player.TryShootBullet('u')
 
-                    elif event.button == 0: # SHOOT DOWN
+                    elif event.button == self.game.input_maps[event.joy]["SHOOT_DOWN"]: # SHOOT DOWN
                         player = self.Players[event.joy]
                         player.TryShootBullet('d')
 
                     # START BUTTON, try respawning player 
-                    elif event.button == 7: 
+                    elif event.button == self.game.input_maps[event.joy]["START"]: 
                         self.tryRespawnPlayer(self.Players[event.joy])
 
 

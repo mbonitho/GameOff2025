@@ -5,7 +5,6 @@ from pygame.locals import *
 
 from typing import Dict, Optional
 from gamestates.actionState import ActionState
-from gamestates.configureGamePadState import ConfigureGamePadState
 from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
@@ -13,7 +12,7 @@ from gamestates.storyState import StoryState
 from gamestates.titleState import TitleState
 from gamestates.rebindState import RebindMenuState
 from gamestates.elevatorState import ElevatorState
-from utils.parameters import STARTING_FLOOR, STARTING_STATE, WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.parameters import INPUT_MAPS, STARTING_FLOOR, STARTING_STATE, WINDOW_HEIGHT, WINDOW_WIDTH
 
 class Game:
 
@@ -42,7 +41,6 @@ class Game:
             "Rebind" : RebindMenuState(self),
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
-            "Config": ConfigureGamePadState(self),
             'Story': StoryState(self)
         }
 
@@ -63,11 +61,11 @@ class Game:
             "floor": STARTING_FLOOR
         }
 
-        # clean input map, can be overridden when load_data is called
-        self.input_map = {
-            "jump": 0,  # Button A on Xbox controller
-            "pause": 7  # Start button
-        }
+        # gamepad input maps
+        self.input_maps = [
+            INPUT_MAPS['xbox'],
+            INPUT_MAPS['xbox']
+        ]        
 
         self.joysticks = []
 
@@ -90,19 +88,6 @@ class Game:
                         key = line.split('::')[0]
                         value = line.split('::')[1].replace('\n', '')
                         self.game_data[key] = value
-            if os.path.exists('inputmap'):
-                with open('inputmap', 'r') as file:
-                    for line in file.readlines():
-                        key = line.split('::')[0]
-                        value = line.split('::')[1].replace('\n', '')
-                        self.input_map[key] = int(value)
-
-    def save_inputmap(self):
-        if not Game.WEB:
-            with open('inputmap', 'w') as file:
-                for key, value in self.input_map.items():
-                    file.write(f'{key}::{value}\n')
-
 
     def save_data(self):
         if Game.WEB:
@@ -147,10 +132,7 @@ class Game:
 
             # Hot-plugging Joysticks 
             if event.type == pygame.JOYDEVICEADDED:
-                new_joystick = pygame.joystick.Joystick(event.device_index)
-                new_joystick.init()
-                self.joysticks.append(new_joystick)
-                print(f"New Joystick Added: {new_joystick.get_name()}")
+                self.AddAndDetectJoystick(event.device_index)
             if event.type == pygame.JOYDEVICEREMOVED:
                 # Re-initialize joysticks or remove the disconnected one from your list
                 print(f"Joystick Removed: {event.instance_id}") # instance_id is preferred in Pygame 2.x
@@ -213,3 +195,21 @@ class Game:
     
     def player2_joystick(self):
         return self.joysticks[1]
+    
+    def AddAndDetectJoystick(self, device_index: int):
+        new_joystick = pygame.joystick.Joystick(device_index)
+        new_joystick.init()
+        self.joysticks.append(new_joystick)
+        print(f"New Joystick Added: {new_joystick.get_name()}")
+
+        name = new_joystick.get_name().lower()
+
+        if "xbox" in name:
+            layout = "xbox"
+        elif "dualshock" in name or "playstation" in name or "dual sense" in name:
+            layout = "playstation"
+        elif "switch" in name or "nintendo" in name:
+            layout = "switch"
+        else:
+            layout = "generic"
+        self.input_maps[device_index] = INPUT_MAPS[layout]

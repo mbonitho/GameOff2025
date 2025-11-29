@@ -61,7 +61,7 @@ class ElevatorState(GameState):
             if event.type == pygame.JOYBUTTONUP:
 
                 # player2 joining by pressing start, spawns at p1 pos
-                if event.button == 7 and event.joy == 1:
+                if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 1:
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
 
@@ -71,7 +71,7 @@ class ElevatorState(GameState):
                         self.moveToNextState()
 
                 if event.type == pygame.JOYBUTTONUP:
-                    if event.button == 7 and event.joy == 0:
+                    if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 0:
                         self.moveToNextState()
 
         ######################################
