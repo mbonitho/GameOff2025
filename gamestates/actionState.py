@@ -152,6 +152,8 @@ class ActionState(GameState):
                         enemy = EnemyFactory.GetBoss3(pos, self.CurrentRoom.Obstacles, self.Objects, self.Enemies)
 
                 if enemy is not None:
+                    if len(self.Players) > 1:
+                        enemy.multiplyLife()
                     self.Enemies.append(enemy)
         
         # BOSS life bar
@@ -328,7 +330,10 @@ class ActionState(GameState):
                 if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 1:
                     if len(self.Players) == 1:
                         self.Players.append(Player(2, self.Players[0].Rect.x, self.Players[0].Rect.y))
-                        self.NumberOfEnemiesToSpawn *= 3
+
+                        # make enemies more resilient when P2 joins
+                        for enemy in self.Enemies:
+                            enemy.multiplyLife()
 
                 # only trigger input if the number of players is sufficient
                 if event.joy == 0 or (event.joy == 1 and len(self.Players) == 2):
@@ -411,6 +416,15 @@ class ActionState(GameState):
             self.Player2DeadText.renderNewText(text)
             self.Player2DeadText.update(dt)
 
+        # check for collision with help button
+        for player in self.Players:
+            if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect) and len(self.Enemies) == 0:
+                self.PopUpText = self.HelpButton.textKey
+                break
+            else:
+                self.PopUpText = ''
+
+
         # Update players
         for player in self.Players:
             player.update(self.Enemies, dt)
@@ -425,24 +439,17 @@ class ActionState(GameState):
                 player.Rect.y = 0
             elif player.Rect.y > WINDOW_HEIGHT - player.Rect.height:
                 player.Rect.y = WINDOW_HEIGHT - player.Rect.height
-            
+
+            if self.VendingMachine is not None:
+                self.VendingMachine.handleCollision(player)
+
             # check for items pickups
             for object in self.Objects.copy():
                 if player.Rect.colliderect(object.Rect):
                     object.handleCollision(player)
                     if object.canBePickedUp:
                         self.Objects.remove(object)
-                    
-            # check for collision with help button
-            if self.HelpButton is not None and player.Rect.colliderect(self.HelpButton.Rect) and len(self.Enemies) == 0:
-                self.PopUpText = self.HelpButton.textKey
-            else:
-                self.PopUpText = ''
-
-            if self.VendingMachine is not None:
-                self.VendingMachine.handleCollision(player)
-
-
+                   
             # check for teleport to next floor
             if self.Elevator is not None and self.CurrentRoom.Cleared and len(self.FarawayTowers) == 0:
                 if player.Rect.colliderect(self.Elevator.Rect):
@@ -625,9 +632,11 @@ class ActionState(GameState):
             self.player2PressStartText.draw(screen)
         else:
             player2ScoreText = self.UIFont.render(f'Player 2 - {self.Players[1].Score} ({self.Players[1].Lives} lives)', False, (255, 255, 255))
-            screen.blit(player2ScoreText, (WINDOW_WIDTH - 200, 16))
-            pygame.draw.rect(screen, (0,0,0), pygame.Rect(16, 64, self.Players[1].MaxLife * 20 + 6, 24))
-            pygame.draw.rect(screen, (255,0,0), pygame.Rect(19, 67, self.Players[1].CurrentLife * 20, 18))
+            screen.blit(player2ScoreText, (WINDOW_WIDTH - player2ScoreText.get_width() - 20, 16))
+
+            barWidth = self.Players[1].MaxLife * 20 + 6
+            pygame.draw.rect(screen, (0,0,0), pygame.Rect(WINDOW_WIDTH - barWidth - 20, 64, barWidth, 24))
+            pygame.draw.rect(screen, (255,0,0), pygame.Rect(WINDOW_WIDTH - barWidth - 17, 67, self.Players[1].CurrentLife * 20, 18))
 
             if self.Players[1].CurrentLife <= 0:
                 self.Player2DeadText.draw(screen)

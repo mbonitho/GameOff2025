@@ -78,3 +78,7 @@ class Enemy:
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
         self.CurrentLife -= dmg
+
+    def multiplyLife(self, factor=3):
+        self.MaxLife *= factor
+        self.CurrentLife =  self.MaxLife

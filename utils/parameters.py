@@ -49,7 +49,7 @@ POPUP_TEXTS = {
     "TIP2": [
         "There are communication towers scattered on this floor and others.",
         "It seems they are sending brainwashing waves that force the cultists", 
-        "to attack you on sight",
+        "to attack you on sight.",
         "",
         "Until you destroy them, they will keep shooting harmful waves at you from afar.",
         "Destroy all towers on a floor to unlock the elevator."
