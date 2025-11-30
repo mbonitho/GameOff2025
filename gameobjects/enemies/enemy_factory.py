@@ -6,6 +6,7 @@ import pygame
 from gameobjects.enemies.attack_player_in_radius_behavior import AttackPlayerInRadiusBehavior
 from gameobjects.enemies.dies_after_a_while_behavior import DiesAfterAWhileBehavior
 from gameobjects.enemies.enemy import Enemy
+from gameobjects.enemies.evolutive_behavior import EvolutiveBehavior
 from gameobjects.enemies.flee_players_behavior import FleePlayersBehavior
 from gameobjects.enemies.hurt_on_contact_behavior import HurtOnContactBehavior
 from gameobjects.enemies.move_randomly_behavior import MoveRandomlyBehavior
@@ -89,7 +90,7 @@ class EnemyFactory:
         seekBehavior = SeekNearestPlayerBehavior()
         seekBehavior.Speed = 100
 
-        enemy =  Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior()])
+        enemy =  Enemy(surfaces, pos[0], pos[1], [seekBehavior, AttackPlayerInRadiusBehavior(2)])
 
         enemy.MaxLife = 7
         enemy.CurrentLife = enemy.MaxLife
@@ -112,7 +113,6 @@ class EnemyFactory:
                 TeleportAndShootWaveBehavior(cls._textures['waveBulletSurface'], angleRange)
             ])
         enemy.ScoreValue = 0
-        enemy.MaxLife = 20
         enemy.CurrentLife = enemy.MaxLife
         return enemy
     
@@ -122,6 +122,7 @@ class EnemyFactory:
             cls._textures['antennaSurface'] =pygame.image.load('assets/sprites/objects/antenna.png').convert_alpha()
 
         enemy = Enemy([cls._textures['antennaSurface']], pos[0], pos[1], [])
+        enemy.MaxLife = 20
         enemy.ScoreValue = 30
 
         return enemy
@@ -396,20 +397,12 @@ class EnemyFactory:
             cls._textures['lastBoss3']
         ]
 
-        move = MoveRandomlyBehavior(obstacles)
-        move.Speed = 240
+        evolveBehavior = EvolutiveBehavior(obstacles, objects, enemies)
 
-        hurtOnContact = HurtOnContactBehavior()
-        hurtOnContact.damage = 2
-
-        spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.BOMB)
-        spawnBehavior.decisionMinTime = 4
-        spawnBehavior.decisionMaxTime = 6
-
-        enemy = Enemy(surfaces, pos[0], pos[1], [move, hurtOnContact, spawnBehavior, SpawnStatsUpgradesBehavior(2, objects)])
+        enemy = Enemy(surfaces, pos[0], pos[1], [evolveBehavior])
     
         enemy.IsABoss = True
-        enemy.MaxLife = 120
+        enemy.MaxLife = 200
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
 

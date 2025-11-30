@@ -2,8 +2,8 @@
 # "Splash","Title","Action","Rebind","GameOver","Elevator","Config", "Story"
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 960
-STARTING_STATE = 'Splash' # default Splash
-STARTING_FLOOR = 1 # default 1 # bosses: 5, 8, 13, 15
+STARTING_STATE = 'Action' # default Splash
+STARTING_FLOOR = 15 # default 1 # bosses: 5, 8, 13, 15
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 LOOT_CHANCE = 0.15
 

@@ -5,13 +5,15 @@ from gameobjects.enemies.enemy_behavior import EnemyBehavior
 
 class AttackPlayerInRadiusBehavior(EnemyBehavior):
 
-    def __init__(self):
+    def __init__(self, damage: int = 1, radius: int = 144):
         super().__init__()
-        self.attack_radius = 144
+        self.attack_radius = radius
         self.in_attack_range = False
 
         self.contact_timers = {}  # player -> time in contact
         self.attack_cooldown = .75  # seconds before damage
+
+        self.damage = damage
 
     def update(self, enemy, players, dt):
         # hurt players that stay too long in attack range
@@ -27,7 +29,7 @@ class AttackPlayerInRadiusBehavior(EnemyBehavior):
                 self.contact_timers[player] = self.contact_timers.get(player, 0) + dt
 
                 if self.contact_timers[player] >= self.attack_cooldown:
-                    player.ReceiveDamage()
+                    player.ReceiveDamage(self.damage)
                     self.contact_timers[player] = 0  # reset after damage
             else:
                 # Player left the zone
