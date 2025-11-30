@@ -3,6 +3,7 @@ from pygame import Surface
 import pygame
 from gameobjects.blinkingComponent import BlinkingComponent
 from gameobjects.enemies.enemy_behavior import EnemyBehavior
+from utils.sfx_factory import SFXFactory
 
 class Enemy:
     def __init__(self, surfaces: List[Surface], x: int, y: int, behaviors: list[EnemyBehavior]):     
@@ -32,6 +33,7 @@ class Enemy:
 
         self.Scale = 1
         self.IsABoss = False
+        self.Name = ''
 
     def setScale(self, scale: int):
         self.Scale = scale
@@ -78,6 +80,21 @@ class Enemy:
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
         self.CurrentLife -= dmg
+
+        if self.CurrentLife <= 0:
+            match self.Name:
+
+                case 'boss1':
+                    SFXFactory.PlayBossDeath1SFX()
+
+                case 'boss2':
+                    SFXFactory.PlayBossDeath2SFX()
+
+                case 'boss3':
+                    SFXFactory.PlayBossDeath3SFX()
+
+                case 'boss4':
+                    SFXFactory.PlayBossDeath4SFX()
 
     def multiplyLife(self, factor=3):
         self.MaxLife *= factor

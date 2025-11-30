@@ -6,6 +6,7 @@ from gameobjects.room import Room
 from gamestates.gameState import GameState
 from utils.ogmo.ogmoMap import OgmoMap
 from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.sfx_factory import SFXFactory
 
 class ElevatorState(GameState):
 
@@ -49,6 +50,10 @@ class ElevatorState(GameState):
 
         self.canSkip = self.game.game_data['floor'] > 2 and self.game.game_data['floor'] != 15
 
+        self.music_timing = 0
+        self.elevator_music_sfx: pygame.mixer.Sound | None = None
+
+
     def exit(self):
         pass
 
@@ -68,11 +73,11 @@ class ElevatorState(GameState):
             if self.canSkip:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        self.moveToNextState()
+                        self.skipTonextFloor()
 
                 if event.type == pygame.JOYBUTTONUP:
                     if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 0:
-                        self.moveToNextState()
+                        self.skipTonextFloor()
 
         ######################################
         # CONTINUOUS INPUT (MOVEMENT)
@@ -115,8 +120,19 @@ class ElevatorState(GameState):
                 if joy.get_hat(0)[1] != 0:
                     player.MoveY(joy.get_hat(0)[1] * -1, self.elevatorRoom.Obstacles)
 
+    def skipTonextFloor(self):
+        if self.elevator_music_sfx is not None:
+            self.elevator_music_sfx.stop()
+        if self.game.game_data['floor'] not in [11,12,13,14]: # todo sfx for those floors
+            SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
+        self.moveToNextState()
+
 
     def update(self, dt: float):
+
+        self.music_timing += dt
+        if self.music_timing >= 1 and self.elevator_music_sfx is None:
+            self.elevator_music_sfx = SFXFactory.PlayElevatorMusicSFX()
 
         # raise everything
         self.YOffset += self.scrollingSpeed * dt
@@ -126,6 +142,8 @@ class ElevatorState(GameState):
 
         # end of animation
         if self.YOffset <= -360:
+            if self.game.game_data['floor'] not in [11,12,13,14]: # todo sfx for those floors
+                SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
             self.moveToNextState()
 
         # Update players

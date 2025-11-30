@@ -15,6 +15,7 @@ from gameobjects.elevator import Elevator
 from gameobjects.roomExit import RoomExit
 from gamestates.gameState import GameState
 from utils.parameters import LOOT_CHANCE, POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.sfx_factory import SFXFactory
 
 class ActionState(GameState):
 
@@ -289,9 +290,12 @@ class ActionState(GameState):
             case '3waysLRD':
                 self.Exits = [exitLeft, exitRight, exitDown]
 
-        # special case for very forst room: write basic instructions on the floor
-        if self.CurrentRoom == self.Level.StartingRoom and self.game.game_data['floor'] == 1:
-            self.howToMoveTipSurface = pygame.image.load(f'assets/sprites/environment/rooms/moveInstructions.png').convert_alpha()
+        
+        if self.CurrentRoom == self.Level.StartingRoom:
+            if self.game.game_data['floor'] == 1: # special case for very forst room: write basic instructions on the floor
+                self.howToMoveTipSurface = pygame.image.load(f'assets/sprites/environment/rooms/moveInstructions.png').convert_alpha()
+            else: # for every other room, play elevator doors sound effect
+                SFXFactory.PlayElevatorDoorsOpen2SFX()
 
 
     def exit(self):
@@ -457,6 +461,7 @@ class ActionState(GameState):
             if self.Elevator is not None and self.CurrentRoom.Cleared and len(self.FarawayTowers) == 0:
                 if player.Rect.colliderect(self.Elevator.Rect):
                     self.game.game_data['floor'] += 1
+                    SFXFactory.PlayElevatorDoorsOpenSFX()
                     self.game.change_state("Elevator")
 
             # check for teleport to adjacent room
@@ -637,7 +642,7 @@ class ActionState(GameState):
 
                 pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, WINDOW_HEIGHT - 75, maxWidth, 48))
                 pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, WINDOW_HEIGHT - 72, currentWidth, 42))
-                
+
         # P1 score & life bar
         player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score} ({self.Players[0].Lives} lives)', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))

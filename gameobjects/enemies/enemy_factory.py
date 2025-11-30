@@ -306,6 +306,7 @@ class EnemyFactory:
                                                  SpawnStatsUpgradesBehavior(2, objects)])
     
         enemy.IsABoss = True
+        enemy.Name = 'boss1'
         enemy.setScale(3)
         enemy.MaxLife = 60
         enemy.CurrentLife =  enemy.MaxLife
@@ -327,14 +328,18 @@ class EnemyFactory:
             cls._textures['rabbit3']
         ]
 
+        seekBehavior = SeekNearestPlayerBehavior()
+        seekBehavior.Speed = 90
+
         enemy = Enemy(surfaces, pos[0], pos[1], [
-            SeekNearestPlayerBehavior(), 
-            AttackPlayerInRadiusBehavior(),
+            seekBehavior, 
+            AttackPlayerInRadiusBehavior(2, 200),
             SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MINE),
             SummonMinionBehavior(enemies, SummonMinionBehavior.EnemyType.MOUSE),
             SpawnStatsUpgradesBehavior(1, objects)])
 
         enemy.IsABoss = True
+        enemy.Name = 'boss2'
         enemy.setScale(2)
         enemy.MaxLife = 120
         enemy.CurrentLife =  enemy.MaxLife
@@ -375,6 +380,7 @@ class EnemyFactory:
                                                  SpawnStatsUpgradesBehavior(2, objects)])
     
         enemy.IsABoss = True
+        enemy.Name = 'boss3'
         enemy.setScale(3)
         enemy.MaxLife = 120
         enemy.CurrentLife =  enemy.MaxLife
@@ -402,6 +408,7 @@ class EnemyFactory:
         enemy = Enemy(surfaces, pos[0], pos[1], [evolveBehavior])
     
         enemy.IsABoss = True
+        enemy.Name = 'boss4'
         enemy.MaxLife = 200
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 200
