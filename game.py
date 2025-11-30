@@ -79,7 +79,6 @@ class Game:
         self.str_final_time: str = ''
 
     def load_data(self):
-        print(self.game_data)
         if Game.WEB:
             from platform import window
             floor_value = window.localStorage.getItem("floor")
@@ -97,7 +96,6 @@ class Game:
                         key = line.split('::')[0]
                         value = line.split('::')[1].replace('\n', '')
                         self.game_data[key] = value
-        print(self.game_data)
 
     def save_data(self):
         if Game.WEB:
@@ -174,10 +172,10 @@ class Game:
                 self.screen.blit(self.render_surface, (0,0))
 
 
-        # # draw FPS
-        # font = pygame.font.SysFont(None, 48)
-        # fps = font.render(str(int(self.clock.get_fps())), True, (255,0,255))
-        # self.screen.blit(fps, (0,0))
+        # draw FPS
+        font = pygame.font.SysFont(None, 48)
+        fps = font.render(str(int(self.clock.get_fps())), True, (255,0,255))
+        self.screen.blit(fps, (0,0))
 
         pygame.display.flip()
 
