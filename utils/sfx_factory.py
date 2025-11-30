@@ -55,6 +55,16 @@ class SFXFactory:
         return cls._playSFX(sound_name)
 
     @classmethod
+    def PlayBombExplodingSFX(cls):
+        sound_name = random.choice(['item_bomb_1', 'item_bomb_2'])
+        return cls._playSFX(sound_name)
+
+    @classmethod
+    def PlayMineExplodingSFX(cls):
+        sound_name = random.choice(['item_mine_1', 'item_mine_2'])
+        return cls._playSFX(sound_name)
+
+    @classmethod
     def PlayShotGunSFX(cls):
         sound_name = random.choice(['gun_shotgun_1', 'gun_shotgun_2'])
         return cls._playSFX(sound_name)

@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 
 class Bomb:
@@ -38,6 +39,7 @@ class Bomb:
             from gameobjects.objects.objects_factory import ObjectsFactory
             explo = ObjectsFactory.GetExplosion(self.Rect.center)
             self.objects.append(explo)
+            SFXFactory.PlayBombExplodingSFX()
 
     def draw(self, screen):
         if self.ColorBlinkingComponent.visible:

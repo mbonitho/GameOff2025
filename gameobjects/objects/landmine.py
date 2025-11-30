@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 
 class Landmine:
@@ -30,5 +31,6 @@ class Landmine:
 
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
+            SFXFactory.PlayMineExplodingSFX()
             if player.ReceiveDamage(1):
                 player.BlinkingComponent.StartBlinking()
