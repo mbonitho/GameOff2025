@@ -71,6 +71,16 @@ class ActionState(GameState):
         self.shoot_up_key = pygame.K_w if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_z
         self.shoot_left_key = pygame.K_a if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_q
 
+        #############################
+        # BGM
+        #############################
+        if self.game.game_data['floor'] in [5,8,13]:
+            self.game.PlayBGM('minor_boss')
+        elif self.game.game_data['floor'] != 15:
+            self.game.PlayBGM('dungeon_loop')
+        else:
+            self.game.PlayBGM('last_boss')
+
     def LoadRoom(self, room: Room | None):
 
         if room == None:

@@ -15,6 +15,8 @@ class ElevatorState(GameState):
     def enter(self):
         print("Entered Elevator State")
 
+        pygame.mixer.music.stop()
+
         self.XOffset = 200
         self.YOffset = 1000
         self.scrollingSpeed = -100

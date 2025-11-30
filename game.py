@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from typing import Dict, Optional
 from gamestates.actionState import ActionState
+from gamestates.creditsState import CreditState
 from gamestates.gameOverState import GameOverState
 from gamestates.gameState import GameState
 from gamestates.splashState import SplashState
@@ -22,6 +23,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.joystick.init()
+        pygame.mixer.init()
         self.screen = pygame.display.set_mode(Game.GAME_WINDOW_SIZE)
         self.render_surface = pygame.Surface(Game.GAME_WINDOW_SIZE)
 
@@ -39,7 +41,8 @@ class Game:
             "Action": ActionState(self),
             "GameOver" : GameOverState(self),
             "Elevator" : ElevatorState(self),
-            'Story': StoryState(self)
+            'Story': StoryState(self),
+            'Credits': CreditState(self)
         }
 
         if sys.platform in ['wasi', 'emscripten']:
@@ -158,11 +161,11 @@ class Game:
             else:
                 self.screen.blit(self.render_surface, (0,0))
 
-
         pygame.display.flip()
 
 
         if not self.running:
+            pygame.mixer.music.stop()
             pygame.quit()
 
     def toggle_fullscreen(self):
@@ -212,3 +215,10 @@ class Game:
         else:
             layout = "generic"
         self.input_maps[device_index] = INPUT_MAPS[layout]
+
+
+    def PlayBGM(self, filenameWithoutExtension: str):
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load(f"assets/bgm/{filenameWithoutExtension}.wav")
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)    

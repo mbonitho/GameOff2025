@@ -26,12 +26,19 @@ class TitleState(GameState):
         self.pressStartY = 600
         self.pressStartDirection = 1
 
+        self.game.PlayBGM('title')
+
     def handle_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
                     SFXFactory.PlayWeeeeeSFX()
                     self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
+
+                if event.key == K_c:
+                    SFXFactory.PlayM9SFX()
+                    self.game.change_state("Credits")
+
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == self.game.input_maps[event.joy]["START"]:
@@ -53,6 +60,9 @@ class TitleState(GameState):
         # about
         title_font = pygame.font.SysFont(None, 32)
         title_text = title_font.render("2025, Mathieu Bonithon & Gael Rincon", True, (255, 255, 255))
+        screen.blit(title_text, (850, 880))
+
+        title_text = title_font.render("Press C to view the full credits", True, (255, 255, 255))
         screen.blit(title_text, (850, 920))
 
         # buttons
