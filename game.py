@@ -77,6 +77,9 @@ class Game:
         self.current_state: Optional[GameState] = None
         self.change_state(STARTING_STATE)
 
+        self.current_run_time: float = -1
+        self.str_final_time: str = ''
+
     def load_data(self):
         print('loading data')
         if Game.WEB:
@@ -140,6 +143,11 @@ class Game:
                 print(f"Joystick Removed: {event.instance_id}") # instance_id is preferred in Pygame 2.x
                 self.joysticks = [j for j in self.joysticks if j.get_instance_id() != event.instance_id]
 
+        ########################################
+        # Update time for the current run
+        ########################################
+        if self.current_run_time >= 0:
+            self.current_run_time += dt
 
         ########################################
         # INPUT, UPDATE, DRAW THE CURRENT STATE

@@ -25,6 +25,7 @@ class StoryState(GameState):
             self.lines = POPUP_TEXTS['BEFORE_FINAL_BOSS']
         elif self.game.game_data['floor'] == 16:
             self.lines = POPUP_TEXTS['AFTER_FINAL_BOSS']
+            self.lines.append(f'Your completion time is: {self.game.str_final_time}')
             self.game.game_data['floor'] = 1 # resets the game progression
 
         self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5

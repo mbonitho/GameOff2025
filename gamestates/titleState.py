@@ -32,8 +32,7 @@ class TitleState(GameState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
-                    SFXFactory.PlayWeeeeeSFX()
-                    self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
+                    self.start_game()
 
                 if event.key == K_c:
                     SFXFactory.PlayM9SFX()
@@ -42,9 +41,16 @@ class TitleState(GameState):
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == self.game.input_maps[event.joy]["START"]:
-                    SFXFactory.PlayWeeeeeSFX()
-                    self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
+                    self.start_game()
 
+
+    def start_game(self):
+        # start chronometer
+        if self.game.game_data['floor'] == 1:
+            self.game.current_run_time = 0
+        SFXFactory.PlayWeeeeeSFX()
+        self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
+        
     def draw(self, screen):
         screen.fill((30, 30, 60))
 
@@ -64,6 +70,11 @@ class TitleState(GameState):
 
         title_text = title_font.render("Press C to view the full credits", True, (255, 255, 255))
         screen.blit(title_text, (850, 920))
+
+        # if the game was beaten at least once, display last win time
+        if self.game.str_final_time != '':
+            title_text = title_font.render(f'Your completion time is: {self.game.str_final_time}', True, (255, 255, 255))
+            screen.blit(title_text, (20, 920))
 
         # buttons
         subtitle_font = pygame.font.SysFont(None, 64)

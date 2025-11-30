@@ -338,6 +338,11 @@ class ActionState(GameState):
                     self.shoot_left_key = pygame.K_a if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_q
                     print(self.game.game_data["keyboard_layout"])
 
+                elif event.key == pygame.K_F12:
+                    self.game.game_data['floor'] += 1
+                    self.game.change_state("Action")
+
+
                 # SPACE, when P1 is dead
                 elif event.key == pygame.K_SPACE:
                     self.tryRespawnPlayer(self.Players[0])
@@ -553,6 +558,12 @@ class ActionState(GameState):
                 if enemy.IsABoss and self.game.game_data['floor'] == 15:
                     self.game.game_data['floor'] = 16
                     self.game.PlayBGM('end')
+
+                    # Calculate the final run time
+                    total_secs = round(self.game.current_run_time)
+                    minutes = total_secs// 60
+                    secs = total_secs  % 60
+                    self.game.str_final_time = f"{minutes}:{secs:02d}"
                     
                     #kill footstep sfx
                     for player in self.Players:
