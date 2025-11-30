@@ -4,6 +4,8 @@ from gameobjects.weapons.weapons_factory import WeaponFactory
 from gamestates.gameState import GameState
 from pygame.locals import *
 
+from utils.sfx_factory import SFXFactory
+
 # Game Over screen state
 class GameOverState(GameState):
     def enter(self):
@@ -13,8 +15,7 @@ class GameOverState(GameState):
 
         self.GameOverSurfaceY = -535
 
-        self.RetryText = BlinkingText("Press Space or Start to restart", (400, 900), 48)
-
+        self.RetryText = BlinkingText("Press Space or Start to restart from the current floor", (400, 900), 48)
 
     def handle_events(self, events):
         for event in events:
@@ -49,4 +50,5 @@ class GameOverState(GameState):
             p.CurrentLife = p.MaxLife
             p.Weapon = WeaponFactory.GetDefaultWeapon(p)
             
+        SFXFactory.PlayWeeeeeSFX()
         self.game.change_state("Action")

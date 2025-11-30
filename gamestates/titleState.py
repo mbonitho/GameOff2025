@@ -4,6 +4,8 @@ from gamestates.gameState import GameState
 from pygame.locals import *
 import random
 
+from utils.sfx_factory import SFXFactory
+
 # Title screen state
 class TitleState(GameState):
     def enter(self):
@@ -28,10 +30,12 @@ class TitleState(GameState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
+                    SFXFactory.PlayWeeeeeSFX()
                     self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == self.game.input_maps[event.joy]["START"]:
+                    SFXFactory.PlayWeeeeeSFX()
                     self.game.change_state("Story" if self.game.game_data['floor'] == 1 else "Action")
 
     def draw(self, screen):

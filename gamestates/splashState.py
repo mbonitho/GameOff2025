@@ -2,6 +2,7 @@ from gamestates.gameState import GameState
 import pygame
 
 from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.sfx_factory import SFXFactory
 
 
 # Splash screen state
@@ -13,6 +14,7 @@ class SplashState(GameState):
         self.logoY = WINDOW_HEIGHT / 2 - self.LogoSurface.get_height() / 2
 
         self.game.splash_timer = 1.5
+        SFXFactory.PlaySplashSFX()
 
     def update(self, dt: float):
         # Simulate splash duration

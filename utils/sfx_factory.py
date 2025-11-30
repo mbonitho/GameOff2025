@@ -8,6 +8,10 @@ class SFXFactory:
     _sounds = {}
 
     @classmethod
+    def PlaySplashSFX(cls):
+        return cls._playSFX('misc_badabim_badaboom')
+
+    @classmethod
     def PlayElevatorDoorsOpenSFX(cls):
         return cls._playSFX('elevator_doors_open')
 
@@ -84,6 +88,18 @@ class SFXFactory:
     @classmethod
     def PlayPlayerHealedSFX(cls, playerindex: int):
         return cls._playSFX(f'player{playerindex}_healed')
+
+    @classmethod
+    def PlayPlayerHurtSFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_hurt{random.choice([1,2])}')
+
+    @classmethod
+    def PlayPlayerDeadSFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_dead')
+
+    @classmethod
+    def PlayWeeeeeSFX(cls):
+        return cls._playSFX('misc_weee')
 
     @classmethod
     def _playSFX(cls, filename: str, loop: bool = False):

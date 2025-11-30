@@ -3,6 +3,7 @@ from gamestates.gameState import GameState
 from pygame.locals import *
 
 from utils.parameters import POPUP_TEXTS, WINDOW_HEIGHT, WINDOW_WIDTH
+from utils.sfx_factory import SFXFactory
 
 # Story screen state
 class StoryState(GameState):
@@ -23,18 +24,20 @@ class StoryState(GameState):
             self.lines = POPUP_TEXTS['AFTER_FINAL_BOSS']
 
         self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5
-        pass
+        
+        self.skip_timing = -1
 
 
     def handle_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
-                    self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
-
+                    SFXFactory.PlayM9SFX()
+                    self.skip_timing = 0
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == self.game.input_maps[event.joy]["START"]:
-                    self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
+                    SFXFactory.PlayM9SFX()
+                    self.skip_timing = 0
 
     def draw(self, screen):
         screen.fill((30, 30, 60))
@@ -60,5 +63,13 @@ class StoryState(GameState):
 
 
     def update(self, dt: float):
+
+        if self.skip_timing >= 0:
+            self.skip_timing += dt
+
+            if self.skip_timing >= 0.5:
+                self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
+
+
         if self.linesY >= self.endY:
             self.linesY -= 24 * dt

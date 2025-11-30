@@ -134,6 +134,13 @@ class Player:
         if not self.BlinkingComponent.IsBlinking():
             self.BlinkingComponent.StartBlinking()
             self.CurrentLife -= dmg
+
+            if self.CurrentLife <= 0:
+                SFXFactory.PlayPlayerDeadSFX(self.playerIndex)
+            else:
+                SFXFactory.PlayPlayerHurtSFX(self.playerIndex)
+
+
             return True
         return False
 
