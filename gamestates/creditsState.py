@@ -8,7 +8,6 @@ from utils.sfx_factory import SFXFactory
 # Story screen state
 class CreditState(GameState):
     def enter(self):
-        print("Entered Credit State")
         self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
 
         self.linesX = 200

@@ -22,7 +22,6 @@ class ActionState(GameState):
     EXIT_SIZE = 48
 
     def enter(self):
-        print("Entered Action State")
 
         #############################
         # SURFACES
@@ -336,11 +335,10 @@ class ActionState(GameState):
                     self.game.game_data["keyboard_layout"] = "ZQSD" if self.game.game_data["keyboard_layout"] == "WASD" else "WASD"
                     self.shoot_up_key = pygame.K_w if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_z
                     self.shoot_left_key = pygame.K_a if self.game.game_data["keyboard_layout"] == "WASD" else pygame.K_q
-                    print(self.game.game_data["keyboard_layout"])
 
-                elif event.key == pygame.K_F12:
-                    self.game.game_data['floor'] += 1
-                    self.game.change_state("Action")
+                # elif event.key == pygame.K_F12:
+                #     self.game.game_data['floor'] += 1
+                #     self.game.change_state("Action")
 
 
                 # SPACE, when P1 is dead
@@ -349,7 +347,6 @@ class ActionState(GameState):
 
             # JOYSTICKS
             if event.type == pygame.JOYBUTTONUP:
-                print(event.button)
                 # player2 joining by pressing start, spawns at p1 pos
                 if event.button == self.game.input_maps[event.joy]["START"] and event.joy == 1:
                     if len(self.Players) == 1:
@@ -587,7 +584,6 @@ class ActionState(GameState):
         # check for game over
         continueGame = any(p.CurrentLife > 0 or p.Lives > 0 for p in self.Players)
         if not continueGame:
-            print(self.Players[0].Lives)
             self.game.change_state("GameOver")
 
     def draw(self, screen):

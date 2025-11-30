@@ -81,7 +81,6 @@ class Game:
         self.str_final_time: str = ''
 
     def load_data(self):
-        print('loading data')
         if Game.WEB:
             from platform import window
             for key, value in self.game_data.items():
@@ -140,7 +139,6 @@ class Game:
                 self.AddAndDetectJoystick(event.device_index)
             if event.type == pygame.JOYDEVICEREMOVED:
                 # Re-initialize joysticks or remove the disconnected one from your list
-                print(f"Joystick Removed: {event.instance_id}") # instance_id is preferred in Pygame 2.x
                 self.joysticks = [j for j in self.joysticks if j.get_instance_id() != event.instance_id]
 
         ########################################
@@ -210,7 +208,6 @@ class Game:
         new_joystick = pygame.joystick.Joystick(device_index)
         new_joystick.init()
         self.joysticks.append(new_joystick)
-        print(f"New Joystick Added: {new_joystick.get_name()}")
 
         name = new_joystick.get_name().lower()
 

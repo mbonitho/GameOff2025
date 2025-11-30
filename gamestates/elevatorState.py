@@ -13,7 +13,6 @@ class ElevatorState(GameState):
     EXIT_SIZE = 48
 
     def enter(self):
-        print("Entered Elevator State")
 
         pygame.mixer.music.stop()
 

@@ -15,7 +15,6 @@ class RandomizedLevel:
         overlappingCoords = [coord for coord, count in Counter(room.Coords for room in self.Rooms).items() if count > 1] 
         attempt = 1
         while len(self.Rooms) < RandomizedLevel.MAX_SIZE or (overlappingCoords and (-1, -1) not in overlappingCoords):
-            print(f'Generation attempt {attempt}')
             self.GenerateDungeon()
             attempt += 1
 

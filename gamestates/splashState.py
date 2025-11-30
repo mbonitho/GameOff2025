@@ -8,7 +8,6 @@ from utils.sfx_factory import SFXFactory
 # Splash screen state
 class SplashState(GameState):
     def enter(self):
-        print("Entered Splash State")
         self.LogoSurface = pygame.image.load('assets/sprites/cool_poop.png').convert_alpha()
         self.logoX = WINDOW_WIDTH / 2 - self.LogoSurface.get_width() / 2
         self.logoY = WINDOW_HEIGHT / 2 - self.LogoSurface.get_height() / 2

@@ -34,11 +34,6 @@ class TeleportAndShootWaveBehavior(EnemyBehavior):
             # randomize shoot timing
             self.attack_cooldown = random.randrange(3, 10)  # seconds
 
-
-            # print bullet detail
-            # print(f'Enemy pos: {enemy.Rect.topleft} | Bullet dir: {(self.Bullet.X_dir, self.Bullet.Y_dir)}')
-            pass
-
         for bullet in self.Bullets.copy():
             bullet.update(players, dt)
 

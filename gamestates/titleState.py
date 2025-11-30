@@ -9,7 +9,6 @@ from utils.sfx_factory import SFXFactory
 # Title screen state
 class TitleState(GameState):
     def enter(self):
-        print("Entered Title State")
         self.TitleBGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
         self.TitleLogo1Surface = pygame.image.load('assets/sprites/environment/title/titleLogo1.png').convert_alpha()
         self.TitleLogo2Surface = pygame.image.load('assets/sprites/environment/title/titleLogo2.png').convert_alpha()

@@ -9,7 +9,6 @@ from utils.sfx_factory import SFXFactory
 # Game Over screen state
 class GameOverState(GameState):
     def enter(self):
-        print("Entered Title State")
         self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
         self.GameOverSurface = pygame.image.load('assets/sprites/environment/gameover/gameOver.png').convert_alpha()
 
