@@ -4,17 +4,22 @@ from gameobjects.weapons.weapons_factory import WeaponFactory
 from gamestates.gameState import GameState
 from pygame.locals import *
 
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
 from utils.sfx_factory import SFXFactory
 
 # Game Over screen state
 class GameOverState(GameState):
     def enter(self):
-        self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
+        self.BGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert()
         self.GameOverSurface = pygame.image.load('assets/sprites/environment/gameover/gameOver.png').convert_alpha()
+        self.RetryText = BlinkingText("Press Space or Start to restart from the current floor", (400, 900), 48)
 
         self.GameOverSurfaceY = -535
 
-        self.RetryText = BlinkingText("Press Space or Start to restart from the current floor", (400, 900), 48)
+        if self.game.WEB:
+            # lower image quality to improve performance on the web
+            self.BGSurface = pygame.transform.scale(self.BGSurface, (640, 480))
+            self.BGSurface = pygame.transform.scale(self.BGSurface, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
     def handle_events(self, events):
         for event in events:
