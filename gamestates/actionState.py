@@ -64,6 +64,7 @@ class ActionState(GameState):
         #############################
         # Load the full level
         #############################
+        self.elevator_ding_sfx_played = False
         self.Level = Level(f"F{self.game.game_data['floor']}")
         self.LoadRoom(self.Level.StartingRoom)
 
@@ -294,8 +295,9 @@ class ActionState(GameState):
         if self.CurrentRoom == self.Level.StartingRoom:
             if self.game.game_data['floor'] == 1: # special case for very forst room: write basic instructions on the floor
                 self.howToMoveTipSurface = pygame.image.load(f'assets/sprites/environment/rooms/moveInstructions.png').convert_alpha()
-            else: # for every other room, play elevator doors sound effect
+            elif not self.elevator_ding_sfx_played: # for every other room, play elevator doors sound effect
                 SFXFactory.PlayElevatorDoorsOpen2SFX()
+                self.elevator_ding_sfx_played = True
 
 
     def exit(self):
