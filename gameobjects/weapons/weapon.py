@@ -1,11 +1,13 @@
 from pygame import Surface
 import pygame
 from gameobjects.bullet import Bullet
+from utils.sfx_factory import SFXFactory
 
 class Weapon:
     def __init__(self, owner, weaponSurface: Surface, bulletSurface: Surface):     
 
         self.Owner = owner
+        self.Name = ''
 
         self.WeaponSurface = weaponSurface
         self.BulletSurface = bulletSurface
@@ -65,6 +67,22 @@ class Weapon:
 
         if len(self.Bullets) >= self.MaxBulletsOnScreen * len(self.Angles['l']):
             return
+
+        # play shooting sfx
+        match self.Name:
+
+            case 'm9':
+                SFXFactory.PlayM9SFX()
+
+            case 'uzi':
+                SFXFactory.PlayUziSFX()
+
+            case 'musket':
+                SFXFactory.PlayMusketSFX()
+
+            case 'shotgun':
+                SFXFactory.PlayShotGunSFX()
+
 
         # reset fire timing
         self.FireTiming = 0

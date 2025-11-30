@@ -21,6 +21,7 @@ class WeaponFactory:
 
         weapon = Weapon(owner, wpnSurface, bulletSurface)
         weapon.BulletMaxLifespan *= .7
+        weapon.Name = 'm9'
         return weapon
     
     @classmethod
@@ -40,7 +41,7 @@ class WeaponFactory:
         weapon.BulletMaxLifespan *= 2
         weapon.TotalAmunition = 300
         weapon.MaxBulletsOnScreen = 15
-
+        weapon.Name = 'uzi'
         return weapon
     
     @classmethod
@@ -66,7 +67,7 @@ class WeaponFactory:
         weapon.BulletMaxLifespan = 0.25
         weapon.TotalAmunition = 150
         weapon.BulletDamage = 1
-
+        weapon.Name = 'musket'
         return weapon
     
     @classmethod
@@ -92,5 +93,5 @@ class WeaponFactory:
         weapon.BulletMaxLifespan = 0.25
         weapon.TotalAmunition = 130
         weapon.BulletDamage = 1
-        
+        weapon.Name = 'shotgun'
         return weapon

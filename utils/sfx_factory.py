@@ -1,3 +1,4 @@
+import random
 import pygame
 
 
@@ -38,6 +39,25 @@ class SFXFactory:
     def PlayBossDeath4SFX(cls):
         return cls._playSFX('boss_death_4')
 
+    @classmethod
+    def PlayUziSFX(cls):
+        sound_name = random.choice(['gun_uzi_1', 'gun_uzi_2', 'gun_uzi_3'])
+        return cls._playSFX(sound_name)
+    
+    @classmethod
+    def PlayM9SFX(cls):
+        sound_name = random.choice(['gun_m9_1', 'gun_m9_2', 'gun_m9_3'])
+        return cls._playSFX(sound_name)
+    
+    @classmethod
+    def PlayMusketSFX(cls):
+        sound_name = random.choice(['gun_musket_1', 'gun_musket_2'])
+        return cls._playSFX(sound_name)
+
+    @classmethod
+    def PlayShotGunSFX(cls):
+        sound_name = random.choice(['gun_shotgun_1', 'gun_shotgun_2'])
+        return cls._playSFX(sound_name)
 
     @classmethod
     def _playSFX(cls, filename: str):
