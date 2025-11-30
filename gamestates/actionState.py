@@ -552,6 +552,7 @@ class ActionState(GameState):
                 # ending when final boss is defeated
                 if enemy.IsABoss and self.game.game_data['floor'] == 15:
                     self.game.game_data['floor'] = 16
+                    self.game.PlayBGM('end')
                     self.game.change_state("Story")
 
                 self.Enemies.remove(enemy)

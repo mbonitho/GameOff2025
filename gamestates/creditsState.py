@@ -33,6 +33,9 @@ class CreditState(GameState):
             "",
             "Demon Lord, by Scrabbit",
             "https://opengameart.org/content/demon-lord",
+            "",
+            "One, by pheonton"
+            "https://opengameart.org/content/one"
         ]
 
 
