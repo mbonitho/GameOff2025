@@ -35,10 +35,6 @@ class GameOverState(GameState):
 
         self.RetryText.draw(screen)
 
-        # highscore_font = pygame.font.SysFont(None, 24)
-        # score_text = highscore_font.render(f'High score: {self.game.game_data['highscore']}', True, (255, 255, 255))
-        # screen.blit(score_text, (500, 440))
-
     def update(self, dt: float):
         self.RetryText.update(dt)
         if self.GameOverSurfaceY < 350:

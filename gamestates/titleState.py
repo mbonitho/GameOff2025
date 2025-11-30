@@ -80,11 +80,6 @@ class TitleState(GameState):
         subtitle_text = subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
         screen.blit(subtitle_text, (340, self.pressStartY))
 
-
-        # highscore_font = pygame.font.SysFont(None, 24)
-        # score_text = highscore_font.render(f'High score: {self.game.game_data['highscore']}', True, (255, 255, 255))
-        # screen.blit(score_text, (500, 440))
-
     def update(self, dt: float):
 
         self.blinkingComponent.update(dt)

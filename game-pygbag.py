@@ -174,10 +174,10 @@ class Game:
                 self.screen.blit(self.render_surface, (0,0))
 
 
-        # # draw FPS
-        # font = pygame.font.SysFont(None, 48)
-        # fps = font.render(str(int(self.clock.get_fps())), True, (255,0,255))
-        # self.screen.blit(fps, (0,0))
+        # draw FPS
+        font = pygame.font.SysFont(None, 48)
+        fps = font.render(str(int(self.clock.get_fps())), True, (255,0,255))
+        self.screen.blit(fps, (0,0))
 
         pygame.display.flip()
 
@@ -236,6 +236,6 @@ class Game:
 
     def PlayBGM(self, filenameWithoutExtension: str):
         pygame.mixer.music.stop()
-        pygame.mixer.music.load(f"assets/bgm/{filenameWithoutExtension}.wav")
+        pygame.mixer.music.load(f"assets/bgm/{filenameWithoutExtension}.ogg")
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)    

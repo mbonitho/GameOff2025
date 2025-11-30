@@ -1,3 +1,8 @@
+# /// script
+# dependencies = [
+# "pygame",
+# ]
+
 from game import Game
 import asyncio
 
