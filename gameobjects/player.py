@@ -4,6 +4,7 @@ from pygame import Rect
 from gameobjects.blinkingComponent import BlinkingComponent
 from gameobjects.weapons.weapons_factory import WeaponFactory
 from utils.helpers.collisions_helper import MoveAndCollide
+from utils.sfx_factory import SFXFactory
 
 class Player:
 
@@ -49,6 +50,8 @@ class Player:
 
         self.BlinkingComponent = BlinkingComponent()
 
+        self.FootstepSFX: pygame.mixer.Sound | None = None
+
     def initializeWeapon(self):
         self.Weapon = WeaponFactory.GetDefaultWeapon(self)
     
@@ -61,8 +64,13 @@ class Player:
 
         if self.previous_pos == self.Rect.topleft:
             self.state = 'idle'
+            if self.FootstepSFX is not None:
+                self.FootstepSFX.stop()
+                self.FootstepSFX = None
         else:
             self.state = 'walk'
+            if self.FootstepSFX is None:
+                self.FootstepSFX = SFXFactory.PlayFootstepsSFX(self.playerIndex)
 
         # animation
         self.animation_timer += dt

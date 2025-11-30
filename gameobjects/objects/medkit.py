@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 class Medkit:
 
@@ -29,5 +30,7 @@ class Medkit:
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
             player.CurrentLife = min(player.MaxLife, max(player.CurrentLife + 1, round(player.CurrentLife * 1.3)))
+            SFXFactory.PlayPlayerHealedSFX(player.playerIndex) 
+
 
     

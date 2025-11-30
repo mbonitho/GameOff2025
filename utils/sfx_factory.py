@@ -70,10 +70,29 @@ class SFXFactory:
         return cls._playSFX(sound_name)
 
     @classmethod
-    def _playSFX(cls, filename: str):
+    def PlayFootstepsSFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_steps', True)
+
+    @classmethod
+    def PlayPlayerHappySFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_happy')
+
+    @classmethod
+    def PlayPlayerDrinksSFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_drinks')
+
+    @classmethod
+    def PlayPlayerHealedSFX(cls, playerindex: int):
+        return cls._playSFX(f'player{playerindex}_healed')
+
+    @classmethod
+    def _playSFX(cls, filename: str, loop: bool = False):
         if filename not in cls._sounds:
             cls._sounds[filename] = pygame.mixer.Sound(f'assets/sfx/{filename}.wav')
 
-        cls._sounds[filename].play()
+        if loop:
+            cls._sounds[filename].play(-1)
+        else:
+            cls._sounds[filename].play()
 
         return cls._sounds[filename]

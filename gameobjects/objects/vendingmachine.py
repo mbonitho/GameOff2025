@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 class VendingMachine:
 
@@ -26,4 +27,5 @@ class VendingMachine:
     def handleCollision(self, player):
         if player.Rect.colliderect(self.CollissionRect) and player.CurrentLife < player.MaxLife:
             player.CurrentLife = player.MaxLife
+            SFXFactory.PlayPlayerDrinksSFX(player.playerIndex) 
     

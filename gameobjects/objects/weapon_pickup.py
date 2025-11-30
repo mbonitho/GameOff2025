@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 class WeaponPickup:
 
@@ -32,3 +33,4 @@ class WeaponPickup:
         if self.lifespan < self.maxlifespan:
             self.Weapon.Owner = player
             player.Weapon = self.Weapon
+            SFXFactory.PlayPlayerHappySFX(player.playerIndex)
