@@ -507,6 +507,7 @@ class ActionState(GameState):
         # Update enemies
         for enemy in self.Enemies.copy():
 
+            # remove enemies that went OOB
             if not enemy.Rect.colliderect(self.FloorRect):
                 self.Enemies.remove(enemy)
                 break
@@ -524,14 +525,18 @@ class ActionState(GameState):
                         player.Lives += 1
 
                 # loot chance!
-                
                 if random.random() <= LOOT_CHANCE:
                     rng = random.random()
                     if rng < 0.5:
                         self.Objects.append(ObjectsFactory.GetMedkit(enemy.Rect.bottomleft))
                     else:
                         self.Objects.append(ObjectsFactory.GetRandomWeaponPickup(enemy.Rect.bottomleft))
-                        
+
+                # ending when final boss is defeated
+                if enemy.IsABoss and self.game.game_data['floor'] == 15:
+                    self.game.game_data['floor'] = 16
+                    self.game.change_state("Story")
+
                 self.Enemies.remove(enemy)
 
             enemy.update(self.Players, dt)
@@ -622,6 +627,17 @@ class ActionState(GameState):
         # HUD
         #############################################
         
+        # Boss life bar
+        if self.TotalBosslife > 0:
+            self.CurrentBosslife = sum(boss.CurrentLife for boss in self.Enemies if boss.IsABoss)
+
+            if self.CurrentBosslife > 0:
+                maxWidth = WINDOW_WIDTH - 394
+                currentWidth = self.CurrentBosslife / self.TotalBosslife * maxWidth - 6
+
+                pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, WINDOW_HEIGHT - 75, maxWidth, 48))
+                pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, WINDOW_HEIGHT - 72, currentWidth, 42))
+                
         # P1 score & life bar
         player1ScoreText = self.UIFont.render(f'Player 1 - {self.Players[0].Score} ({self.Players[0].Lives} lives)', False, (255,255, 255))
         screen.blit(player1ScoreText, (16, 16))
@@ -644,16 +660,6 @@ class ActionState(GameState):
             if self.Players[1].CurrentLife <= 0:
                 self.Player2DeadText.draw(screen)
 
-        # Boss life bar
-        if self.TotalBosslife > 0:
-            self.CurrentBosslife = sum(boss.CurrentLife for boss in self.Enemies if boss.IsABoss)
-
-            if self.CurrentBosslife > 0:
-                maxWidth = WINDOW_WIDTH - 394
-                currentWidth = self.CurrentBosslife / self.TotalBosslife * maxWidth - 6
-
-                pygame.draw.rect(screen, (0,0,0), pygame.Rect(197, WINDOW_HEIGHT - 75, maxWidth, 48))
-                pygame.draw.rect(screen, (255,0,0), pygame.Rect(200, WINDOW_HEIGHT - 72, currentWidth, 42))
 
 
     def tryRespawnPlayer(self, player: Player):

@@ -19,6 +19,8 @@ class StoryState(GameState):
             self.lines = POPUP_TEXTS['INTRO']
         elif self.game.game_data['floor'] == 15:
             self.lines = POPUP_TEXTS['BEFORE_FINAL_BOSS']
+        elif self.game.game_data['floor'] == 16:
+            self.lines = POPUP_TEXTS['AFTER_FINAL_BOSS']
 
         self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5
         pass
@@ -28,11 +30,11 @@ class StoryState(GameState):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == K_SPACE:
-                    self.game.change_state("Action")
+                    self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
 
             if event.type == pygame.JOYBUTTONUP:
                 if event.button == self.game.input_maps[event.joy]["START"]:
-                    self.game.change_state("Action")
+                    self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
 
     def draw(self, screen):
         screen.fill((30, 30, 60))
