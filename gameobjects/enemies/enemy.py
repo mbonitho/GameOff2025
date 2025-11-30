@@ -96,6 +96,9 @@ class Enemy:
                 case 'boss4':
                     SFXFactory.PlayBossDeath4SFX()
 
+        elif self.IsABoss:
+            SFXFactory.PlayBossHurtSFX()
+
     def multiplyLife(self, factor=3):
         self.MaxLife *= factor
         self.CurrentLife =  self.MaxLife

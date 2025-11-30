@@ -28,6 +28,10 @@ class SFXFactory:
         return cls._playSFX(f'elevator_F{floorNumber}')
 
     @classmethod
+    def PlayBossHurtSFX(cls):
+        return cls._playSFX('boss_hurt')
+
+    @classmethod
     def PlayBossDeath1SFX(cls):
         return cls._playSFX('boss_death_1')
 
