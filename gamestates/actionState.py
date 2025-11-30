@@ -553,6 +553,10 @@ class ActionState(GameState):
                 if enemy.IsABoss and self.game.game_data['floor'] == 15:
                     self.game.game_data['floor'] = 16
                     self.game.PlayBGM('end')
+                    
+                    #kill footstep sfx
+                    for player in self.Players:
+                        player.FootstepSFX = None
                     self.game.change_state("Story")
 
                 self.Enemies.remove(enemy)

@@ -3,7 +3,7 @@
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 960
 STARTING_STATE = 'Splash' # default Splash
-STARTING_FLOOR = 15 # default 1 # bosses: 5, 8, 13, 15
+STARTING_FLOOR = 1 # default 1 # bosses: 5, 8, 13, 15
 NUMBER_OF_ENEMIES_TO_SPAWN = 0 #3
 LOOT_CHANCE = 0.15
 
@@ -38,7 +38,7 @@ POPUP_TEXTS = {
     "AFTER_FINAL_BOSS": [
         "The signal is dead. The mastermind's big dish-head-thing has finally cracked.",
         "",
-        "The villagers blink and stretch, vaguely wondering why they're wearing matching cloaks,",
+        "The villagers blink and stretch, wondering vaguely why they're wearing matching cloaks,",
         "and what exactly was so great about The Great Frequency they were chanting about",
         "mere seconds ago.",
         "",

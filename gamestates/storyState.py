@@ -14,6 +14,9 @@ class StoryState(GameState):
         self.linesX = 200
         self.linesY = WINDOW_HEIGHT
 
+        # determine the state after this story segment
+        self.target_state = "Action" if self.game.game_data['floor'] != 16 else "Title"
+
         # determine lines
         self.lines = []
         if self.game.game_data['floor'] == 1:
@@ -22,6 +25,7 @@ class StoryState(GameState):
             self.lines = POPUP_TEXTS['BEFORE_FINAL_BOSS']
         elif self.game.game_data['floor'] == 16:
             self.lines = POPUP_TEXTS['AFTER_FINAL_BOSS']
+            self.game.game_data['floor'] = 1 # resets the game progression
 
         self.endY = self.linesY - len(self.lines) * 40 - WINDOW_HEIGHT * .5
         
@@ -68,7 +72,7 @@ class StoryState(GameState):
             self.skip_timing += dt
 
             if self.skip_timing >= 0.5:
-                self.game.change_state("Action" if self.game.game_data['floor'] != 16 else "Title")
+                self.game.change_state(self.target_state)
 
 
         if self.linesY >= self.endY:
