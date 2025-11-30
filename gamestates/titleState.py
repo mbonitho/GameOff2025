@@ -4,15 +4,15 @@ from gamestates.gameState import GameState
 from pygame.locals import *
 import random
 
+from utils.parameters import WINDOW_HEIGHT, WINDOW_WIDTH
 from utils.sfx_factory import SFXFactory
 
 # Title screen state
 class TitleState(GameState):
     def enter(self):
-        self.TitleBGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert_alpha()
+        self.TitleBGSurface = pygame.image.load('assets/sprites/environment/backgrounds/titleBG.png').convert()
         self.TitleLogo1Surface = pygame.image.load('assets/sprites/environment/title/titleLogo1.png').convert_alpha()
         self.TitleLogo2Surface = pygame.image.load('assets/sprites/environment/title/titleLogo2.png').convert_alpha()
-        
         self.TitleLightningSurface = pygame.image.load('assets/sprites/environment/title/titleScreenLightning.png').convert_alpha()
         
         self.blinkingComponent = BlinkingComponent()
@@ -26,6 +26,20 @@ class TitleState(GameState):
         self.pressStartDirection = 1
 
         self.game.PlayBGM('title')
+
+        ###############################################
+        # PRERENDER TO OPTIMIZE PERFORMANCE ON THE WEB
+        ###############################################
+        if self.game.WEB:
+            # lower BG image quality to improve performance on the web
+            self.TitleBGSurface = pygame.transform.scale(self.TitleBGSurface, (640, 480))
+            self.TitleBGSurface = pygame.transform.scale(self.TitleBGSurface, (WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.title_font = pygame.font.SysFont(None, 32)
+        self.title_text = self.title_font.render("2025, Mathieu Bonithon & Gael Rincon", True, (255, 255, 255))
+        self.credits_text = self.title_font.render("Press C to view the full credits", True, (255, 255, 255))
+        self.completion_time_text = self.title_font.render(f'Your completion time is: {self.game.str_final_time}', True, (255, 255, 255))
+        self.subtitle_font = pygame.font.SysFont(None, 64)
+        self.subtitle_text = self.subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
 
     def handle_events(self, events):
         for event in events:
@@ -61,24 +75,14 @@ class TitleState(GameState):
             screen.blit(self.TitleLogo2Surface, (680, 130))
         else:
             screen.blit(self.TitleLogo1Surface, (680, 130))
-            
-        # about
-        title_font = pygame.font.SysFont(None, 32)
-        title_text = title_font.render("2025, Mathieu Bonithon & Gael Rincon", True, (255, 255, 255))
-        screen.blit(title_text, (850, 880))
 
-        title_text = title_font.render("Press C to view the full credits", True, (255, 255, 255))
-        screen.blit(title_text, (850, 920))
+        screen.blit(self.title_text, (850, 880))
+        screen.blit(self.credits_text, (850, 920))
+        screen.blit(self.subtitle_text, (340, self.pressStartY))
 
         # if the game was beaten at least once, display last win time
         if self.game.str_final_time != '':
-            title_text = title_font.render(f'Your completion time is: {self.game.str_final_time}', True, (255, 255, 255))
-            screen.blit(title_text, (20, 920))
-
-        # buttons
-        subtitle_font = pygame.font.SysFont(None, 64)
-        subtitle_text = subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
-        screen.blit(subtitle_text, (340, self.pressStartY))
+            screen.blit(self.completion_time_text, (20, 920))
 
     def update(self, dt: float):
 
