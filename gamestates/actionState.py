@@ -95,8 +95,11 @@ class ActionState(GameState):
             player.Weapon.Bullets = []
 
         self.CurrentRoom = room
-        self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert_alpha()
-
+        self.RoomSurface = pygame.image.load(f'assets/sprites/environment/rooms/{room.Map.name}.png').convert()
+        if self.game.WEB:
+            # lower BG image quality to improve performance on the web
+            self.RoomSurface = pygame.transform.scale(self.RoomSurface, (640, 480))
+            self.RoomSurface = pygame.transform.scale(self.RoomSurface, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
         #############################
         # Add an help button when there is one in the room
@@ -599,7 +602,7 @@ class ActionState(GameState):
         # DRAW CURRENT ROOM BY NAME
         #############################################
         screen.blit(self.RoomSurface, (0,0))
-
+        
         #############################################
         # SPECIAL CASE FOR VERY FIRST ROOM: WRITE INSTRUCTIONS
         #############################################
@@ -615,7 +618,6 @@ class ActionState(GameState):
 
         if self.VendingMachine is not None:
             self.VendingMachine.draw(screen)
-
 
         if self.CommTower:
             self.CommTower.draw(screen)
