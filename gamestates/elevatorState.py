@@ -124,8 +124,7 @@ class ElevatorState(GameState):
     def skipTonextFloor(self):
         if self.elevator_music_sfx is not None:
             self.elevator_music_sfx.stop()
-        if self.game.game_data['floor'] not in [11,12,13,14]: # todo sfx for those floors
-            SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
+        SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
         self.moveToNextState()
 
 
@@ -143,8 +142,7 @@ class ElevatorState(GameState):
 
         # end of animation
         if self.YOffset <= -360:
-            if self.game.game_data['floor'] not in [11,12,13,14]: # todo sfx for those floors
-                SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
+            SFXFactory.PlayElevatorFloorAnouncementSFX(self.game.game_data['floor'])
             self.moveToNextState()
 
         # Update players

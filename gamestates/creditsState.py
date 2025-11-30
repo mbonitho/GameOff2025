@@ -17,7 +17,7 @@ class CreditState(GameState):
         self.lines = [
             "Project W.A.V.E.S - Where All Victims End Silently",
             "",
-            "Mathieu Bonithon - Code & Game design",
+            "Mathieu Bonithon - Code, Graphics & Game design",
             "Gael Rincon - Sound design & Game design",
             "",
             "Music used:",
@@ -33,7 +33,7 @@ class CreditState(GameState):
             "Demon Lord, by Scrabbit",
             "https://opengameart.org/content/demon-lord",
             "",
-            "One, by pheonton"
+            "One, by pheonton",
             "https://opengameart.org/content/one"
         ]
 

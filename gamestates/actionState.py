@@ -424,6 +424,12 @@ class ActionState(GameState):
 
     def update(self, dt: float):
 
+        # BGM volume
+        if len(self.Enemies) > 0:
+            pygame.mixer.music.set_volume(0.5)
+        else:
+            pygame.mixer.music.set_volume(0.2)
+
         # blinking text
         if self.Players[0].CurrentLife <= 0:
             text = 'Player 1 - press start or space' if self.Players[0].Lives > 0 else 'Player 1 - GAME OVER'

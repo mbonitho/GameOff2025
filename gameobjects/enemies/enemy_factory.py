@@ -235,17 +235,17 @@ class EnemyFactory:
 
         spawnBehavior = SpawnItemBehavior(objects, SpawnItemBehavior.ObjectType.MONEY)
         spawnBehavior.decisionMinTime = 0.25
-        spawnBehavior.decisionMaxTime = .6
+        spawnBehavior.decisionMaxTime = .4
 
         moveBehavior = MoveRandomlyBehavior(obstacles)
-        moveBehavior.Speed = 220
+        moveBehavior.Speed = 320
 
         enemy = Enemy(surfaces, pos[0], pos[1], [
-                                                 DiesAfterAWhileBehavior(5),
+                                                 DiesAfterAWhileBehavior(10),
                                                  moveBehavior,
                                                  spawnBehavior])
     
-        enemy.MaxLife = 20
+        enemy.MaxLife = 30
         enemy.CurrentLife =  enemy.MaxLife
         enemy.ScoreValue = 250
 

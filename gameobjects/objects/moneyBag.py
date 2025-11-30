@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 class MoneyBag:
 
@@ -31,5 +32,6 @@ class MoneyBag:
     def handleCollision(self, player):
         if self.lifespan < self.maxlifespan:
             player.Score += self.value
+            SFXFactory.PlayGotCashSFX(player.playerIndex)
 
     

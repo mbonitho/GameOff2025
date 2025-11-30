@@ -1,5 +1,6 @@
 from pygame import  Surface
 from gameobjects.blinkingComponent import BlinkingComponent
+from utils.sfx_factory import SFXFactory
 
 class MaxLifeUp:
 
@@ -33,5 +34,6 @@ class MaxLifeUp:
             player.MaxLife += self.value
             player.CurrentLife = player.MaxLife
             player.Lives += 1
+            SFXFactory.PlayPlayerHappySFX(player.playerIndex)
 
     

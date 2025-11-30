@@ -98,6 +98,11 @@ class SFXFactory:
         return cls._playSFX(f'player{playerindex}_hurt{random.choice([1,2])}')
 
     @classmethod
+    def PlayGotCashSFX(cls, playerindex: int):
+        index = random.choice([1,2,3,4])
+        return cls._playSFX(f'item_cash_{index}')
+
+    @classmethod
     def PlayPlayerDeadSFX(cls, playerindex: int):
         return cls._playSFX(f'player{playerindex}_dead')
 

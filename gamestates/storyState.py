@@ -71,7 +71,7 @@ class StoryState(GameState):
         if self.skip_timing >= 0:
             self.skip_timing += dt
 
-            if self.skip_timing >= 0.5:
+            if self.skip_timing >= 1:
                 self.game.change_state(self.target_state)
 
 
