@@ -9,8 +9,9 @@ LOOT_CHANCE = 0.15
 
 INPUT_MAPS = {
     "xbox": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 2, "SHOOT_UP": 3, "START": 7},
+    "generic": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 2, "SHOOT_UP": 3, "START": 7},
     "playstation": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 2, "SHOOT_UP": 3, "START": 7},
-    "switch": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 3, "SHOOT_UP": 2, "START": 10},
+    "switch": {"SHOOT_DOWN": 0, "SHOOT_RIGHT": 1, "SHOOT_LEFT": 3, "SHOOT_UP": 2, "START": 10}
 }
 
 POPUP_TEXTS = {
