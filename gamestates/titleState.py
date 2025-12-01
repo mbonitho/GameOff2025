@@ -38,6 +38,7 @@ class TitleState(GameState):
         self.title_text = self.title_font.render("2025, Mathieu Bonithon & Gael Rincon", True, (255, 255, 255))
         self.credits_text = self.title_font.render("Press C to view the full credits", True, (255, 255, 255))
         self.completion_time_text = self.title_font.render(f'Your completion time is: {self.game.str_final_time}', True, (255, 255, 255))
+        self.toggle_fullscreen_text = self.title_font.render('Press F11 to toggle Fullscreen mode', True, (255, 255, 255))
         self.subtitle_font = pygame.font.SysFont(None, 64)
         self.subtitle_text = self.subtitle_font.render("Press Space or Start to begin", True, (255, 255, 255))
 
@@ -82,7 +83,9 @@ class TitleState(GameState):
 
         # if the game was beaten at least once, display last win time
         if self.game.str_final_time != '':
-            screen.blit(self.completion_time_text, (20, 920))
+            screen.blit(self.completion_time_text, (20, 880))
+        if not self.game.WEB:
+            screen.blit(self.toggle_fullscreen_text, (20, 920))
 
     def update(self, dt: float):
 
