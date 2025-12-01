@@ -234,6 +234,6 @@ class Game:
 
     def PlayBGM(self, filenameWithoutExtension: str):
         pygame.mixer.music.stop()
-        pygame.mixer.music.load(f"assets/bgm/{filenameWithoutExtension}.wav")
+        pygame.mixer.music.load(f"assets/bgm/{filenameWithoutExtension}.ogg")
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)    

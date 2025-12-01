@@ -171,12 +171,11 @@ class Game:
             else:
                 self.screen.blit(self.render_surface, (0,0))
 
-
-        # draw FPS (web only)
-        if Game.WEB:
-            font = pygame.font.SysFont(None, 48)
-            fps = font.render(f'{str(int(self.clock.get_fps()))} fps', True, (255,0,255))
-            self.screen.blit(fps, (WINDOW_WIDTH - fps.get_width() - 8,WINDOW_HEIGHT - fps.get_height() - 8))
+        # # draw FPS (web only)
+        # if Game.WEB:
+        #     font = pygame.font.SysFont(None, 48)
+        #     fps = font.render(f'{str(int(self.clock.get_fps()))} fps', True, (255,0,255))
+        #     self.screen.blit(fps, (WINDOW_WIDTH - fps.get_width() - 8,WINDOW_HEIGHT - fps.get_height() - 8))
 
         pygame.display.flip()
 
